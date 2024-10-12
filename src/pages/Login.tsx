@@ -57,8 +57,8 @@ const Login: React.FC = () => {
               marginTop: "40px",
               backgroundColor: "green",
               color: "white",
-              width: "50vw",
-            }}
+              width: "50vw"
+            }} 
           >
             Login
           </IonButton>
