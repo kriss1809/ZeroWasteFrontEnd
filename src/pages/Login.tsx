@@ -29,7 +29,7 @@ const Login: React.FC = () => {
 
           {/* Email */}
           <IonItem style={{ marginTop: "10px", width: "75vw" }}>
-            <IonLabel position="stacked">Email</IonLabel>
+            <IonLabel position="stacked" className="label-font">Email</IonLabel>
             <IonInput
               type="email"
               placeholder="Type your email"
@@ -40,7 +40,7 @@ const Login: React.FC = () => {
 
           {/* Password */}
           <IonItem style={{ marginTop: "10px", width: "75vw" }}>
-            <IonLabel position="stacked">Password</IonLabel>
+            <IonLabel position="stacked" className="label-font">Password</IonLabel>
             <IonInput
               type="password"
               placeholder="Type yout password"
@@ -62,6 +62,12 @@ const Login: React.FC = () => {
           >
             Login
           </IonButton>
+
+           <div style={{ marginTop: "20px" }}>
+            <span>Not a member? </span>
+            <a href="/signup" style={{ color: "gray", textDecoration: "none" }}>Create account</a>
+          </div>
+
         </div>
       </IonPage>
     );
