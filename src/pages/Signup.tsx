@@ -27,7 +27,7 @@ const Signup: React.FC = () => {
               width: "50vw"
             }} 
           >
-            Sign Up
+            Sign Up!
           </IonButton>
         </IonPage>
     );
