@@ -32,15 +32,18 @@ const Signup: React.FC = () => {
 
   return (
     <IonPage>
-     
-      <div className="center-content">
-        <h1 className="title">ZeroWaste</h1>
-      </div>
-       
       <div className="center-content-vertically">
+        <img
+          src="/images/logo.png"
+          alt="Logo"
+          style={{ objectFit: "cover", maxWidth: "400px" }}
+        />
+
         {/* Email */}
         <IonItem style={{ marginTop: "10px", width: "75vw" }}>
-          <IonLabel position="stacked" className="label-font">Email</IonLabel>
+          <IonLabel position="stacked" className="label-font">
+            Email
+          </IonLabel>
           <IonInput
             type="email"
             placeholder="Type your email"
@@ -51,7 +54,9 @@ const Signup: React.FC = () => {
 
         {/* Password */}
         <IonItem style={{ marginTop: "10px", width: "75vw" }}>
-          <IonLabel position="stacked" className="label-font">Password</IonLabel>
+          <IonLabel position="stacked" className="label-font">
+            Password
+          </IonLabel>
           <IonInput
             type="password"
             placeholder="Type your password"
@@ -62,7 +67,9 @@ const Signup: React.FC = () => {
 
         {/* Confirm Password */}
         <IonItem style={{ marginTop: "10px", width: "75vw" }}>
-          <IonLabel position="stacked" className="label-font">Confirm Password</IonLabel>
+          <IonLabel position="stacked" className="label-font">
+            Confirm Password
+          </IonLabel>
           <IonInput
             type="password"
             placeholder="Confirm your password"
@@ -78,7 +85,7 @@ const Signup: React.FC = () => {
           </IonText>
         )}
 
-        <IonButton 
+        <IonButton
           expand="block"
           className="green-button"
           routerLink="/signup"
@@ -86,18 +93,19 @@ const Signup: React.FC = () => {
             marginTop: "40px",
             backgroundColor: "green",
             color: "white",
-            width: "50vw"
-          }} 
+            width: "50vw",
+          }}
           disabled={error !== ""} // Dezactivezi butonul dacă parolele nu coincid
         >
           Create account!
         </IonButton>
 
-        <div style={{ marginTop: "20px" }}>
-            <span>Already have an account? </span>
-            <a href="/login" style={{ color: "gray", textDecoration: "none" }}>Login here!</a>
+        <div style={{ marginTop: "20px", marginBottom: "20px"}}>
+          <span>Already have an account? </span>
+          <a href="/login" style={{ color: "gray", textDecoration: "none"}}>
+            Login here!
+          </a>
         </div>
-
       </div>
     </IonPage>
   );
