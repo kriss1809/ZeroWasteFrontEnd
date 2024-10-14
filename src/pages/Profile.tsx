@@ -1,7 +1,7 @@
 import { IonPage } from "@ionic/react";
 
 const Profile: React.FC = () => {
-  return <IonPage></IonPage>;
+  return <IonPage> "test"</IonPage>;
 };
 
 export default Profile;
