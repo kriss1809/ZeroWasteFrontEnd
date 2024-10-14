@@ -2,11 +2,7 @@ import { useState } from "react";
 import React from "react";
 import {
   IonButton,
-  IonContent,
-  IonHeader,
   IonPage,
-  IonTitle,
-  IonToolbar,
   IonItem,
   IonLabel,
   IonInput
@@ -22,7 +18,7 @@ const Login: React.FC = () => {
       <IonPage>
         <div className="center-content-vertically">
           <img
-            src="/images/logo.jpg"
+            src="/images/logo.png"
             alt="Logo"
             style={{ objectFit: "cover", maxWidth: "400px" }}
           />
