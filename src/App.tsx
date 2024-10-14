@@ -45,7 +45,7 @@ const App: React.FC = () => (
           <Login />
         </Route>
         <Route exact path="/signup">
-          <Signup />
+          <Signup/>
         </Route>
         <Route exact path="/profile">
           <Profile />
