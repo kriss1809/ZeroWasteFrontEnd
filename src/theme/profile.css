@@ -11,6 +11,7 @@
 
 .input {
   margin-top: 10px;
+  margin-bottom: 20px;
 }
 
 .share {
@@ -18,10 +19,20 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 16px;
   margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .grid-item {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.profile-photo {
+  height: 155px;
+  width: 155px;
+  margin-bottom: 20px;
+  border-radius: 50%;
+  border: 3px solid #1b6f1b;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }

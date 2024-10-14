@@ -9,6 +9,8 @@ import {
   IonButton,
   IonList,
   IonCheckbox,
+  IonSelect,
+  IonSelectOption,
 } from "@ionic/react";
 import "../theme/profile.css";
 
@@ -21,12 +23,39 @@ const Profile: React.FC = () => {
   //   option2: false,
   //   option3: false,
   // });
+  const [darkMode, setDarkMode] = useState<boolean>(false);
+  const [notificationDays, setNotificationDays] = useState<number>(1);
   const [deleteAccount, setDeleteAccount] = useState<boolean>(false);
+
+  const handleInvite = () => {
+    // Aici poți adăuga logica pentru a gestiona invitația
+    console.log("Invitație trimisă!");
+  };
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
+
+  const handleChangePassword = () => {
+    console.log("the password has been changed");
+  };
 
   return (
     <IonPage>
       <IonContent>
         <div className="center-profile">
+          <img
+            src="/images/logo.png"
+            alt="Logo"
+            className="profile-photo"
+            style={{
+              objectFit: "cover",
+              maxWidth: "150px",
+              marginTop: "40px",
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+          />
           <IonItem className="input">
             <IonLabel position="floating" style={{ marginBottom: "8px" }}>
               Email
@@ -46,21 +75,25 @@ const Profile: React.FC = () => {
               type="password"
               onIonChange={(e) => setPassword(e.detail.value!)}
             />
+            <IonButton
+              onClick={handleChangePassword}
+              shape="round"
+              slot="end"
+              color="success"
+              // fill = "outline"
+              style={{
+                // display: "block",
+                // marginTop: "20px",
+                // marginLeft: "auto",
+                // marginRight: "auto",
+                // width: "50vw",
+                marginTop: "10px",
+                marginLeft: "10px",
+              }}
+            >
+              Change password
+            </IonButton>
           </IonItem>
-          <IonButton
-            shape="round"
-            color="success"
-            style={{
-              marginTop: "40px",
-              marginLeft: "auto",
-              marginRight: "0",
-              marginBottom: "40px",
-              color: "white",
-              width: "50vw",
-            }}
-          >
-            Change password
-          </IonButton>
           <div className="share">
             <div className="grid-item preferred">
               <IonItem>
@@ -74,15 +107,35 @@ const Profile: React.FC = () => {
                 />
               </IonItem>
             </div>
-
             <div className="grid-item items">
               <IonLabel>Share list</IonLabel>
-              <IonList>
-                <IonItem>Option 1</IonItem>
-                <IonItem>Option 2</IonItem>
-                <IonItem>Option 3</IonItem>
-              </IonList>
+              <IonButton
+                shape="round"
+                color="success"
+                onClick={handleInvite}
+                style={{
+                  display: "block",
+                  marginTop: "10px",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  width: "50vw",
+                }}
+              >
+                Send Invite
+              </IonButton>
             </div>
+          </div>
+          <div className="grid-item notification">
+            <IonLabel>Notify me</IonLabel>
+            <IonSelect
+              value={notificationDays}
+              onIonChange={(e) => setNotificationDays(e.detail.value!)}
+              interface="action-sheet" // Opțiune de a folosi un action sheet pentru selectare
+            >
+              <IonSelectOption value={1}>1 day before</IonSelectOption>
+              <IonSelectOption value={2}>2 days before</IonSelectOption>
+              <IonSelectOption value={3}>3 days before</IonSelectOption>
+            </IonSelect>
           </div>
           <IonButton
             shape="round"
@@ -95,7 +148,7 @@ const Profile: React.FC = () => {
               width: "50vw",
             }}
           >
-            Delete button
+            Delete Account
           </IonButton>
         </div>
       </IonContent>
