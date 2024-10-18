@@ -35,6 +35,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Profile from './pages/Profile';
 import SuccessfullyCreatedAccount from './pages/SuccessfullyCreatedAccount';
+import SuccessfullyDeletedAccount from './pages/SuccessfullyDeletedAccount';
 import NotFound from './pages/NotFound';
 
 setupIonicReact();
@@ -55,6 +56,9 @@ const App: React.FC = () => (
           </Route>
           <Route exact path="/successfully-created-account">
             <SuccessfullyCreatedAccount />
+          </Route>
+          <Route exact path="/successfully-deleted-account">
+            <SuccessfullyDeletedAccount />
           </Route>
           <Route exact path="/">
             <Redirect to="/login" />
