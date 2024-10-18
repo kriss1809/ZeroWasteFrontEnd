@@ -1,6 +1,6 @@
-import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
-import { IonReactRouter } from '@ionic/react-router';
+import { IonReactRouter} from '@ionic/react-router';
+import { Route, Redirect, Switch } from "react-router-dom";
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -34,6 +34,8 @@ import './theme/variables.css';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Profile from './pages/Profile';
+import SuccessfullyCreatedAccount from './pages/SuccessfullyCreatedAccount';
+import NotFound from './pages/NotFound';
 
 setupIonicReact();
 
@@ -41,18 +43,26 @@ const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
       <IonRouterOutlet>
-        <Route exact path="/login">
-          <Login />
-        </Route>
-        <Route exact path="/signup">
-          <Signup/>
-        </Route>
-        <Route exact path="/profile">
-          <Profile />
-        </Route>
-        <Route exact path="/">
-          <Redirect to="/login" />
-        </Route>
+        <Switch>
+          <Route exact path="/login">
+            <Login />
+          </Route>
+          <Route exact path="/signup">
+            <Signup />
+          </Route>
+          <Route exact path="/profile">
+            <Profile />
+          </Route>
+          <Route exact path="/successfully-created-account">
+            <SuccessfullyCreatedAccount />
+          </Route>
+          <Route exact path="/">
+            <Redirect to="/login" />
+          </Route>
+          <Route path="*">
+            <NotFound />
+          </Route>
+        </Switch>
       </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>
