@@ -37,6 +37,8 @@ import Profile from './pages/Profile';
 import SuccessfullyCreatedAccount from './pages/SuccessfullyCreatedAccount';
 import SuccessfullyDeletedAccount from './pages/SuccessfullyDeletedAccount';
 import NotFound from './pages/NotFound';
+import Home from './pages/Home';
+import Recepies from './pages/Recepies';
 
 setupIonicReact();
 
@@ -45,6 +47,12 @@ const App: React.FC = () => (
     <IonReactRouter>
       <IonRouterOutlet>
         <Switch>
+          <Route exact path="/home">
+            <Home />
+          </Route>
+          <Route exact path="/recepies">
+            <Recepies />
+          </Route>
           <Route exact path="/login">
             <Login />
           </Route>
