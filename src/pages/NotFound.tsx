@@ -1,6 +1,6 @@
 import React from "react";
 import { IonPage, IonContent, IonButton } from "@ionic/react";
-import "../theme/login.css";
+import "../theme/info.css";
 
 const NotFound: React.FC = () => {
   return (

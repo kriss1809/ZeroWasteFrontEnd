@@ -1,0 +1,18 @@
+.green-button {
+  --background: green; 
+  --color: white; 
+}
+
+.center-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Asigură-te că pagina ocupă întreaga înălțime a ecranului */
+  text-align: center;
+}
+
+.title {
+  font-size: 48px; /* Mărește fontul titlului */
+  font-weight: bold;
+  color: green; /* Poți schimba culoarea după preferințe */
+}

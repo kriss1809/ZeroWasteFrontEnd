@@ -1,6 +1,6 @@
 import React from "react";
 import { IonPage, IonContent, IonButton } from "@ionic/react";
-import "../theme/confirmation.css";
+import "../theme/info.css";
 
 const SuccessfullyDeletedAccount: React.FC = () => {
   return (
