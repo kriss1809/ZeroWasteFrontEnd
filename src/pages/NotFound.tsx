@@ -1,5 +1,24 @@
+import React from "react";
+import { IonPage, IonContent, IonButton } from "@ionic/react";
+import "../theme/login.css";
+
 const NotFound: React.FC = () => {
-  return "aici va fi scris un mesaj pentru utilizatorul care a accesat o cale care nu exista si un buton pentru a-l duce la pagina home";
+  return (
+    <IonPage>
+      <IonContent className="center-content">
+        <h1 className="title">Page Not Found</h1>
+        <p>The page you are looking for does not exist. Please check the URL or return to the home page.</p>
+        <IonButton
+          expand="block"
+          routerLink="/login"
+          className="green-button"
+          style={{ marginTop: "20px", backgroundColor: "green", color: "white" }}
+        >
+          Go to Home
+        </IonButton>
+      </IonContent>
+    </IonPage>
+  );
 };
 
 export default NotFound;

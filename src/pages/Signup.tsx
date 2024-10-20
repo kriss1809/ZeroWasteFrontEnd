@@ -100,7 +100,7 @@ const Signup: React.FC = () => {
           <IonButton 
             expand="block"
             className="green-button"
-            routerLink="/signup"
+            routerLink="/successfully-created-account"
             style={{
               marginTop: "40px",
               backgroundColor: "green",
@@ -110,6 +110,7 @@ const Signup: React.FC = () => {
             disabled={!validateEmail(email) || error !== ""} // Dezactivează butonul dacă emailul este invalid sau parolele nu coincid
           >
             Sign Up!
+            
           </IonButton>
         </div>
     </IonPage>
