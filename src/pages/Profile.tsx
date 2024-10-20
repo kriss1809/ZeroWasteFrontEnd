@@ -58,7 +58,7 @@ const Profile: React.FC = () => {
     // Logică pentru ștergerea contului
     console.log("Contul a fost șters");
     setShowDeleteAccountModal(false);
-    history.push("/SucessfullyDeletedAccount");
+    history.push("/successfully-deleted-account");
   };
 
   const isSaveDisabled = newPassword !== confirmNewPassword;
