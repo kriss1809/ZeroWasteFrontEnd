@@ -14,6 +14,7 @@ import {
 } from "@ionic/react";
 import "../theme/login.css";
 import { registerUser } from '../services/apiClient';
+import { mailUnread } from "ionicons/icons";
 
 const Signup: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -137,7 +138,7 @@ const Signup: React.FC = () => {
           >
             Sign Up!
           </IonButton>
-          <div style={{ marginTop: "20px" }}>
+          <div style={{ margin: "20px", textAlign:"center"}}>
             <span>Already a member? </span>
             <a href="/login" style={{ color: "gray", textDecoration: "none" }}>
               Login here!
