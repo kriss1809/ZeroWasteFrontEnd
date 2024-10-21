@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import {
@@ -14,6 +14,8 @@ import {
 } from "@ionic/react";
 import { logOutOutline } from "ionicons/icons";
 import "../theme/profile.css";
+import { getUserProfile } from "../services/apiClient";
+import { User } from "../entitites/User";
 
 const Profile: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -22,6 +24,7 @@ const Profile: React.FC = () => {
   const [darkMode, setDarkMode] = useState<boolean>(false);
   const [notificationDays, setNotificationDays] = useState<number>(1);
   const [deleteAccount, setDeleteAccount] = useState<boolean>(false);
+
 
   const [showChangePasswordModal, setShowChangePasswordModal] =
     useState<boolean>(false);
@@ -34,6 +37,16 @@ const Profile: React.FC = () => {
   const [deletePassword, setDeletePassword] = useState<string>("");
 
   const history = useHistory();
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      const userProfile = await getUserProfile();
+      if(userProfile) {
+      setEmail(userProfile.email);}
+    };
+
+    fetchUserProfile();
+  }, []);
 
   const handleInvite = () => {
     console.log("Invitație trimisă!");

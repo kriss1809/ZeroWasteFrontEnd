@@ -5,17 +5,39 @@ import {
   IonPage,
   IonItem,
   IonLabel,
-  IonInput
+  IonInput,
+  IonContent,
 } from "@ionic/react";
+import { useHistory } from "react-router-dom";
 import "../theme/login.css";
+import { loginUser } from "../services/apiClient"; // presupunem că loginUser e definit corect
 
 const Login: React.FC = () => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const history = useHistory(); // Pentru redirecționare programatică
 
-    const [email, setEmail] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-    return (
-      <IonPage>
+    try {
+      const response = await loginUser(email, password);
+      if (response) {
+        // Redirecționează către home după login reușit
+        console.log(response);
+        history.push("/home");
+      } else {
+        // Tratează eroarea, poate afisezi un mesaj
+        console.log("Login failed");
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+    }
+  };
+
+  return (
+    <IonPage>
+      <IonContent className="ion-padding">
         <div className="center-content-vertically">
           <img
             src="/images/logo.png"
@@ -23,50 +45,62 @@ const Login: React.FC = () => {
             style={{ objectFit: "cover", maxWidth: "400px" }}
           />
 
-          {/* Email */}
-          <IonItem style={{ marginTop: "10px", width: "75vw" }}>
-            <IonLabel position="stacked" className="label-font">Email</IonLabel>
-            <IonInput
-              type="email"
-              placeholder="Type your email"
-              value={email}
-              onIonChange={(e) => setEmail(e.detail.value!)}
-            />
-          </IonItem>
+          {/* Formularul de Login */}
+          <form onSubmit={handleLogin}>
+            {/* Email */}
+            <IonItem style={{ marginTop: "10px", width: "75vw" }}>
+              <IonLabel position="stacked" className="label-font">
+                Email
+              </IonLabel>
+              <IonInput
+                type="email"
+                placeholder="Type your email"
+                value={email}
+                onIonChange={(e) => setEmail(e.detail.value!)}
+                required
+              />
+            </IonItem>
 
-          {/* Password */}
-          <IonItem style={{ marginTop: "10px", width: "75vw" }}>
-            <IonLabel position="stacked" className="label-font">Password</IonLabel>
-            <IonInput
-              type="password"
-              placeholder="Type yout password"
-              value={password}
-              onIonChange={(e) => setPassword(e.detail.value!)}
-            />
-          </IonItem>
+            {/* Parola */}
+            <IonItem style={{ marginTop: "10px", width: "75vw" }}>
+              <IonLabel position="stacked" className="label-font">
+                Password
+              </IonLabel>
+              <IonInput
+                type="password"
+                placeholder="Type your password"
+                value={password}
+                onIonChange={(e) => setPassword(e.detail.value!)}
+                required
+              />
+            </IonItem>
 
-          <IonButton 
-            expand="block"
-            className="green-button"
-            routerLink="/home"
-            style={{
-              marginTop: "40px",
-              backgroundColor: "green",
-              color: "white",
-              width: "50vw"
-            }} 
-          >
-            Login
-          </IonButton>
+            {/* Butonul de login */}
+            <IonButton
+              expand="block"
+              className="green-button"
+              type="submit" // Acum este buton de submit, declanșând evenimentul de form
+              style={{
+                marginTop: "40px",
+                backgroundColor: "green",
+                color: "white",
+                width: "50vw",
+              }}
+            >
+              Login
+            </IonButton>
+          </form>
 
-           <div style={{ marginTop: "20px" }}>
+          <div style={{ marginTop: "20px" }}>
             <span>Not a member? </span>
-            <a href="/signup" style={{ color: "gray", textDecoration: "none" }}>Create account</a>
+            <a href="/signup" style={{ color: "gray", textDecoration: "none" }}>
+              Create account
+            </a>
           </div>
-
         </div>
-      </IonPage>
-    );
+      </IonContent>
+    </IonPage>
+  );
 };
 
 export default Login;
