@@ -13,6 +13,7 @@ import {
   IonText
 } from "@ionic/react";
 import "../theme/login.css";
+import { registerUser } from '../services/apiClient';
 
 const Signup: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -21,6 +22,24 @@ const Signup: React.FC = () => {
   const [username, setUsername] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [emailError, setEmailError] = useState<string>("");
+
+  const handleSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const response = await registerUser(email, password, confirmPassword);
+      if (response) {
+        // Redirecționează către home după crearea contului
+        console.log(response);
+      } else {
+        // Tratează eroarea, poate afisezi un mesaj
+        console.log("Signup failed");
+      }
+    } catch (error) {
+      console.error("Error during signup:", error);
+    }
+  }
+
 
   const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -48,20 +67,22 @@ const Signup: React.FC = () => {
   return (
     <IonPage>
       <div className="center-content-vertically">
-          <img
-            src="/images/logo.png"
-            alt="Logo"
-            style={{ objectFit: "cover", maxWidth: "400px" }}
-          />
-      
+        <img
+          src="/images/logo.png"
+          alt="Logo"
+          style={{ objectFit: "cover", maxWidth: "400px" }}
+        />
+        <form onSubmit={handleSignup}>
           {/* Email */}
           <IonItem style={{ marginTop: "10px", width: "75vw" }}>
-            <IonLabel position="stacked" className="label-font">Email</IonLabel>
+            <IonLabel position="stacked" className="label-font">
+              Email
+            </IonLabel>
             <IonInput
               type="email"
               placeholder="Type your email"
               value={email}
-              onIonChange={(e) => handleEmailChange(e.detail.value!)}
+              onIonInput={(e) => handleEmailChange(e.detail.value!)}
             />
           </IonItem>
           {emailError && (
@@ -72,23 +93,27 @@ const Signup: React.FC = () => {
 
           {/* Password */}
           <IonItem style={{ marginTop: "10px", width: "75vw" }}>
-            <IonLabel position="stacked" className="label-font">Password</IonLabel>
+            <IonLabel position="stacked" className="label-font">
+              Password
+            </IonLabel>
             <IonInput
               type="password"
               placeholder="Type your password"
               value={password}
-              onIonChange={(e) => setPassword(e.detail.value!)}
+              onIonInput={(e) => setPassword(e.detail.value!)}
             />
           </IonItem>
 
           {/* Confirm Password */}
           <IonItem style={{ marginTop: "10px", width: "75vw" }}>
-            <IonLabel position="stacked" className="label-font">Confirm Password</IonLabel>
+            <IonLabel position="stacked" className="label-font">
+              Confirm Password
+            </IonLabel>
             <IonInput
               type="password"
               placeholder="Confirm your password"
               value={confirmPassword}
-              onIonChange={(e) => handleConfirmPasswordChange(e.detail.value!)}
+              onIonInput={(e) => handleConfirmPasswordChange(e.detail.value!)}
             />
           </IonItem>
           {error && (
@@ -97,22 +122,23 @@ const Signup: React.FC = () => {
             </IonText>
           )}
 
-          <IonButton 
+          <IonButton
             expand="block"
             className="green-button"
             routerLink="/successfully-created-account"
+            type="submit"
             style={{
               marginTop: "40px",
               backgroundColor: "green",
               color: "white",
-              width: "50vw"
-            }} 
+              width: "50vw",
+            }}
             disabled={!validateEmail(email) || error !== ""} // Dezactivează butonul dacă emailul este invalid sau parolele nu coincid
           >
             Sign Up!
-            
           </IonButton>
-        </div>
+        </form>
+      </div>
     </IonPage>
   );
 };

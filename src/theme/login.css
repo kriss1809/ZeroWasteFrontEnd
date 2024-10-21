@@ -1,6 +1,7 @@
 .green-button {
   --background: green; 
   --color: white; 
+  margin: auto;
 }
 
 .center-content-vertically {
