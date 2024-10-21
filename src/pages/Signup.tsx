@@ -137,6 +137,12 @@ const Signup: React.FC = () => {
           >
             Sign Up!
           </IonButton>
+          <div style={{ marginTop: "20px" }}>
+            <span>Already a member? </span>
+            <a href="/login" style={{ color: "gray", textDecoration: "none" }}>
+              Login here!
+            </a>
+          </div>
         </form>
       </div>
     </IonPage>
