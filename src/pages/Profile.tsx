@@ -11,6 +11,8 @@ import {
   IonModal, // Import pentru modal
   IonIcon,
   IonRouterLink,
+  IonSelect,
+  IonSelectOption,
 } from "@ionic/react";
 import { logOutOutline } from "ionicons/icons";
 import "../theme/profile.css";
@@ -24,7 +26,6 @@ const Profile: React.FC = () => {
   const [darkMode, setDarkMode] = useState<boolean>(false);
   const [notificationDays, setNotificationDays] = useState<number>(1);
   const [deleteAccount, setDeleteAccount] = useState<boolean>(false);
-
 
   const [showChangePasswordModal, setShowChangePasswordModal] =
     useState<boolean>(false);
@@ -41,8 +42,9 @@ const Profile: React.FC = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       const userProfile = await getUserProfile();
-      if(userProfile) {
-      setEmail(userProfile.email);}
+      if (userProfile) {
+        setEmail(userProfile.email);
+      }
     };
 
     fetchUserProfile();
@@ -231,6 +233,18 @@ const Profile: React.FC = () => {
                 Send Invite
               </IonButton>
             </div>
+          </div>
+          <div className="grid-item notification">
+            <IonLabel>Notify me</IonLabel>
+            <IonSelect
+              value={notificationDays}
+              onIonChange={(e) => setNotificationDays(e.detail.value!)}
+              interface="action-sheet" // Opțiune de a folosi un action sheet pentru selectare
+            >
+              <IonSelectOption value={1}>1 day before</IonSelectOption>
+              <IonSelectOption value={2}>2 days before</IonSelectOption>
+              <IonSelectOption value={3}>3 days before</IonSelectOption>
+            </IonSelect>
           </div>
           <IonButton
             shape="round"
