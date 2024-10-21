@@ -86,7 +86,7 @@ const Profile: React.FC = () => {
             color="danger"
             style={{
               display: "block",
-              marginTop: "20px",
+              marginTop: "25px",
               marginLeft: "auto",
               marginRight: "5px",
               textAlign: "center",
@@ -112,38 +112,41 @@ const Profile: React.FC = () => {
               marginRight: "auto",
             }}
           />
-          <IonItem className="input">
-            <IonLabel position="floating" style={{ marginBottom: "20px" }}>
-              Email
-            </IonLabel>
-            <IonInput
-              value={email}
-              type="email"
-              onIonChange={(e) => setEmail(e.detail.value!)}
-            />
-          </IonItem>
-          <IonItem className="input">
-            <IonLabel position="floating" style={{ marginBottom: "20px" }}>
-              Password
-            </IonLabel>
-            <IonInput
-              value={password}
-              type="password"
-              onIonChange={(e) => setPassword(e.detail.value!)}
-            />
-            <IonButton
-              onClick={() => setShowChangePasswordModal(true)} // Deschide fereastra modală la click
-              shape="round"
-              slot="end"
-              color="success"
-              style={{
-                marginTop: "30px",
-                marginLeft: "10px",
-              }}
-            >
-              Change password
-            </IonButton>
-          </IonItem>
+          <div className="check-in">
+            <IonItem className="input">
+              <IonLabel position="floating" style={{ marginBottom: "20px" }}>
+                Email
+              </IonLabel>
+              <IonInput
+                value={email}
+                type="email"
+                onIonChange={(e) => setEmail(e.detail.value!)}
+              />
+            </IonItem>
+            <IonItem className="input">
+              <IonLabel position="floating" style={{ marginBottom: "20px" }}>
+                Password
+              </IonLabel>
+              <IonInput
+                value={password}
+                type="password"
+                onIonChange={(e) => setPassword(e.detail.value!)}
+              />
+
+              <IonButton
+                onClick={() => setShowChangePasswordModal(true)} // Deschide fereastra modală la click
+                shape="round"
+                slot="end"
+                color="success"
+                style={{
+                  marginTop: "30px",
+                  marginLeft: "10px",
+                }}
+              >
+                Change password
+              </IonButton>
+            </IonItem>
+          </div>
 
           <IonModal isOpen={showChangePasswordModal}>
             <div className="modal-content center-profile">
@@ -252,7 +255,7 @@ const Profile: React.FC = () => {
             onClick={() => setShowDeleteAccountModal(true)}
             style={{
               display: "block",
-              marginTop: "40px",
+              // marginTop: "40px",
               marginLeft: "auto",
               marginRight: "auto",
               width: "50vw",
