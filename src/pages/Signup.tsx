@@ -125,7 +125,7 @@ const Signup: React.FC = () => {
 
           <IonButton
             expand="block"
-            className="green-button"
+            className="green-button-gradient"
             routerLink="/successfully-created-account"
             type="submit"
             style={{

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   IonInput,
   IonButton,
@@ -7,6 +7,7 @@ import {
   IonList,
   IonText,
 } from "@ionic/react";
+import "../theme/addItem.css";
 
 const AddItem: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -16,61 +17,78 @@ const AddItem: React.FC = () => {
   const [recommendedDays, setRecommendedDays] = useState("");
   const [error, setError] = useState("");
 
-  
-    useEffect(() => {
-        console.log(productName, expirationDate, openingDate, recommendedDays);
-    }, [productName, expirationDate, openingDate, recommendedDays]);
+  // Ref for the AddItem container
+  const addItemRef = useRef<HTMLDivElement>(null);
 
-  const handleSave = () => {
-    // Use setTimeout to delay validation
-    if (!productName) {
-    setError("Product name is required.");
-    return;
-    }
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        addItemRef.current &&
+        !addItemRef.current.contains(event.target as Node)
+      ) {
+        // Reset the form if clicked outside
+        resetForm();
+      }
+    };
 
-    if (!expirationDate) {
-    setError("Expiration date is required.");
-    return;
-    }
+    // Add the click event listener
+    document.addEventListener("mousedown", handleClickOutside);
 
-    if (expirationDate && !isValidDate(expirationDate)) {
-    setError("Invalid expiration date. Please use the format DD/MM/YYYY.");
-    return;
-    }
+    // Cleanup the event listener when the component is unmounted
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
-    if (openingDate && !isValidDate(openingDate)) {
-    setError("Invalid opening date. Please use the format DD/MM/YYYY.");
-    return;
-    }
-
-    // Handle saving the product details
-    console.log({
-    productName,
-    expirationDate,
-    openingDate,
-    recommendedDays,
-    });
-
-    // Reset the form
+  const resetForm = () => {
     setProductName("");
     setExpirationDate("");
     setOpeningDate("");
     setRecommendedDays("");
     setError("");
     setIsExpanded(false);
-     
   };
 
+  const handleSave = () => {
+    if (!productName) {
+      setError("Product name is required.");
+      return;
+    }
+
+    if (!expirationDate) {
+      setError("Expiration date is required.");
+      return;
+    }
+
+    if (expirationDate && !isValidDate(expirationDate)) {
+      setError("Invalid expiration date. Please use the format DD/MM/YYYY.");
+      return;
+    }
+
+    if (openingDate && !isValidDate(openingDate)) {
+      setError("Invalid opening date. Please use the format DD/MM/YYYY.");
+      return;
+    }
+
+    // Handle saving the product details
+    console.log({
+      productName,
+      expirationDate,
+      openingDate,
+      recommendedDays,
+    });
+
+    // Reset the form
+    resetForm();
+  };
 
   const isValidDate = (dateString: string): boolean => {
-    // Split the date to validate
     const parts = dateString.split("-");
     if (parts.length !== 3) return false;
 
     const [year, month, day] = parts.map(Number);
     const date = new Date(year, month - 1, day); // Month is 0-indexed
 
-    // Validate the date
     return (
       date.getFullYear() === year &&
       date.getMonth() === month - 1 &&
@@ -79,16 +97,21 @@ const AddItem: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: "16px" }}>
+    <div ref={addItemRef} style={{ padding: "16px" }}>
       <IonItem>
         <IonInput
           placeholder="Add a product"
-          onFocus={() => setIsExpanded(true)} // Expand on focus
+          onFocus={() => setIsExpanded(true)}
           value={productName}
-          onIonInput={(e) => setProductName(e.detail.value!)} // Use onIonInput for immediate updates
+          onIonInput={(e) => setProductName(e.detail.value!)}
           style={{ flex: 1 }}
         />
-        <IonButton onClick={() => setIsExpanded(true)}>+</IonButton>
+        <IonButton
+          className="green-button-gradient"
+          onClick={() => setIsExpanded(true)}
+        >
+          +
+        </IonButton>
       </IonItem>
 
       {isExpanded && (
@@ -98,25 +121,36 @@ const AddItem: React.FC = () => {
             <IonInput
               type="date"
               value={expirationDate}
-              onIonInput={(e) => setExpirationDate(e.detail.value!)} // Set value directly
+              onIonInput={(e) => setExpirationDate(e.detail.value!)}
             />
           </IonItem>
-          <IonItem>
-            <IonLabel position="stacked">Opening Date</IonLabel>
-            <IonInput
-              type="date"
-              value={openingDate}
-              onIonInput={(e) => setOpeningDate(e.detail.value!)} // Set value directly
-            />
-          </IonItem>
-          <IonItem>
-            <IonLabel position="stacked">Recommended Days to Consume</IonLabel>
-            <IonInput
-              type="number"
-              value={recommendedDays}
-              onIonInput={(e) => setRecommendedDays(e.detail.value!)} // Use e.detail.value
-            />
-          </IonItem>
+
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <IonItem style={{ flex: 1, marginRight: "8px" }}>
+              <IonLabel position="stacked">Opening Date</IonLabel>
+              <IonInput
+                type="date"
+                value={openingDate}
+                onIonInput={(e) => setOpeningDate(e.detail.value!)}
+              />
+            </IonItem>
+
+            <IonItem style={{ flex: 1 }}>
+              <IonLabel position="stacked">Days to Consume</IonLabel>
+              <IonInput
+                type="number"
+                value={recommendedDays}
+                onIonInput={(e) => setRecommendedDays(e.detail.value!)}
+              />
+            </IonItem>
+          </div>
+
           {error && (
             <IonText color="danger" style={{ marginTop: "10px" }}>
               {error}
@@ -124,6 +158,7 @@ const AddItem: React.FC = () => {
           )}
           <IonButton
             expand="full"
+            className="green-button-gradient"
             onClick={handleSave}
             style={{ marginTop: "10px" }}
           >

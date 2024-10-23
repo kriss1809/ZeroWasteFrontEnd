@@ -6,7 +6,7 @@ const Menu: React.FC = () => {
   const history = useHistory();
 
   return (
-    <IonTabBar slot="bottom">
+    <IonTabBar>
       <IonTabButton tab="myproducts" onClick={() => history.push("/home")}>
         <IonIcon icon={homeOutline} />
         <IonLabel>Products</IonLabel>

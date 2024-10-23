@@ -1,0 +1,24 @@
+.item-card {
+  border-radius: 20px;
+  background: linear-gradient(135deg, #1b8911 0%, #5cb947 100%);
+  color: white;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.item-card:hover {
+  transform: scale(1.05);
+}
+
+.item-card-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: white;
+}
+
+.item-card-content {
+  padding: 15px;
+  font-size: 0.9em;
+  color: #ffffffcc;
+  text-align: right;
+}

@@ -17,7 +17,6 @@ import {
 import { logOutOutline } from "ionicons/icons";
 import "../theme/profile.css";
 import { getUserProfile } from "../services/apiClient";
-import { User } from "../entitites/User";
 
 const Profile: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -137,7 +136,7 @@ const Profile: React.FC = () => {
                 onClick={() => setShowChangePasswordModal(true)} // Deschide fereastra modală la click
                 shape="round"
                 slot="end"
-                color="success"
+                className="green-button-gradient"
                 style={{
                   marginTop: "30px",
                   marginLeft: "10px",
@@ -184,7 +183,7 @@ const Profile: React.FC = () => {
 
               <IonButton
                 expand="block"
-                color="success"
+                className="green-button-gradient"
                 disabled={isSaveDisabled}
                 onClick={handleSaveNewPassword}
                 style={{
@@ -223,7 +222,7 @@ const Profile: React.FC = () => {
               <IonLabel>Share list</IonLabel>
               <IonButton
                 shape="round"
-                color="success"
+                className="green-button-gradient"
                 onClick={handleInvite}
                 style={{
                   display: "block",
@@ -251,7 +250,7 @@ const Profile: React.FC = () => {
           </div>
           <IonButton
             shape="round"
-            color="success"
+            color = "danger"
             onClick={() => setShowDeleteAccountModal(true)}
             style={{
               display: "block",
@@ -295,7 +294,7 @@ const Profile: React.FC = () => {
               </IonButton>
               <IonButton
                 expand="block"
-                color="light"
+                className="green-button-gradient"
                 onClick={() => setShowDeleteAccountModal(false)}
                 style={{
                   marginTop: "10px",
