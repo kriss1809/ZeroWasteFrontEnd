@@ -1,5 +1,5 @@
-.green-button {
-  --background: green; 
+.green-button-gradient {
+  --background: linear-gradient(135deg, #1b8911 0%, #5cb947 100%);
   --color: white; 
   margin: auto;
 }

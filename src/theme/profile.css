@@ -36,3 +36,9 @@
   border: 3px solid #1b6f1b;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
+
+.green-button-gradient {
+  --background: linear-gradient(135deg, #1b8911 0%, #5cb947 100%);
+  --color: white; 
+  margin: auto;
+}

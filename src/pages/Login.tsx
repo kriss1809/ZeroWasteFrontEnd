@@ -78,7 +78,7 @@ const Login: React.FC = () => {
             {/* Butonul de login */}
             <IonButton
               expand="block"
-              className="green-button"
+              className="green-button-gradient"
               type="submit" // Acum este buton de submit, declanșând evenimentul de form
               style={{
                 marginTop: "40px",
