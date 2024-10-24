@@ -13,9 +13,11 @@ import {
 } from "@ionic/react";
 import { logOutOutline } from "ionicons/icons";
 import "../theme/profile.css";
+import "../theme/darkMode.css"
 import { useTheme } from "../components/ThemeContext"; 
 import ProfileSettings from "../components/ProfileSettings";
 import AccountSettings from "../components/AccountSettings";
+import Menu from "../components/Menu";
 
 const Profile: React.FC = () => {
  
@@ -59,12 +61,14 @@ const Profile: React.FC = () => {
               }}
             />
 
-            <ProfileSettings/>
-            <AccountSettings/>
-        
+            <ProfileSettings />
+            <AccountSettings />
           </div>
         </div>
       </IonContent>
+      <div slot="bottom" className={darkMode ? "dark-mode" : ""}>
+        <Menu />
+      </div>
     </IonPage>
   );
 };

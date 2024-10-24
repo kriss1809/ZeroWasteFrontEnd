@@ -71,6 +71,7 @@ const Signup: React.FC = () => {
         <img
           src="/images/logo.png"
           alt="Logo"
+          className="img-logo"
           style={{ objectFit: "cover", maxWidth: "400px" }}
         />
         <form onSubmit={handleSignup}>

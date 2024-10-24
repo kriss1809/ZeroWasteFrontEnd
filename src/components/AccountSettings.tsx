@@ -37,13 +37,11 @@ const AccountSettings: React.FC = () => {
     }, []);
 
     const handleSaveNewPassword = () => {
-      // Logică pentru a salva noua parolă
       console.log("Parola a fost schimbată");
       setShowChangePasswordModal(false);
     };
 
     const handleDeleteAccount = () => {
-      // Logică pentru ștergerea contului
       console.log("Contul a fost șters");
       setShowDeleteAccountModal(false);
       history.push("/successfully-deleted-account");
@@ -66,7 +64,7 @@ const AccountSettings: React.FC = () => {
         </div>
 
         <IonButton
-          onClick={() => setShowChangePasswordModal(true)} // Open modal on click
+          onClick={() => setShowChangePasswordModal(true)} 
           className="green-button-gradient"
           style={{
             display: "block",
@@ -127,7 +125,7 @@ const AccountSettings: React.FC = () => {
           <IonButton
             expand="block"
             color="danger"
-            onClick={() => setShowChangePasswordModal(false)} // Închide fereastra modală
+            onClick={() => setShowChangePasswordModal(false)} 
             style={{
               marginTop: "10px",
             }}
@@ -142,7 +140,6 @@ const AccountSettings: React.FC = () => {
         onClick={() => setShowDeleteAccountModal(true)}
         style={{
           display: "block",
-          // marginTop: "40px",
           marginLeft: "auto",
           marginRight: "auto",
           width: "90vw",
@@ -150,7 +147,6 @@ const AccountSettings: React.FC = () => {
       >
         Delete Account
       </IonButton>
-      {/* Modal pentru confirmarea ștergerii contului */}
       <IonModal isOpen={showDeleteAccountModal}>
         <div className="modal-content center-profile">
           <h2 style={{ textAlign: "center", color: "red" }}>

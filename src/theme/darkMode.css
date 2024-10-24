@@ -1,0 +1,11 @@
+
+.dark-mode {
+  background-color: #121212; /* Dark background */
+  color: #ffffff; /* Light text color */
+}
+
+.dark-mode input,
+.dark-mode label {
+  color: white; /* Input and label text color in dark mode */
+  background-color: #2c2c2c; /* Dark background for inputs */
+}
