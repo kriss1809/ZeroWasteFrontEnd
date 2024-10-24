@@ -99,7 +99,11 @@ const AddItem: React.FC = () => {
   };
 
   return (
-    <div ref={addItemRef} style={{ padding: "16px" }} className={darkMode ? "dark-mode" : ""}>
+    <div
+      ref={addItemRef}
+      style={{ padding: "16px" }}
+      className={darkMode ? "dark-mode" : ""}
+    >
       <IonItem>
         <IonInput
           placeholder="Add a product"
@@ -119,7 +123,9 @@ const AddItem: React.FC = () => {
       {isExpanded && (
         <IonList style={{ marginTop: "10px" }}>
           <IonItem>
-            <IonLabel position="stacked">Expiration Date</IonLabel>
+            <IonLabel position="stacked" className="label-dark-mode">
+              Expiration Date
+            </IonLabel>
             <IonInput
               type="date"
               value={expirationDate}
@@ -135,8 +141,11 @@ const AddItem: React.FC = () => {
             }}
           >
             <IonItem style={{ flex: 1, marginRight: "8px" }}>
-              <IonLabel position="stacked">Opening Date</IonLabel>
+              <IonLabel position="stacked" className="label-dark-mode">
+                Opening Date
+              </IonLabel>
               <IonInput
+                className="label-dark-mode"
                 type="date"
                 value={openingDate}
                 onIonInput={(e) => setOpeningDate(e.detail.value!)}
@@ -144,7 +153,9 @@ const AddItem: React.FC = () => {
             </IonItem>
 
             <IonItem style={{ flex: 1 }}>
-              <IonLabel position="stacked">Days to Consume</IonLabel>
+              <IonLabel position="stacked" className="label-dark-mode">
+                Days to Consume
+              </IonLabel>
               <IonInput
                 type="number"
                 value={recommendedDays}

@@ -42,7 +42,7 @@ const Login: React.FC = () => {
             <img
               src="/images/logo.png"
               alt="Logo"
-              className = "img-logo"
+              className="img-logo"
               style={{ objectFit: "cover", maxWidth: "400px" }}
             />
 
@@ -50,7 +50,7 @@ const Login: React.FC = () => {
             <form onSubmit={handleLogin}>
               {/* Email */}
               <IonItem style={{ marginTop: "10px", width: "75vw" }}>
-                <IonLabel position="stacked">
+                <IonLabel position="stacked" className="label-dark-mode">
                   Email
                 </IonLabel>
                 <IonInput
@@ -64,7 +64,7 @@ const Login: React.FC = () => {
 
               {/* Parola */}
               <IonItem style={{ marginTop: "10px", width: "75vw" }}>
-                <IonLabel position="stacked">
+                <IonLabel position="stacked" className="label-dark-mode">
                   Password
                 </IonLabel>
                 <IonInput
