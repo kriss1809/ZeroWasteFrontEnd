@@ -29,3 +29,7 @@
   color: white; 
   --color: white;
 }
+
+.dark-mode .label-dark-mode {
+  color: white; /* Make labels white in dark mode */
+}
