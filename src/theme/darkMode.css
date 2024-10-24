@@ -31,5 +31,10 @@
 }
 
 .dark-mode .label-dark-mode {
-  color: white; /* Make labels white in dark mode */
+  color: white;
+}
+
+.dark-mode input[type="time"]::-webkit-calendar-picker-indicator,
+.dark-mode input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(100%); 
 }
