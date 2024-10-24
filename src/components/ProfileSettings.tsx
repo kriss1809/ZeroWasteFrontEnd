@@ -41,11 +41,17 @@ const ProfileSettings: React.FC = () => {
           <IonSelect
             value={notificationDays}
             onIonChange={(e) => setNotificationDays(e.detail.value!)}
-            interface="action-sheet"
+            interface="popover"
           >
-            <IonSelectOption value={1}>1 day before</IonSelectOption>
-            <IonSelectOption value={2}>2 days before</IonSelectOption>
-            <IonSelectOption value={3}>3 days before</IonSelectOption>
+            <IonSelectOption value={1} className="label-dark-mode">
+              1 day before
+            </IonSelectOption>
+            <IonSelectOption value={2} className="label-dark-mode">
+              2 days before
+            </IonSelectOption>
+            <IonSelectOption value={3} className="label-dark-mode">
+              3 days before
+            </IonSelectOption>
           </IonSelect>
         </div>
 
