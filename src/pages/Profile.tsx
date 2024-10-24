@@ -11,7 +11,7 @@ import {
   IonIcon,
   IonRouterLink,
 } from "@ionic/react";
-import { logOutOutline } from "ionicons/icons";
+import { colorFill, logOutOutline } from "ionicons/icons";
 import "../theme/profile.css";
 import "../theme/darkMode.css"
 import { useTheme } from "../components/ThemeContext"; 
@@ -48,7 +48,7 @@ const Profile: React.FC = () => {
                 cursor: "pointer",
               }}
             >
-              <IonIcon icon={logOutOutline} style={{ marginRight: "8px" }} />
+              <IonIcon icon={logOutOutline} style={{ marginRight: "8px", color:"red" }} />
             </IonRouterLink>
             <img
               src="/images/logo.png"
@@ -62,6 +62,7 @@ const Profile: React.FC = () => {
             />
 
             <ProfileSettings />
+            <div style={{ borderBottom: "1px solid #ccc", margin: "10px 0"}}></div>
             <AccountSettings />
           </div>
         </div>

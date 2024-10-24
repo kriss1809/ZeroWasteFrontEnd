@@ -59,7 +59,7 @@ const AccountSettings: React.FC = () => {
           <IonInput
             value={email}
             type="email"
-            onIonChange={(e) => setEmail(e.detail.value!)}
+            readonly
           />
         </div>
 
@@ -87,7 +87,7 @@ const AccountSettings: React.FC = () => {
             <IonInput
               value={oldPassword}
               type="password"
-              onIonChange={(e) => setOldPassword(e.detail.value!)}
+              onIonInput={(e) => setOldPassword(e.detail.value!)}
             />
           </div>
           <div>
@@ -97,7 +97,7 @@ const AccountSettings: React.FC = () => {
             <IonInput
               value={newPassword}
               type="password"
-              onIonChange={(e) => setNewPassword(e.detail.value!)}
+              onIonInput={(e) => setNewPassword(e.detail.value!)}
             />
           </div>
           <div>
@@ -107,7 +107,7 @@ const AccountSettings: React.FC = () => {
             <IonInput
               value={confirmNewPassword}
               type="password"
-              onIonChange={(e) => setConfirmNewPassword(e.detail.value!)}
+              onIonInput={(e) => setConfirmNewPassword(e.detail.value!)}
             />
           </div>
 
@@ -163,7 +163,7 @@ const AccountSettings: React.FC = () => {
             <IonInput
               value={deletePassword}
               type="password"
-              onIonChange={(e) => setDeletePassword(e.detail.value!)}
+              onIonInput={(e) => setDeletePassword(e.detail.value!)}
             />
           </div>
           <IonButton

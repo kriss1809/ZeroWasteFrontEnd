@@ -16,7 +16,7 @@ import { useTheme } from "../components/ThemeContext";
 const Login: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const history = useHistory(); // Pentru redirecționare programatică
+  const history = useHistory(); 
   const { darkMode} = useTheme();
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -25,8 +25,8 @@ const Login: React.FC = () => {
     try {
       const response = await loginUser(email, password);
       if (response) {
-        console.log(response);
         history.push("/home");
+        console.log(response);
       } else 
         console.log("Login failed");
     } catch (error) {
@@ -57,7 +57,7 @@ const Login: React.FC = () => {
                   type="email"
                   placeholder="Type your email"
                   value={email}
-                  onIonChange={(e) => setEmail(e.detail.value!)}
+                  onIonInput={(e) => setEmail(e.detail.value!)}
                   required
                 />
               </IonItem>
@@ -71,7 +71,7 @@ const Login: React.FC = () => {
                   type="password"
                   placeholder="Type your password"
                   value={password}
-                  onIonChange={(e) => setPassword(e.detail.value!)}
+                  onIonInput={(e) => setPassword(e.detail.value!)}
                   required
                 />
               </IonItem>
@@ -80,6 +80,7 @@ const Login: React.FC = () => {
               <IonButton
                 expand="block"
                 className="green-button-gradient"
+                routerLink="/home"
                 type="submit" // Acum este buton de submit, declanșând evenimentul de form
                 style={{
                   marginTop: "40px",
