@@ -11,11 +11,13 @@ import {
 import { useHistory } from "react-router-dom";
 import "../theme/login.css";
 import { loginUser } from "../services/apiClient"; // presupunem că loginUser e definit corect
+import { useTheme } from "../components/ThemeContext"; 
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const history = useHistory(); // Pentru redirecționare programatică
+  const { darkMode} = useTheme();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,7 +38,7 @@ const Login: React.FC = () => {
   };
 
   return (
-    <IonPage>
+    <IonPage className={darkMode ? "dark-mode" : ""}>
       <IonContent className="ion-padding">
         <div className="center-content-vertically">
           <img
