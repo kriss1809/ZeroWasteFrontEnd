@@ -9,13 +9,13 @@ const Home: React.FC = () => {
   const { darkMode } = useTheme();
   return (
     <IonPage>
-      <div className={darkMode ? "dark-mode" : ""}></div>
       <IonHeader
         style={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
           padding: "1rem",
+          borderBottom: "1px solid #e5e5e5",
         }}
       >
         Your products
@@ -23,12 +23,12 @@ const Home: React.FC = () => {
 
       <IonContent>
         <div className={darkMode ? "dark-mode" : ""}>
-          <ItemCard title="Card 1" expiration_date="19.09.2023" />
-          <ItemCard title="Card 1" expiration_date="19.09.2023" />
-          <ItemCard title="Card 1" expiration_date="19.09.2023" />
-          <ItemCard title="Card 1" expiration_date="19.09.2023" />
-          <ItemCard title="Card 1" expiration_date="19.09.2023" />
-          <ItemCard title="Card 1" expiration_date="19.09.2023" />
+        <ItemCard title="Card 1" expiration_date="19.09.2023"  />
+        <ItemCard title="Card 1" expiration_date="19.09.2023" />
+        <ItemCard title="Card 1" expiration_date="19.09.2023" />
+        <ItemCard title="Card 1" expiration_date="19.09.2023" />
+        <ItemCard title="Card 1" expiration_date="19.09.2023" />
+        <ItemCard title="Card 1" expiration_date="19.09.2023" />
         </div>
       </IonContent>
 

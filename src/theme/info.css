@@ -18,3 +18,8 @@
   width: 90vw;;
   text-align: center;
 }
+
+p{
+  width: 90vw;
+  text-align: "justify";
+}

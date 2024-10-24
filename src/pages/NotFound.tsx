@@ -13,7 +13,7 @@ const NotFound: React.FC = () => {
         <div className={darkMode ? "dark-mode" : ""}>
           <div className="center-content">
             <h1 className="title">Page Not Found</h1>
-            <p style={{width: "90vw", textAlign: "justify"}}>
+            <p>
               The page you are looking for does not exist. Please check the URL
               or return to the home page.
             </p>

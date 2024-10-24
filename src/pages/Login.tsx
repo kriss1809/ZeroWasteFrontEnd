@@ -25,20 +25,17 @@ const Login: React.FC = () => {
     try {
       const response = await loginUser(email, password);
       if (response) {
-        // Redirecționează către home după login reușit
         console.log(response);
         history.push("/home");
-      } else {
-        // Tratează eroarea, poate afisezi un mesaj
+      } else 
         console.log("Login failed");
-      }
     } catch (error) {
       console.error("Error during login:", error);
     }
   };
 
   return (
-    <IonPage className={darkMode ? "dark-mode" : ""}>
+    <IonPage>
       <IonContent>
         <div className={darkMode ? "dark-mode" : ""}>
           <div className="center-content-vertically">
