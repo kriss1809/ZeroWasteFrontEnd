@@ -18,14 +18,15 @@ import { useTheme } from "../components/ThemeContext";
 import ProfileSettings from "../components/ProfileSettings";
 import AccountSettings from "../components/AccountSettings";
 import Menu from "../components/Menu";
+import {logoutUser} from "../services/apiClient";
 
 const Profile: React.FC = () => {
  
   const history = useHistory();
   const { darkMode } = useTheme();
 
-  const handleLogout = () => {
-    console.log("Logout...");
+  const handleLogout = async () => {
+    await logoutUser();
     history.push("/login");
   };
 

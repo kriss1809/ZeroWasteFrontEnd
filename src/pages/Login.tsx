@@ -26,7 +26,6 @@ const Login: React.FC = () => {
       const response = await loginUser(email, password);
       if (response) {
         history.push("/home");
-        console.log(response);
       } else 
         console.log("Login failed");
     } catch (error) {
