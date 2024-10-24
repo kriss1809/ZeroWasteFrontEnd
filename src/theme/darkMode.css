@@ -34,7 +34,7 @@
   color: white;
 }
 
-input[type="time"]::-webkit-calendar-picker-indicator,
-input[type="date"]::-webkit-calendar-picker-indicator {
+.dark-mode input[type="time"]::-webkit-calendar-picker-indicator,
+.dark-mode input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(100%); 
 }
