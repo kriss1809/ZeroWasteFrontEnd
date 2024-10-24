@@ -50,7 +50,7 @@ const Login: React.FC = () => {
             <form onSubmit={handleLogin}>
               {/* Email */}
               <IonItem style={{ marginTop: "10px", width: "75vw" }}>
-                <IonLabel position="stacked" className="label-font">
+                <IonLabel position="stacked">
                   Email
                 </IonLabel>
                 <IonInput
@@ -64,7 +64,7 @@ const Login: React.FC = () => {
 
               {/* Parola */}
               <IonItem style={{ marginTop: "10px", width: "75vw" }}>
-                <IonLabel position="stacked" className="label-font">
+                <IonLabel position="stacked">
                   Password
                 </IonLabel>
                 <IonInput

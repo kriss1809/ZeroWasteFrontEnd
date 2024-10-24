@@ -18,59 +18,56 @@ const ProfileSettings: React.FC = () => {
 
 
   return (
-    <>
-    <div className="grid-item items">
+    <div className={darkMode ? "dark-mode" : ""}>
+      <div className="grid-item items">
         <IonButton
-        className="green-button-gradient"
-        onClick={handleInvite}
-        style={{
+          className="green-button-gradient"
+          onClick={handleInvite}
+          style={{
             display: "block",
             marginTop: "10px",
             marginLeft: "auto",
             marginRight: "auto",
             width: "90vw",
-        }}
+          }}
         >
-        Send Invite
+          Send Invite
         </IonButton>
-    </div>
+      </div>
 
-    <div className="share">
+      <div className="share">
         <div className="grid-item notification">
-        <IonLabel>Notify me</IonLabel>
-        <IonSelect
+          <IonLabel>Notify me</IonLabel>
+          <IonSelect
             value={notificationDays}
             onIonChange={(e) => setNotificationDays(e.detail.value!)}
             interface="action-sheet"
-        >
+          >
             <IonSelectOption value={1}>1 day before</IonSelectOption>
             <IonSelectOption value={2}>2 days before</IonSelectOption>
             <IonSelectOption value={3}>3 days before</IonSelectOption>
-        </IonSelect>
+          </IonSelect>
         </div>
 
         <div className="grid-item preferred">
-        <div>
-            <IonLabel
-            position="floating"
-            style={{ marginBottom: "20px" }}
-            >
-            Notification Hour
+          <div>
+            <IonLabel position="floating" style={{ marginBottom: "20px" }}>
+              Notification Hour
             </IonLabel>
             <IonInput
-            value={preferredTime}
-            type="time"
-            onIonChange={(e) => setPreferredTime(e.detail.value!)}
+              value={preferredTime}
+              type="time"
+              onIonChange={(e) => setPreferredTime(e.detail.value!)}
             />
+          </div>
         </div>
-        </div>
-    </div>
+      </div>
 
-    <div className="dark-mode-toggle">
+      <div className="dark-mode-toggle">
         <IonLabel>Dark Mode</IonLabel>
         <IonToggle checked={darkMode} onIonChange={toggleDarkMode} />
+      </div>
     </div>
-    </>
   );
 };
 
