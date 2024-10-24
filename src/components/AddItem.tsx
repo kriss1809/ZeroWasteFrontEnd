@@ -8,6 +8,7 @@ import {
   IonText,
 } from "@ionic/react";
 import "../theme/addItem.css";
+import { useTheme } from "./ThemeContext";
 
 const AddItem: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -16,6 +17,7 @@ const AddItem: React.FC = () => {
   const [openingDate, setOpeningDate] = useState("");
   const [recommendedDays, setRecommendedDays] = useState("");
   const [error, setError] = useState("");
+  const {darkMode} = useTheme();
 
   // Ref for the AddItem container
   const addItemRef = useRef<HTMLDivElement>(null);
@@ -97,7 +99,7 @@ const AddItem: React.FC = () => {
   };
 
   return (
-    <div ref={addItemRef} style={{ padding: "16px" }}>
+    <div ref={addItemRef} style={{ padding: "16px" }} className={darkMode ? "dark-mode" : ""}>
       <IonItem>
         <IonInput
           placeholder="Add a product"

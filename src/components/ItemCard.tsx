@@ -2,6 +2,7 @@ import { IonTabBar, IonTabButton, IonIcon, IonLabel, IonCard, IonCardHeader, Ion
 import { homeOutline, listOutline, personOutline } from "ionicons/icons";
 import { useHistory } from "react-router-dom";
 import '../theme/itemCard.css';
+import { useTheme } from "./ThemeContext";
 
 interface ItemProps {
   title: string;
@@ -10,8 +11,10 @@ interface ItemProps {
 
 const Item: React.FC<ItemProps> = ({ title, expiration_date}) => {
   const history = useHistory();
+  const {darkMode} = useTheme();
 
   return (
+    <div className={darkMode ? "dark-mode" : ""}>
     <IonCard className="item-card">
       <IonCardHeader>
         <IonLabel className="item-card-title">{title}</IonLabel>
@@ -21,6 +24,7 @@ const Item: React.FC<ItemProps> = ({ title, expiration_date}) => {
         <p>{"Expiration date: " + expiration_date}</p>
       </IonCardContent>
     </IonCard>
+    </div>
   );
 };
 

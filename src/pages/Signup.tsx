@@ -14,7 +14,7 @@ import {
 } from "@ionic/react";
 import "../theme/login.css";
 import { registerUser } from '../services/apiClient';
-import { mailUnread } from "ionicons/icons";
+import { useTheme } from "../components/ThemeContext";
 
 const Signup: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -65,12 +65,16 @@ const Signup: React.FC = () => {
     }
   };
 
+  const { darkMode } = useTheme();
+
   return (
     <IonPage>
+      <div className={darkMode ? "dark-mode" : ""}>
       <div className="center-content-vertically">
         <img
           src="/images/logo.png"
           alt="Logo"
+          className="img-logo"
           style={{ objectFit: "cover", maxWidth: "400px" }}
         />
         <form onSubmit={handleSignup}>
@@ -145,6 +149,7 @@ const Signup: React.FC = () => {
             </a>
           </div>
         </form>
+      </div>
       </div>
     </IonPage>
   );
