@@ -15,6 +15,7 @@ import {
 import "../theme/login.css";
 import { registerUser } from '../services/apiClient';
 import { useTheme } from "../components/ThemeContext";
+import { useHistory } from "react-router-dom";
 
 const Signup: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -23,6 +24,7 @@ const Signup: React.FC = () => {
   const [username, setUsername] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [emailError, setEmailError] = useState<string>("");
+  const history = useHistory();
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,10 +32,9 @@ const Signup: React.FC = () => {
     try {
       const response = await registerUser(email, password, confirmPassword);
       if (response) {
-        // Redirecționează către home după crearea contului
+        history.push("/successfully-created-account");
         console.log(response);
       } else {
-        // Tratează eroarea, poate afisezi un mesaj
         console.log("Signup failed");
       }
     } catch (error) {
@@ -69,91 +70,95 @@ const Signup: React.FC = () => {
 
   return (
     <IonPage>
-      <div className={darkMode ? "dark-mode" : ""}>
-        <div className="center-content-vertically">
-          <img
-            src="/images/logo.png"
-            alt="Logo"
-            className="img-logo"
-            style={{ objectFit: "cover", maxWidth: "400px" }}
-          />
-          <form onSubmit={handleSignup}>
-            {/* Email */}
-            <IonItem style={{ marginTop: "10px", width: "75vw" }}>
-              <IonLabel position="stacked" className="label-dark-mode">
-                Email
-              </IonLabel>
-              <IonInput
-                type="email"
-                placeholder="Type your email"
-                value={email}
-                onIonInput={(e) => handleEmailChange(e.detail.value!)}
-              />
-            </IonItem>
-            {emailError && (
-              <IonText color="danger" style={{ marginTop: "10px" }}>
-                {emailError}
-              </IonText>
-            )}
+      <IonContent>
+        <div className={darkMode ? "dark-mode" : ""}>
+          <div className="center-content-vertically">
+            <img
+              src="/images/logo.png"
+              alt="Logo"
+              className="img-logo"
+              style={{ objectFit: "cover", maxWidth: "400px" }}
+            />
+            <form onSubmit={handleSignup}>
+              {/* Email */}
+              <IonItem style={{ marginTop: "10px", width: "75vw" }}>
+                <IonLabel position="stacked" className="label-dark-mode">
+                  Email
+                </IonLabel>
+                <IonInput
+                  type="email"
+                  placeholder="Type your email"
+                  value={email}
+                  onIonInput={(e) => handleEmailChange(e.detail.value!)}
+                />
+              </IonItem>
+              {emailError && (
+                <IonText color="danger" style={{ marginTop: "10px" }}>
+                  {emailError}
+                </IonText>
+              )}
 
-            {/* Password */}
-            <IonItem style={{ marginTop: "10px", width: "75vw" }}>
-              <IonLabel position="stacked" className="label-dark-mode">
-                Password
-              </IonLabel>
-              <IonInput
-                type="password"
-                placeholder="Type your password"
-                value={password}
-                onIonInput={(e) => setPassword(e.detail.value!)}
-              />
-            </IonItem>
+              {/* Password */}
+              <IonItem style={{ marginTop: "10px", width: "75vw" }}>
+                <IonLabel position="stacked" className="label-dark-mode">
+                  Password
+                </IonLabel>
+                <IonInput
+                  type="password"
+                  placeholder="Type your password"
+                  value={password}
+                  onIonInput={(e) => setPassword(e.detail.value!)}
+                />
+              </IonItem>
 
-            {/* Confirm Password */}
-            <IonItem style={{ marginTop: "10px", width: "75vw" }}>
-              <IonLabel position="stacked" className="label-dark-mode">
-                Confirm Password
-              </IonLabel>
-              <IonInput
-                type="password"
-                placeholder="Confirm your password"
-                value={confirmPassword}
-                onIonInput={(e) => handleConfirmPasswordChange(e.detail.value!)}
-              />
-            </IonItem>
-            {error && (
-              <IonText color="danger" style={{ marginTop: "10px" }}>
-                {error}
-              </IonText>
-            )}
+              {/* Confirm Password */}
+              <IonItem style={{ marginTop: "10px", width: "75vw" }}>
+                <IonLabel position="stacked" className="label-dark-mode">
+                  Confirm Password
+                </IonLabel>
+                <IonInput
+                  type="password"
+                  placeholder="Confirm your password"
+                  value={confirmPassword}
+                  onIonInput={(e) =>
+                    handleConfirmPasswordChange(e.detail.value!)
+                  }
+                />
+              </IonItem>
+              {error && (
+                <IonText color="danger" style={{ marginTop: "10px" }}>
+                  {error}
+                </IonText>
+              )}
 
-            <IonButton
-              expand="block"
-              className="green-button-gradient"
-              routerLink="/successfully-created-account"
-              type="submit"
-              style={{
-                marginTop: "40px",
-                backgroundColor: "green",
-                color: "white",
-                width: "50vw",
-              }}
-              disabled={!validateEmail(email) || error !== ""} // Dezactivează butonul dacă emailul este invalid sau parolele nu coincid
-            >
-              Sign Up!
-            </IonButton>
-            <div style={{ margin: "20px", textAlign: "center" }}>
-              <span>Already a member? </span>
-              <a
-                href="/login"
-                style={{ color: "gray", textDecoration: "none" }}
+              <IonButton
+                expand="block"
+                className="green-button-gradient"
+                routerLink="/successfully-created-account"
+                type="submit"
+                style={{
+                  marginTop: "40px",
+                  backgroundColor: "green",
+                  color: "white",
+                  width: "50vw",
+                }}
+                disabled={!validateEmail(email) || error !== ""}
               >
-                Login here!
-              </a>
-            </div>
-          </form>
+                Sign Up!
+              </IonButton>
+              <div style={{ margin: "20px", textAlign: "center" }}>
+                <span>Already a member? </span>
+                <a
+                  href="/login"
+                  style={{ color: "gray", textDecoration: "none" }}
+                >
+                  Login here!
+                </a>
+              </div>
+            </form>
+          </div>
         </div>
-      </div>
+      </IonContent>
     </IonPage>
   );
 };

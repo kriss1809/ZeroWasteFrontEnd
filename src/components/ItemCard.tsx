@@ -21,7 +21,7 @@ const Item: React.FC<ItemProps> = ({ title, expiration_date}) => {
       </IonCardHeader>
 
       <IonCardContent className="item-card-content">
-        <p>{"Expiration date: " + expiration_date}</p>
+        {"Expiration date: " + expiration_date}
       </IonCardContent>
     </IonCard>
     </div>
