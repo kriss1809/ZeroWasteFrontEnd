@@ -1,11 +1,14 @@
 import { IonTabBar, IonTabButton, IonIcon, IonLabel } from "@ionic/react";
 import { homeOutline, listOutline, personOutline } from "ionicons/icons";
 import { useHistory } from "react-router-dom";
+import { useTheme } from "./ThemeContext";
 
 const Menu: React.FC = () => {
   const history = useHistory();
+  const {darkMode} = useTheme();
 
   return (
+    <div className={darkMode ? "dark-mode" : ""}>
     <IonTabBar>
       <IonTabButton tab="myproducts" onClick={() => history.push("/home")}>
         <IonIcon icon={homeOutline} />
@@ -22,6 +25,7 @@ const Menu: React.FC = () => {
         <IonLabel>Profile</IonLabel>
       </IonTabButton>
     </IonTabBar>
+    </div>
   );
 };
 
