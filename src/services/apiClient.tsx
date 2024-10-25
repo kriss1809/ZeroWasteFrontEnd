@@ -67,3 +67,23 @@ export const logoutUser = async () => {
     console.error(error);
   }
 };
+
+export const UserdeleteAccount = async (password: string) => {
+  try {
+    const response = await axios({
+      method: "delete",
+      url: `${url}delete-account/`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      data: {
+        password,
+      },
+    });
+
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+};
