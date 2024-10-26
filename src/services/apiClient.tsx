@@ -44,3 +44,46 @@ export const getUserProfile = async () => {
     console.error(error);
   }
 }
+
+export const logoutUser = async () => {
+  try {
+    const response = await axios.post(
+      `${url}logout/`,
+      {
+        refresh: localStorage.getItem("refreshToken"),
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }
+    );
+
+    console.log(response);
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const UserdeleteAccount = async (password: string) => {
+  try {
+    const response = await axios({
+      method: "delete",
+      url: `${url}delete-account/`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      data: {
+        password,
+      },
+    });
+
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+};

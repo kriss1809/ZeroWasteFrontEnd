@@ -25,7 +25,11 @@
 .dark-mode ion-icon,
 .dark-mode ion-item ion-label,
 .dark-mode ion-input,
-.dark-mode ion-toggle{
+.dark-mode ion-toggle,
+.dark-mode ion-select,
+.dark-mode ion-select-option,
+.dark-mode ion-list,
+.dark-mode ion-popover{
   color: white; 
   --color: white;
 }

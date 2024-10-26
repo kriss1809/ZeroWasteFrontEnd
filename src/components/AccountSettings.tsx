@@ -5,7 +5,7 @@ import {
 } from "@ionic/react";
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { getUserProfile } from "../services/apiClient";
+import { getUserProfile, UserdeleteAccount } from "../services/apiClient";
 
 const AccountSettings: React.FC = () => {
 
@@ -41,10 +41,11 @@ const AccountSettings: React.FC = () => {
       setShowChangePasswordModal(false);
     };
 
-    const handleDeleteAccount = () => {
-      console.log("Contul a fost șters");
+    const handleDeleteAccount =async () => {
+      const response =await UserdeleteAccount(deletePassword);
       setShowDeleteAccountModal(false);
-      history.push("/successfully-deleted-account");
+      if(response && response.status === 204)
+        history.push("/successfully-deleted-account");
     };
 
     const isSaveDisabled = newPassword !== confirmNewPassword;
