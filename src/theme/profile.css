@@ -14,7 +14,7 @@
   width: 90vw;
 }
 
-.share {
+.settings {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 16px;
@@ -38,14 +38,7 @@
 .green-button-gradient {
   --background: linear-gradient(135deg, #1b8911 0%, #5cb947 100%);
   --color: white; 
-  margin: auto;
-}
-
-.notification-settings {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  margin-bottom: 20px;
+  /* margin: auto; */
 }
 
 .grid-item.items.full-row {
@@ -84,3 +77,9 @@
   margin-bottom: 0; /* Remove bottom margin to prevent extra space */
 }
 
+
+.custom-popover {
+  overflow-y: auto; /* Activează derularea pe verticală */
+  max-height: max-content;
+  z-index: 10000; /* Afișează pop-up-ul peste tot */
+}

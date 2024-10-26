@@ -80,7 +80,7 @@ const AddItem: React.FC = () => {
       recommendedDays,
     });
 
-    // Reset the form
+
     resetForm();
   };
 
@@ -89,7 +89,7 @@ const AddItem: React.FC = () => {
     if (parts.length !== 3) return false;
 
     const [year, month, day] = parts.map(Number);
-    const date = new Date(year, month - 1, day); // Month is 0-indexed
+    const date = new Date(year, month - 1, day);
 
     return (
       date.getFullYear() === year &&

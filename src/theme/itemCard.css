@@ -6,10 +6,6 @@
   transition: transform 0.2s ease-in-out;
 }
 
-.item-card:hover {
-  transform: scale(1.05);
-}
-
 .item-card-title {
   font-size: 1.2em;
   font-weight: bold;
@@ -17,8 +13,14 @@
 }
 
 .item-card-content {
-  padding: 15px;
+  padding: 5px 15px;
   font-size: 0.9em;
   color: #ffffffcc;
   text-align: right;
 }
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}; 
