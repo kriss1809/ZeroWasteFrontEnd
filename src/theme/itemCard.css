@@ -6,6 +6,10 @@
   transition: transform 0.2s ease-in-out;
 }
 
+.item-card.expired {
+  background: linear-gradient(135deg, #b71c1c 0%, #f44336 100%);
+}
+
 .item-card-title {
   font-size: 1.2em;
   font-weight: bold;
