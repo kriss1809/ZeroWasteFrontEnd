@@ -1,3 +1,4 @@
+// AddItem.tsx
 import React, { useEffect, useRef, useState } from "react";
 import {
   IonInput,
@@ -10,17 +11,42 @@ import {
 import "../theme/addItem.css";
 import { useTheme } from "./ThemeContext";
 
-const AddItem: React.FC = () => {
+interface AddItemProps {
+  selectedItem: {
+    title: string;
+    expiration_date: string;
+    opening_date: string;
+    recommended_days: string;
+  } | null; // Updated prop
+}
+
+const AddItem: React.FC<AddItemProps> = ({ selectedItem }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [productName, setProductName] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
   const [openingDate, setOpeningDate] = useState("");
   const [recommendedDays, setRecommendedDays] = useState("");
   const [error, setError] = useState("");
-  const {darkMode} = useTheme();
+  const { darkMode } = useTheme();
 
-  // Ref for the AddItem container
   const addItemRef = useRef<HTMLDivElement>(null);
+
+  const convertDateFormat = (date: string) => {
+    const parts = date.split(".");
+    return `${parts[2]}-${parts[1]}-${parts[0]}`; // "YYYY-MM-DD"
+  };
+
+  useEffect(() => {
+    if (selectedItem) {
+      setProductName(selectedItem.title);
+      setExpirationDate(convertDateFormat(selectedItem.expiration_date));
+      setOpeningDate(convertDateFormat(selectedItem.opening_date));
+      setRecommendedDays(selectedItem.recommended_days);
+      setIsExpanded(true);
+    } else {
+      resetForm();
+    }
+  }, [selectedItem]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -28,15 +54,11 @@ const AddItem: React.FC = () => {
         addItemRef.current &&
         !addItemRef.current.contains(event.target as Node)
       ) {
-        // Reset the form if clicked outside
         resetForm();
       }
     };
 
-    // Add the click event listener
     document.addEventListener("mousedown", handleClickOutside);
-
-    // Cleanup the event listener when the component is unmounted
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -62,16 +84,6 @@ const AddItem: React.FC = () => {
       return;
     }
 
-    if (expirationDate && !isValidDate(expirationDate)) {
-      setError("Invalid expiration date. Please use the format DD/MM/YYYY.");
-      return;
-    }
-
-    if (openingDate && !isValidDate(openingDate)) {
-      setError("Invalid opening date. Please use the format DD/MM/YYYY.");
-      return;
-    }
-
     // Handle saving the product details
     console.log({
       productName,
@@ -80,22 +92,7 @@ const AddItem: React.FC = () => {
       recommendedDays,
     });
 
-
     resetForm();
-  };
-
-  const isValidDate = (dateString: string): boolean => {
-    const parts = dateString.split("-");
-    if (parts.length !== 3) return false;
-
-    const [year, month, day] = parts.map(Number);
-    const date = new Date(year, month - 1, day);
-
-    return (
-      date.getFullYear() === year &&
-      date.getMonth() === month - 1 &&
-      date.getDate() === day
-    );
   };
 
   return (
@@ -133,36 +130,28 @@ const AddItem: React.FC = () => {
             />
           </IonItem>
 
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <IonItem style={{ flex: 1, marginRight: "8px" }}>
-              <IonLabel position="stacked" className="label-dark-mode">
-                Opening Date
-              </IonLabel>
-              <IonInput
-                className="label-dark-mode"
-                type="date"
-                value={openingDate}
-                onIonInput={(e) => setOpeningDate(e.detail.value!)}
-              />
-            </IonItem>
+          <IonItem>
+            <IonLabel position="stacked" className="label-dark-mode">
+              Opening Date
+            </IonLabel>
+            <IonInput
+              className="label-dark-mode"
+              type="date"
+              value={openingDate}
+              onIonInput={(e) => setOpeningDate(e.detail.value!)}
+            />
+          </IonItem>
 
-            <IonItem style={{ flex: 1 }}>
-              <IonLabel position="stacked" className="label-dark-mode">
-                Days to Consume
-              </IonLabel>
-              <IonInput
-                type="number"
-                value={recommendedDays}
-                onIonInput={(e) => setRecommendedDays(e.detail.value!)}
-              />
-            </IonItem>
-          </div>
+          <IonItem>
+            <IonLabel position="stacked" className="label-dark-mode">
+              Days to Consume
+            </IonLabel>
+            <IonInput
+              type="number"
+              value={recommendedDays}
+              onIonInput={(e) => setRecommendedDays(e.detail.value!)}
+            />
+          </IonItem>
 
           {error && (
             <IonText color="danger" style={{ marginTop: "10px" }}>
