@@ -1,87 +1,192 @@
-import { IonLabel, IonButton, IonSelect, IonSelectOption, IonInput, IonToggle } from "@ionic/react";
+import { IonLabel, IonButton, IonSelect, IonSelectOption, IonInput, IonToggle, IonText } from "@ionic/react";
 import React, { useState, useEffect } from "react";
 import { useTheme } from "./ThemeContext";
-import { IonPopover, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonCheckbox } from "@ionic/react";
+import { IonPopover, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonCheckbox, IonIcon } from "@ionic/react";
+import { clipboardOutline, copy } from "ionicons/icons";
+import { useHistory } from "react-router-dom";
 
 const ProfileSettings: React.FC = () => {
-    const [preferredTime, setPreferredTime] = useState<string>("");
-    const [notificationDays, setNotificationDays] = useState<number>(1);
+  const [preferredTime, setPreferredTime] = useState<string>("");
+  const [notificationDays, setNotificationDays] = useState<number>(1);
 
-    const handleInvite = () => {
-      console.log("Invitație trimisă!");
+  const { darkMode, toggleDarkMode } = useTheme();
+
+  useEffect(() => {
+    document.body.classList.toggle("dark-mode", darkMode);
+  }, [darkMode]);
+
+  const [showPopoverAllergies, setShowPopoverAllergies] = useState(false);
+  const [showPopoverPreferences, setShowPopoverPreferences] = useState(false);
+  const [allergies, setAllergies] = useState<string[]>([]);
+  const [preferences, setPreferences] = useState<string[]>([]);
+
+  const allergyOptions: { label: string; value: string }[] = [
+    { label: "Celery", value: "celery" },
+    { label: "Cereals containing gluten", value: "cereals" },
+    { label: "Crustaceans", value: "crustaceans" },
+    { label: "Eggs", value: "eggs" },
+    { label: "Fish", value: "fish" },
+    { label: "Lupin", value: "lupin" },
+    { label: "Milk", value: "milk" },
+    { label: "Molluscs", value: "molluscs" },
+    { label: "Mustard", value: "mustard" },
+    { label: "Peanuts", value: "peanuts" },
+    { label: "Sesame", value: "sesame" },
+    { label: "Soybeans", value: "soybeans" },
+    { label: "Sulphur dioxide and sulphites", value: "sulphur" },
+  ];
+
+  const preferenceOptions: { label: string; value: string }[] = [
+    { label: "Dairy-Free", value: "dairy-free" },
+    { label: "Gluten-Free", value: "gluten-free" },
+    { label: "Vegan", value: "vegan" },
+    { label: "Vegetarian", value: "vegetarian" },
+  ];
+
+  // Funcții pentru togglarea alergiilor
+  const toggleAllergy = (value: string) => {
+    setAllergies((prev) =>
+      prev.includes(value)
+        ? prev.filter((item) => item !== value)
+        : [...prev, value]
+    );
+  };
+
+  // Funcții pentru togglarea preferințelor
+  const togglePreference = (value: string) => {
+    setPreferences((prev) =>
+      prev.includes(value)
+        ? prev.filter((item) => item !== value)
+        : [...prev, value]
+    );
+  };
+
+   const [shareCode, setShareCode] = useState<string | null>(null);
+   const [showJoinInput, setShowJoinInput] = useState<boolean>(false);
+   const [joinCode, setJoinCode] = useState<string>("");
+   const [errorMessage, setErrorMessage] = useState<string>("");
+
+   const history = useHistory();
+
+
+    const handleShare = () => {
+      const newCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+      setShareCode(newCode);
+      setShowJoinInput(false); // Ascunde inputul de Join dacă era deschis
     };
 
-    const { darkMode, toggleDarkMode } = useTheme();
+    // Funcția care afișează inputul de "Join"
+    const handleJoin = () => {
+      setShareCode(null); // Ascunde inputul de Share dacă era deschis
+      setShowJoinInput(true); // Afișează inputul de Join
+    };
 
-    useEffect(() => {
-    document.body.classList.toggle("dark-mode", darkMode);
-    }, [darkMode]);
+    // Funcția care copiază codul în clipboard și resetează la butoanele originale
+    const copyToClipboard = () => {
+      if (shareCode) {
+        navigator.clipboard.writeText(shareCode).then(() => {
+          console.log("Cod copiat în clipboard!");
+          setShareCode(null); // Resetează pentru a afișa din nou butoanele
+        });
+      }
+    };
 
-
-    const [showPopoverAllergies, setShowPopoverAllergies] = useState(false);
-    const [showPopoverPreferences, setShowPopoverPreferences] = useState(false);
-    const [allergies, setAllergies] = useState<string[]>([]);
-    const [preferences, setPreferences] = useState<string[]>([]);
-
-     const allergyOptions: { label: string; value: string }[] = [
-      { label: "Celery", value: "celery" },
-      { label: "Cereals containing gluten", value: "cereals" },
-      { label: "Crustaceans", value: "crustaceans" },
-      { label: "Eggs", value: "eggs" },
-      { label: "Fish", value: "fish" },
-      { label: "Lupin", value: "lupin" },
-      { label: "Milk", value: "milk" },
-      { label: "Molluscs", value: "molluscs" },
-      { label: "Mustard", value: "mustard" },
-      { label: "Peanuts", value: "peanuts" },
-      { label: "Sesame", value: "sesame" },
-      { label: "Soybeans", value: "soybeans" },
-      { label: "Sulphur dioxide and sulphites", value: "sulphur" },
-     ];
-
-     const preferenceOptions: { label: string; value: string }[] = [
-       { label: "Dairy-Free", value: "dairy-free" },
-       { label: "Gluten-Free", value: "gluten-free" },
-       { label: "Vegan", value: "vegan" },
-       { label: "Vegetarian", value: "vegetarian" },
-     ];
-
-     // Funcții pentru togglarea alergiilor
-     const toggleAllergy = (value: string) => {
-       setAllergies((prev) =>
-         prev.includes(value)
-           ? prev.filter((item) => item !== value)
-           : [...prev, value]
-       );
-     };
-
-     // Funcții pentru togglarea preferințelor
-     const togglePreference = (value: string) => {
-       setPreferences((prev) =>
-         prev.includes(value)
-           ? prev.filter((item) => item !== value)
-           : [...prev, value]
-       );
-     };
-
-
+    const validateJoinCode = () => {
+      if (joinCode.length === 6) {
+        // AICI TRATAM RASPUNSUL DE LA SERVER
+        setErrorMessage(""); // Resetăm orice mesaj de eroare
+        history.push("/home"); // Redirecționăm către pagina "Home"
+      } else {
+        setErrorMessage(
+          "Invalid code. Please try again."
+        );
+      }
+    };
 
   return (
     <div className={darkMode ? "dark-mode" : ""}>
       <div className="grid-item items">
-        <IonButton
-          className="green-button-gradient"
-          onClick={handleInvite}
-          style={{
-            display: "block",
-            marginTop: "10px",
-            marginLeft: "auto",
-            marginRight: "auto",
-            width: "90vw",
-          }}
-        >
-          Send Invite
-        </IonButton>
+        {/* Afișează fie cele două butoane "Share list" și "Join list", fie inputul cu codul */}
+        {shareCode === null && !showJoinInput ? (
+          <div
+            style={{
+              display: "flex",
+              gap: "16px",
+              justifyContent: "center",
+              marginTop: "10px",
+            }}
+          >
+            <IonButton
+              className="green-button-gradient"
+              onClick={handleShare}
+              style={{ flex: 1 }}
+            >
+              Share list
+            </IonButton>
+            <IonButton
+              className="green-button-gradient"
+              onClick={handleJoin}
+              style={{ flex: 1 }}
+            >
+              Join list
+            </IonButton>
+          </div>
+        ) : shareCode !== null ? (
+          <div
+            style={{ display: "flex", alignItems: "center", marginTop: "10px" }}
+          >
+            <IonInput
+              readonly
+              value={shareCode}
+              style={{
+                textAlign: "center",
+                flex: 1,
+                marginRight: "10px",
+              }}
+            />
+            <IonButton
+              onClick={copyToClipboard}
+              className="green-button-gradient"
+            >
+              COPY
+            </IonButton>
+          </div>
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              marginTop: "10px",
+              flexDirection: "column",
+            }}
+          >
+            <div
+              style={{ display: "flex", alignItems: "center", width: "100%" }}
+            >
+              <IonInput
+                placeholder="Enter code"
+                value={joinCode}
+                onIonInput={(e) => setJoinCode(e.detail.value!)}
+                style={{
+                  textAlign: "center",
+                  flex: 1,
+                  marginRight: "10px",
+                }}
+              />
+              <IonButton
+                onClick={validateJoinCode}
+                className="green-button-gradient"
+              >
+                JOIN
+              </IonButton>
+            </div>
+            {errorMessage && (
+              <IonText color="danger" style={{ marginTop: "10px" }}>
+                {errorMessage}
+              </IonText>
+            )}
+          </div>
+        )}
       </div>
 
       <div className="settings">
