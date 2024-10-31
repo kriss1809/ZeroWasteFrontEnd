@@ -21,20 +21,20 @@ import "../theme/itemCard.css";
 import { useTheme } from "./ThemeContext";
 
 interface ItemProps {
-  title: string;
-  expiration_date: string; // Format: "DD.MM.YYYY"
-  opening_date: string;
-  recommended_days: string;
+  name: string;
+  best_before: string; // Format: "DD.MM.YYYY"
+  opened: string;
+  consumption_days: string;
   onEdit: (
-    title: string,
-    expiration_date: string,
-    opening_date: string,
-    recommended_days: string
+     name: string,
+    best_before: string,  // Format: "DD.MM.YYYY"
+    opened: string,
+    consumption_days: string
   ) => void; // Callback prop for editing
 }
 
 
-const ItemCard: React.FC<ItemProps> = ({ title, expiration_date, opening_date, recommended_days, onEdit }) => {
+const ItemCard: React.FC<ItemProps> = ({name, best_before, opened, consumption_days, onEdit }) => {
   const history = useHistory();
   const { darkMode } = useTheme();
   const [presentAlert] = useIonAlert();
@@ -49,7 +49,7 @@ const ItemCard: React.FC<ItemProps> = ({ title, expiration_date, opening_date, r
 
    const isExpired = () => {
      const today = new Date();
-     const parts = expiration_date.split(".");
+     const parts = best_before.split(".");
      if (parts.length === 3) {
        const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`; // "YYYY-MM-DD"
        const expDate = new Date(formattedDate);
@@ -61,7 +61,7 @@ const ItemCard: React.FC<ItemProps> = ({ title, expiration_date, opening_date, r
    };
 
    const handleItemEdit = () => {
-    onEdit(title, expiration_date, opening_date, recommended_days); // Call the edit handler
+    onEdit(name, best_before, opened, consumption_days); // Call the edit handler
   };
 
 
@@ -72,13 +72,13 @@ const ItemCard: React.FC<ItemProps> = ({ title, expiration_date, opening_date, r
         onClick={handleItemEdit}
       >
         <IonCardHeader>
-          <IonLabel className="item-card-title">{title}</IonLabel>
+          <IonLabel className="item-card-title">{name}</IonLabel>
         </IonCardHeader>
 
         <IonCardContent className="item-card-content">
           <div className="footer-container">
             <div className="expiration-text">
-              {"Expiration date: " + expiration_date}
+              {"Expiration date: " + best_before}
             </div>
             <div className="button-container">
               <IonButton

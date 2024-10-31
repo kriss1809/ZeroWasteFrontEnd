@@ -70,6 +70,7 @@ const ProfileSettings: React.FC = () => {
 
 
     const handleShare = () => {
+      // AICI CODUL PRIMIT DE LA SERVER
       const newCode = Math.random().toString(36).substring(2, 8).toUpperCase();
       setShareCode(newCode);
       setShowJoinInput(false); // Ascunde inputul de Join dacă era deschis

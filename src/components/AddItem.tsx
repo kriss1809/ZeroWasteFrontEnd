@@ -13,10 +13,10 @@ import { useTheme } from "./ThemeContext";
 
 interface AddItemProps {
   selectedItem: {
-    title: string;
-    expiration_date: string;
-    opening_date: string;
-    recommended_days: string;
+    name: string;
+    best_before: string;
+    opened: string;
+    consumption_days: string;
   } | null; // Updated prop
 }
 
@@ -38,10 +38,10 @@ const AddItem: React.FC<AddItemProps> = ({ selectedItem }) => {
 
   useEffect(() => {
     if (selectedItem) {
-      setProductName(selectedItem.title);
-      setExpirationDate(convertDateFormat(selectedItem.expiration_date));
-      setOpeningDate(convertDateFormat(selectedItem.opening_date));
-      setRecommendedDays(selectedItem.recommended_days);
+      setProductName(selectedItem.name);
+      setExpirationDate(convertDateFormat(selectedItem.best_before));
+      setOpeningDate(convertDateFormat(selectedItem.opened));
+      setRecommendedDays(selectedItem.consumption_days);
       setIsExpanded(true);
     } else {
       resetForm();
