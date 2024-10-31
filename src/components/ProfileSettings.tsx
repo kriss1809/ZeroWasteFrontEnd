@@ -70,8 +70,9 @@ const ProfileSettings: React.FC = () => {
 
 
     const handleShare = () => {
-      const newCode = Math.random().toString(36).substring(2, 8).toUpperCase();
-      setShareCode(newCode);
+      // AICI CODUL PRIMIT DE LA SERVER
+      const Code = sessionStorage.getItem("share_code");
+      setShareCode(Code);
       setShowJoinInput(false); // Ascunde inputul de Join dacă era deschis
     };
 
@@ -84,6 +85,7 @@ const ProfileSettings: React.FC = () => {
     // Funcția care copiază codul în clipboard și resetează la butoanele originale
     const copyToClipboard = () => {
       if (shareCode) {
+        console.log(shareCode);
         navigator.clipboard.writeText(shareCode).then(() => {
           console.log("Cod copiat în clipboard!");
           setShareCode(null); // Resetează pentru a afișa din nou butoanele
