@@ -1,27 +1,52 @@
 // Home.tsx
-import React, { useState } from "react";
-import { IonHeader, IonPage, IonContent, IonButton } from "@ionic/react";
+import React, { useEffect, useState } from "react";
+import { IonHeader, IonPage, IonContent, IonButton, IonLoading } from "@ionic/react";
 import Menu from "../components/Menu";
 import AddItem from "../components/AddItem";
 import ItemCard from "../components/ItemCard";
 import { useTheme } from "../components/ThemeContext";
+import { GetProductList } from "../services/apiClient";
 
 const Home: React.FC = () => {
   const { darkMode } = useTheme();
   const [selectedItem, setSelectedItem] = useState<{
+    id: number;
     name: string;
     best_before: string;
     opened: string; 
     consumption_days: string; 
   } | null>(null);
 
+  const [products, setProducts] = useState<Array<{
+    id: number;
+    name: string;
+    best_before: string;
+    opened: string;
+    consumption_days: string;
+  }>>([]);
+  const [loading, setLoading] = useState(false);
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      if(!sessionStorage.getItem("accessToken")) {
+        setLoading(true);
+      await new Promise(resolve => setTimeout(resolve, 60*25));
+        setLoading(false);}
+      await GetProductList();
+      const productsFromStorage = sessionStorage.getItem("products");
+      setProducts(productsFromStorage ? JSON.parse(productsFromStorage) : []);
+    };
+    fetchData();
+  }, []);
+
   const handleEditItem = (
+    id: number,
     name: string,
     best_before: string,
     opened: string,
     consumption_days: string
   ) => {
-    setSelectedItem({ name, best_before, opened, consumption_days }); // Set selected item
+    setSelectedItem({id, name, best_before, opened, consumption_days }); // Set selected item
   };
 
   return (
@@ -37,16 +62,20 @@ const Home: React.FC = () => {
       >
         Your products
       </IonHeader>
-
+      <IonLoading isOpen={loading} message="Please wait..." />
       <IonContent>
         <div className={darkMode ? "dark-mode" : ""}>
-          <ItemCard
-            name="Card 1"
-            best_before="19.09.2023"
-            opened="01.09.2023" 
-            consumption_days="7" 
-            onEdit={handleEditItem}
-          />
+          {products.map((product: any) => (
+            <ItemCard
+              key={product.id}
+              id={product.id}
+              name={product.name}
+              best_before={product.best_before}
+              opened={product.opened}
+              consumption_days={product.consumption_days}
+              onEdit={handleEditItem}
+            />
+          ))}
         </div>
       </IonContent>
 

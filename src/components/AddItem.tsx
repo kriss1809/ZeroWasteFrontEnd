@@ -13,6 +13,7 @@ import { useTheme } from "./ThemeContext";
 
 interface AddItemProps {
   selectedItem: {
+    id: number;
     name: string;
     best_before: string;
     opened: string;
@@ -40,7 +41,7 @@ const AddItem: React.FC<AddItemProps> = ({ selectedItem }) => {
     if (selectedItem) {
       setProductName(selectedItem.name);
       setExpirationDate(convertDateFormat(selectedItem.best_before));
-      setOpeningDate(convertDateFormat(selectedItem.opened));
+      setOpeningDate(selectedItem.opened ? convertDateFormat(selectedItem.opened) : "");
       setRecommendedDays(selectedItem.consumption_days);
       setIsExpanded(true);
     } else {

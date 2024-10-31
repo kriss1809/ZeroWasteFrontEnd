@@ -19,14 +19,17 @@ import {
 import { useHistory } from "react-router-dom";
 import "../theme/itemCard.css";
 import { useTheme } from "./ThemeContext";
+import { DeleteProduct } from "../services/apiClient";
 
 interface ItemProps {
+  id: number;
   name: string;
   best_before: string; // Format: "DD.MM.YYYY"
   opened: string;
   consumption_days: string;
   onEdit: (
-     name: string,
+    id: number,
+    name: string,
     best_before: string,  // Format: "DD.MM.YYYY"
     opened: string,
     consumption_days: string
@@ -34,16 +37,25 @@ interface ItemProps {
 }
 
 
-const ItemCard: React.FC<ItemProps> = ({name, best_before, opened, consumption_days, onEdit }) => {
+const ItemCard: React.FC<ItemProps> = ({id,name, best_before, opened, consumption_days, onEdit }) => {
   const history = useHistory();
   const { darkMode } = useTheme();
   const [presentAlert] = useIonAlert();
+
+  const convertDateFormat = (date: string) => {
+    const parts = date.split("-");
+    return `${parts[2]}.${parts[1]}.${parts[0]}`; // "DD.MM.YYYY"
+  };
+
+  best_before = convertDateFormat(best_before); // Convert the date format
+  opened ? (opened = convertDateFormat(opened)) : opened; // Convert the date format if opened is not null 
 
   const handleItemConsumed = () => {
     console.log("Item consumed");
   };
  
-  const handleDeleteClick = () => {
+  const handleDeleteClick = async () => {
+    await DeleteProduct(id);
     console.log("Item deleted");
   };
 
@@ -61,7 +73,7 @@ const ItemCard: React.FC<ItemProps> = ({name, best_before, opened, consumption_d
    };
 
    const handleItemEdit = () => {
-    onEdit(name, best_before, opened, consumption_days); // Call the edit handler
+    onEdit(id,name, best_before, opened, consumption_days); // Call the edit handler
   };
 
 
