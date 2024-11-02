@@ -4,6 +4,7 @@ import { useTheme } from "./ThemeContext";
 import { IonPopover, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonCheckbox, IonIcon } from "@ionic/react";
 import { clipboardOutline, copy } from "ionicons/icons";
 import { useHistory } from "react-router-dom";
+import { JoinProductList } from "../services/apiClient";
 
 const ProfileSettings: React.FC = () => {
   const [preferredTime, setPreferredTime] = useState<string>("");
@@ -70,8 +71,9 @@ const ProfileSettings: React.FC = () => {
 
 
     const handleShare = () => {
-      const newCode = Math.random().toString(36).substring(2, 8).toUpperCase();
-      setShareCode(newCode);
+      // AICI CODUL PRIMIT DE LA SERVER
+      const Code = sessionStorage.getItem("share_code");
+      setShareCode(Code);
       setShowJoinInput(false); // Ascunde inputul de Join dacă era deschis
     };
 
@@ -84,6 +86,7 @@ const ProfileSettings: React.FC = () => {
     // Funcția care copiază codul în clipboard și resetează la butoanele originale
     const copyToClipboard = () => {
       if (shareCode) {
+        console.log(shareCode);
         navigator.clipboard.writeText(shareCode).then(() => {
           console.log("Cod copiat în clipboard!");
           setShareCode(null); // Resetează pentru a afișa din nou butoanele
@@ -91,10 +94,10 @@ const ProfileSettings: React.FC = () => {
       }
     };
 
-    const validateJoinCode = () => {
+    const validateJoinCode = async () => {
       if (joinCode.length === 6) {
-        // AICI TRATAM RASPUNSUL DE LA SERVER
-        setErrorMessage(""); // Resetăm orice mesaj de eroare
+        const repsonse = await JoinProductList(joinCode);
+        console.log(repsonse);
         history.push("/home"); // Redirecționăm către pagina "Home"
       } else {
         setErrorMessage(
