@@ -4,6 +4,7 @@ import { useTheme } from "./ThemeContext";
 import { IonPopover, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonCheckbox, IonIcon } from "@ionic/react";
 import { clipboardOutline, copy } from "ionicons/icons";
 import { useHistory } from "react-router-dom";
+import { JoinProductList } from "../services/apiClient";
 
 const ProfileSettings: React.FC = () => {
   const [preferredTime, setPreferredTime] = useState<string>("");
@@ -93,10 +94,10 @@ const ProfileSettings: React.FC = () => {
       }
     };
 
-    const validateJoinCode = () => {
+    const validateJoinCode = async () => {
       if (joinCode.length === 6) {
-        // AICI TRATAM RASPUNSUL DE LA SERVER
-        setErrorMessage(""); // Resetăm orice mesaj de eroare
+        const repsonse = await JoinProductList(joinCode);
+        console.log(repsonse);
         history.push("/home"); // Redirecționăm către pagina "Home"
       } else {
         setErrorMessage(

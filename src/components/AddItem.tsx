@@ -10,6 +10,7 @@ import {
 } from "@ionic/react";
 import "../theme/addItem.css";
 import { useTheme } from "./ThemeContext";
+import { AddProduct, UpdateProduct } from "../services/apiClient";
 
 interface AddItemProps {
   selectedItem: {
@@ -39,6 +40,7 @@ const AddItem: React.FC<AddItemProps> = ({ selectedItem }) => {
 
   useEffect(() => {
     if (selectedItem) {
+      console.log(selectedItem);
       setProductName(selectedItem.name);
       setExpirationDate(convertDateFormat(selectedItem.best_before));
       setOpeningDate(selectedItem.opened ? convertDateFormat(selectedItem.opened) : "");
@@ -74,10 +76,10 @@ const AddItem: React.FC<AddItemProps> = ({ selectedItem }) => {
     setIsExpanded(false);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!productName) {
       setError("Product name is required.");
-      return;
+      return; 
     }
 
     if (!expirationDate) {
@@ -85,14 +87,24 @@ const AddItem: React.FC<AddItemProps> = ({ selectedItem }) => {
       return;
     }
 
-    // Handle saving the product details
-    console.log({
-      productName,
-      expirationDate,
-      openingDate,
-      recommendedDays,
-    });
-
+    if (selectedItem){
+      // Update the product
+      const response = await UpdateProduct(
+        selectedItem.id,
+        productName,
+        expirationDate,
+        openingDate,
+        recommendedDays
+      );
+      if (response) {
+        window.location.reload();
+      }
+    }
+    else{
+    const response = await AddProduct(productName, expirationDate, openingDate, recommendedDays);
+    if (response) {
+      window.location.reload();}
+  }
     resetForm();
   };
 
