@@ -1,11 +1,12 @@
 // Home.tsx
 import React, { useEffect, useState } from "react";
-import { IonHeader, IonPage, IonContent, IonButton, IonLoading } from "@ionic/react";
+import { IonHeader, IonPage, IonContent, IonButton, IonLoading, IonIcon, IonTabBar, IonTabButton, IonLabel } from "@ionic/react";
 import Menu from "../components/Menu";
 import AddItem from "../components/AddItem";
 import ItemCard from "../components/ItemCard";
 import { useTheme } from "../components/ThemeContext";
 import { GetProductList } from "../services/apiClient";
+import { peopleOutline, receiptOutline } from "ionicons/icons";
 
 const Home: React.FC = () => {
   const { darkMode } = useTheme();
@@ -54,14 +55,32 @@ const Home: React.FC = () => {
       <IonHeader
         style={{
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "space-between",
           alignItems: "center",
           padding: "1rem",
           borderBottom: "1px solid #e5e5e5",
+          fontSize: "8vw",
         }}
       >
-        Your products
+        <div>
+          <IonIcon icon={receiptOutline} style={{ marginRight: "3vw" }} />
+        </div>
+        <div
+          style={{
+            background: "linear-gradient(135deg, #1b8911 0%, #5cb947 100%)",
+            color: "transparent",
+            WebkitBackgroundClip: "text",
+            backgroundClip: "text",
+            fontWeight: "bold"
+          }}
+        >
+          ZeroWaste
+        </div>
+        <div>
+          <IonIcon icon={peopleOutline} />
+        </div>
       </IonHeader>
+
       <IonLoading isOpen={loading} message="Please wait..." />
       <IonContent>
         <div className={darkMode ? "dark-mode" : ""}>
