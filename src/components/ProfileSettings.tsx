@@ -94,11 +94,12 @@ const ProfileSettings: React.FC = () => {
       }
     };
 
-    const validateJoinCode = async () => {
+    const validateJoinCode = () => {
       if (joinCode.length === 6) {
-        const repsonse = await JoinProductList(joinCode);
-        console.log(repsonse);
-        history.push("/home"); // Redirecționăm către pagina "Home"
+        JoinProductList(joinCode).then((response) => {
+          console.log(response);
+          history.push("/home");
+        }); 
       } else {
         setErrorMessage(
           "Invalid code. Please try again."

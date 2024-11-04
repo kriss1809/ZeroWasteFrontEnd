@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { User } from '../entitites/User';
 
-// const url = "http://192.168.100.92:8000/";
-const url = "http://192.168.100.186:8000/";
+const url = "http://192.168.100.92:8000/";
+// const url = "http://192.168.100.186:8000/";
 export const loginUser = async (email: string, password: string) => {
   try {
     const response = await axios.post<{ access: string; refresh: string }>(`${url}login/`, {
@@ -183,6 +183,21 @@ export const JoinProductList = async (share_code: string) => {
       }
     );
     return response;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+
+export const GetCollaborators = async () => {
+  try {
+    const response = await axios.get<{ email: string }[]>(`${url}collaborators/`, {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+      },
+    });
+    sessionStorage.setItem("collaborators", JSON.stringify(response.data));
+    return response.data;
   } catch (error) {
     console.error(error);
   }

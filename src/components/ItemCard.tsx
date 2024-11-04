@@ -54,9 +54,16 @@ const ItemCard: React.FC<ItemProps> = ({id,name, best_before, opened, consumptio
     console.log("Item consumed");
   };
  
-  const handleDeleteClick = async () => {
-    await DeleteProduct(id);
-    console.log("Item deleted");
+  const handleDeleteClick = () => {
+    DeleteProduct(id).then(() => {
+
+      presentAlert({
+        header: "Item deleted",
+        message: "The item was successfully deleted.",
+        buttons: ["OK"],
+      });
+      
+    });
   };
 
    const isExpired = () => {

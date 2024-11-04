@@ -32,18 +32,35 @@ const Home: React.FC = () => {
   const [showUploadModal, setshowUploadModal] = useState(false);
    const [showCollaboratorsModal, setshowCollaboratorsModal] = useState(false);
   
-  useEffect(() => {
-    const fetchData = async () => {
-      if(!sessionStorage.getItem("accessToken")) {
+useEffect(() => {
+  const fetchData = async () => {
+
+    const waitForToken = new Promise<void>((resolve) => {
+      const checkToken = setInterval(() => {
         setLoading(true);
-      await new Promise(resolve => setTimeout(resolve, 60*25));
-        setLoading(false);}
-      await GetProductList();
-      const productsFromStorage = sessionStorage.getItem("products");
-      setProducts(productsFromStorage ? JSON.parse(productsFromStorage) : []);
-    };
-    fetchData();
-  }, []);
+        if (sessionStorage.getItem("accessToken")) {
+          clearInterval(checkToken);
+          setLoading(false);
+          resolve();
+        }
+      }, 50);
+    });
+
+    await waitForToken;
+
+    GetProductList().then((response) => {
+      if(response){
+        setProducts(response);
+      }
+      else{
+      setProducts(sessionStorage.getItem("products") ? JSON.parse(sessionStorage.getItem("products")!) : []);
+    }
+    });
+  };
+
+  fetchData();
+}, []);
+
 
   const handleEditItem = (
     id: number,
