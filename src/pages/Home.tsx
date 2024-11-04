@@ -71,7 +71,7 @@ const Home: React.FC = () => {
             color: "transparent",
             WebkitBackgroundClip: "text",
             backgroundClip: "text",
-            fontWeight: "bold"
+            fontWeight: "bold",
           }}
         >
           ZeroWaste
@@ -81,7 +81,11 @@ const Home: React.FC = () => {
         </div>
       </IonHeader>
 
-      <IonLoading isOpen={loading} message="Please wait..." />
+      <IonLoading
+        isOpen={loading}
+        message="Please wait..."
+        cssClass={darkMode ? "dark-mode" : ""}
+      />
       <IonContent>
         <div className={darkMode ? "dark-mode" : ""}>
           {products.map((product: any) => (
