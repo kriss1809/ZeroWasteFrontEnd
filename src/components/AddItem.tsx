@@ -20,9 +20,10 @@ interface AddItemProps {
     opened: string;
     consumption_days: string;
   } | null; // Updated prop
+  onCancelEdit: () => void;
 }
 
-const AddItem: React.FC<AddItemProps> = ({ selectedItem }) => {
+const AddItem: React.FC<AddItemProps> = ({ selectedItem, onCancelEdit }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [productName, setProductName] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
@@ -58,8 +59,10 @@ const AddItem: React.FC<AddItemProps> = ({ selectedItem }) => {
         !addItemRef.current.contains(event.target as Node)
       ) {
         resetForm();
+        onCancelEdit(); 
       }
     };
+
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => {

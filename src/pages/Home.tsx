@@ -20,6 +20,10 @@ const Home: React.FC = () => {
     consumption_days: string; 
   } | null>(null);
 
+  const handleCancelEdit = () => {
+    setSelectedItem(null); // Clear the selected item when canceling
+  };
+
   const [products, setProducts] = useState<Array<{
     id: number;
     name: string;
@@ -30,23 +34,23 @@ const Home: React.FC = () => {
 
   const [loading, setLoading] = useState(false);
   const [showUploadModal, setshowUploadModal] = useState(false);
-   const [showCollaboratorsModal, setshowCollaboratorsModal] = useState(false);
+  const [showCollaboratorsModal, setshowCollaboratorsModal] = useState(false);
   
 useEffect(() => {
   const fetchData = async () => {
 
-    const waitForToken = new Promise<void>((resolve) => {
-      const checkToken = setInterval(() => {
-        setLoading(true);
-        if (sessionStorage.getItem("accessToken")) {
-          clearInterval(checkToken);
-          setLoading(false);
-          resolve();
-        }
-      }, 50);
-    });
+    // const waitForToken = new Promise<void>((resolve) => {
+    //   const checkToken = setInterval(() => {
+    //     setLoading(true);
+    //     if (sessionStorage.getItem("accessToken")) {
+    //       clearInterval(checkToken);
+    //       setLoading(false);
+    //       resolve();
+    //     }
+    //   }, 50);
+    // });
 
-    await waitForToken;
+    // await waitForToken;
 
     GetProductList().then((response) => {
       if(response){
@@ -103,8 +107,14 @@ useEffect(() => {
         </div>
       </IonHeader>
 
-      <UploadReceiptModal showUploadModal={showUploadModal} setShowUploadModal={setshowUploadModal} />
-      <CollaboratorsModal showCollaboratorsModal = {showCollaboratorsModal} setShowCollaboratorsModal={setshowCollaboratorsModal}/>
+      <UploadReceiptModal
+        showUploadModal={showUploadModal}
+        setShowUploadModal={setshowUploadModal}
+      />
+      <CollaboratorsModal
+        showCollaboratorsModal={showCollaboratorsModal}
+        setShowCollaboratorsModal={setshowCollaboratorsModal}
+      />
 
       <IonLoading
         isOpen={loading}
@@ -129,7 +139,7 @@ useEffect(() => {
       </IonContent>
 
       <div slot="bottom">
-        <AddItem selectedItem={selectedItem} />
+        <AddItem selectedItem={selectedItem} onCancelEdit={handleCancelEdit} />
         <Menu />
       </div>
     </IonPage>
