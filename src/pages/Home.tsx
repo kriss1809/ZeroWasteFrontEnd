@@ -1,12 +1,14 @@
 // Home.tsx
 import React, { useEffect, useState } from "react";
-import { IonHeader, IonPage, IonContent, IonButton, IonLoading, IonIcon, IonTabBar, IonTabButton, IonLabel } from "@ionic/react";
+import { IonHeader, IonPage, IonContent, IonButton, IonLoading, IonIcon, IonModal, IonList, IonItem, IonLabel, IonListHeader } from "@ionic/react";
 import Menu from "../components/Menu";
 import AddItem from "../components/AddItem";
 import ItemCard from "../components/ItemCard";
 import { useTheme } from "../components/ThemeContext";
 import { GetProductList } from "../services/apiClient";
-import { peopleOutline, receiptOutline } from "ionicons/icons";
+import { peopleOutline, receiptOutline, closeOutline } from "ionicons/icons";
+import CollaboratorsModal from "../components/CollaboratorsModal";
+import UploadReceiptModal from "../components/UploadReceiptModal";
 
 const Home: React.FC = () => {
   const { darkMode } = useTheme();
@@ -25,7 +27,10 @@ const Home: React.FC = () => {
     opened: string;
     consumption_days: string;
   }>>([]);
+
   const [loading, setLoading] = useState(false);
+  const [showUploadModal, setshowUploadModal] = useState(false);
+   const [showCollaboratorsModal, setshowCollaboratorsModal] = useState(false);
   
   useEffect(() => {
     const fetchData = async () => {
@@ -47,7 +52,7 @@ const Home: React.FC = () => {
     opened: string,
     consumption_days: string
   ) => {
-    setSelectedItem({id, name, best_before, opened, consumption_days }); // Set selected item
+    setSelectedItem({id, name, best_before, opened, consumption_days });
   };
 
   return (
@@ -62,7 +67,7 @@ const Home: React.FC = () => {
           fontSize: "8vw",
         }}
       >
-        <div>
+        <div onClick={() => setshowUploadModal(true)}>
           <IonIcon icon={receiptOutline} style={{ marginRight: "3vw" }} />
         </div>
         <div
@@ -71,17 +76,25 @@ const Home: React.FC = () => {
             color: "transparent",
             WebkitBackgroundClip: "text",
             backgroundClip: "text",
-            fontWeight: "bold"
+            fontWeight: "bold",
           }}
         >
           ZeroWaste
         </div>
-        <div>
+        <div onClick={() => setshowCollaboratorsModal(true)}>
           <IonIcon icon={peopleOutline} />
         </div>
       </IonHeader>
 
-      <IonLoading isOpen={loading} message="Please wait..." />
+      <UploadReceiptModal showUploadModal={showUploadModal} setShowUploadModal={setshowUploadModal} />
+      <CollaboratorsModal showCollaboratorsModal = {showCollaboratorsModal} setShowCollaboratorsModal={setshowCollaboratorsModal}/>
+
+      <IonLoading
+        isOpen={loading}
+        message="Please wait..."
+        cssClass={darkMode ? "dark-mode" : ""}
+      />
+
       <IonContent>
         <div className={darkMode ? "dark-mode" : ""}>
           {products.map((product: any) => (
