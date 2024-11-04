@@ -20,9 +20,10 @@ interface AddItemProps {
     opened: string;
     consumption_days: string;
   } | null; // Updated prop
+  onCancelEdit: () => void;
 }
 
-const AddItem: React.FC<AddItemProps> = ({ selectedItem }) => {
+const AddItem: React.FC<AddItemProps> = ({ selectedItem, onCancelEdit }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [productName, setProductName] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
@@ -58,8 +59,10 @@ const AddItem: React.FC<AddItemProps> = ({ selectedItem }) => {
         !addItemRef.current.contains(event.target as Node)
       ) {
         resetForm();
+        onCancelEdit(); 
       }
     };
+
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
@@ -76,7 +79,7 @@ const AddItem: React.FC<AddItemProps> = ({ selectedItem }) => {
     setIsExpanded(false);
   };
 
-  const handleSave = async () => {
+  const handleSave = () => {
     if (!productName) {
       setError("Product name is required.");
       return; 
@@ -88,22 +91,25 @@ const AddItem: React.FC<AddItemProps> = ({ selectedItem }) => {
     }
 
     if (selectedItem){
-      // Update the product
-      const response = await UpdateProduct(
+      UpdateProduct(
         selectedItem.id,
         productName,
         expirationDate,
         openingDate,
         recommendedDays
-      );
-      if (response) {
-        window.location.reload();
-      }
+      ).then((response) => {
+        if (response) {
+          window.location.reload();
+        }
+      });
     }
     else{
-    const response = await AddProduct(productName, expirationDate, openingDate, recommendedDays);
+
+    AddProduct(productName, expirationDate, openingDate, recommendedDays).then((response) => {
     if (response) {
-      window.location.reload();}
+      window.location.reload();
+      }
+    });
   }
     resetForm();
   };

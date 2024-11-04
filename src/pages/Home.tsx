@@ -20,6 +20,10 @@ const Home: React.FC = () => {
     consumption_days: string; 
   } | null>(null);
 
+  const handleCancelEdit = () => {
+    setSelectedItem(null); // Clear the selected item when canceling
+  };
+
   const [products, setProducts] = useState<Array<{
     id: number;
     name: string;
@@ -30,20 +34,37 @@ const Home: React.FC = () => {
 
   const [loading, setLoading] = useState(false);
   const [showUploadModal, setshowUploadModal] = useState(false);
-   const [showCollaboratorsModal, setshowCollaboratorsModal] = useState(false);
+  const [showCollaboratorsModal, setshowCollaboratorsModal] = useState(false);
   
-  useEffect(() => {
-    const fetchData = async () => {
-      if(!sessionStorage.getItem("accessToken")) {
-        setLoading(true);
-      await new Promise(resolve => setTimeout(resolve, 60*25));
-        setLoading(false);}
-      await GetProductList();
-      const productsFromStorage = sessionStorage.getItem("products");
-      setProducts(productsFromStorage ? JSON.parse(productsFromStorage) : []);
-    };
-    fetchData();
-  }, []);
+useEffect(() => {
+  const fetchData = async () => {
+
+    // const waitForToken = new Promise<void>((resolve) => {
+    //   const checkToken = setInterval(() => {
+    //     setLoading(true);
+    //     if (sessionStorage.getItem("accessToken")) {
+    //       clearInterval(checkToken);
+    //       setLoading(false);
+    //       resolve();
+    //     }
+    //   }, 50);
+    // });
+
+    // await waitForToken;
+
+    GetProductList().then((response) => {
+      if(response){
+        setProducts(response);
+      }
+      else{
+      setProducts(sessionStorage.getItem("products") ? JSON.parse(sessionStorage.getItem("products")!) : []);
+    }
+    });
+  };
+
+  fetchData();
+}, []);
+
 
   const handleEditItem = (
     id: number,
@@ -86,8 +107,14 @@ const Home: React.FC = () => {
         </div>
       </IonHeader>
 
-      <UploadReceiptModal showUploadModal={showUploadModal} setShowUploadModal={setshowUploadModal} />
-      <CollaboratorsModal showCollaboratorsModal = {showCollaboratorsModal} setShowCollaboratorsModal={setshowCollaboratorsModal}/>
+      <UploadReceiptModal
+        showUploadModal={showUploadModal}
+        setShowUploadModal={setshowUploadModal}
+      />
+      <CollaboratorsModal
+        showCollaboratorsModal={showCollaboratorsModal}
+        setShowCollaboratorsModal={setshowCollaboratorsModal}
+      />
 
       <IonLoading
         isOpen={loading}
@@ -112,7 +139,7 @@ const Home: React.FC = () => {
       </IonContent>
 
       <div slot="bottom">
-        <AddItem selectedItem={selectedItem} />
+        <AddItem selectedItem={selectedItem} onCancelEdit={handleCancelEdit} />
         <Menu />
       </div>
     </IonPage>

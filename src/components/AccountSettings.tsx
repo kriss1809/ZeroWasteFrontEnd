@@ -26,14 +26,13 @@ const AccountSettings: React.FC = () => {
     const [deletePassword, setDeletePassword] = useState<string>("");
 
     useEffect(() => {
-      const fetchUserProfile = async () => {
-        const userProfile = await getUserProfile();
-        if (userProfile) {
-          setEmail(userProfile.email);
-        }
-      };
+    
+        getUserProfile().then((userProfile) => {
+          if (userProfile) {
+            setEmail(userProfile.email);
+          }
+        });
 
-      fetchUserProfile();
     }, []);
 
     const handleSaveNewPassword = () => {
@@ -41,11 +40,13 @@ const AccountSettings: React.FC = () => {
       setShowChangePasswordModal(false);
     };
 
-    const handleDeleteAccount =async () => {
-      const response =await UserdeleteAccount(deletePassword);
-      setShowDeleteAccountModal(false);
-      if(response && response.status === 204)
-        history.push("/successfully-deleted-account");
+    const handleDeleteAccount = () => {
+      UserdeleteAccount(deletePassword).then((response) => {
+        setShowDeleteAccountModal(false);
+        
+        if(response && response.status === 204)
+          history.push("/successfully-deleted-account");
+      });
     };
 
     const isSaveDisabled = newPassword !== confirmNewPassword;
