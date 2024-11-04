@@ -73,8 +73,15 @@ const ProfileSettings: React.FC = () => {
     const handleShare = () => {
       // AICI CODUL PRIMIT DE LA SERVER
       const Code = sessionStorage.getItem("share_code");
-      setShareCode(Code);
-      setShowJoinInput(false); // Ascunde inputul de Join dacă era deschis
+
+      if (Code) {
+        setShareCode(Code);
+        setShowJoinInput(false); // Ascunde inputul de Join dacă era deschis
+      } else {
+        console.error("share_code nu este definit în sessionStorage");
+        setErrorMessage("Nu s-a putut obține codul de partajare.");
+      }
+
     };
 
     // Funcția care afișează inputul de "Join"
@@ -86,13 +93,40 @@ const ProfileSettings: React.FC = () => {
     // Funcția care copiază codul în clipboard și resetează la butoanele originale
     const copyToClipboard = () => {
       if (shareCode) {
-        console.log(shareCode);
-        navigator.clipboard.writeText(shareCode).then(() => {
-          console.log("Cod copiat în clipboard!");
-          setShareCode(null); // Resetează pentru a afișa din nou butoanele
-        });
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard
+            .writeText(shareCode)
+            .then(() => {
+              console.log("Cod copiat în clipboard!");
+              setShareCode(null); // Resetează pentru a afișa din nou butoanele
+            })
+            .catch((error) => {
+              console.error("Eroare la copierea codului:", error);
+              setErrorMessage("Nu s-a putut copia codul. Încearcă din nou.");
+            });
+        } else {
+          // Fallback: Folosește execCommand pentru copiere
+          const textArea = document.createElement("textarea");
+          textArea.value = shareCode;
+          document.body.appendChild(textArea);
+          textArea.select();
+          try {
+            document.execCommand("copy");
+            console.log("Cod copiat în clipboard folosind fallback!");
+            setShareCode(null);
+          } catch (err) {
+            console.error("Fallback pentru copiere a eșuat:", err);
+            setErrorMessage(
+              "Funcția de copiere nu este suportată pe acest dispozitiv."
+            );
+          }
+          document.body.removeChild(textArea);
+        }
+      } else {
+        setErrorMessage("Codul nu este disponibil pentru copiere.");
       }
     };
+
 
     const validateJoinCode = () => {
       if (joinCode.length === 6) {
