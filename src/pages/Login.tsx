@@ -19,15 +19,16 @@ const Login: React.FC = () => {
   const history = useHistory(); 
   const { darkMode} = useTheme();
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const response = await loginUser(email, password);
-      if (response) {
-        history.push("/home");
-      } else 
-        console.log("Login failed");
+      loginUser(email, password).then((response) => {
+        if (response) {
+          history.push("/home");
+        } else 
+          console.log("Login failed");
+      });
     } catch (error) {
       console.error("Error during login:", error);
     }

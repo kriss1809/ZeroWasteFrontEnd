@@ -26,17 +26,18 @@ const Signup: React.FC = () => {
   const [emailError, setEmailError] = useState<string>("");
   const history = useHistory();
 
-  const handleSignup = async (e: React.FormEvent) => {
+  const handleSignup = (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const response = await registerUser(email, password, confirmPassword);
-      if (response) {
-        history.push("/successfully-created-account");
-        console.log(response);
-      } else {
-        console.log("Signup failed");
-      }
+      registerUser(email, password, confirmPassword).then((response) => {
+        if (response) {
+          history.push("/successfully-created-account");
+          console.log(response);
+        } else {
+          console.log("Signup failed");
+        }
+      }); 
     } catch (error) {
       console.error("Error during signup:", error);
     }

@@ -25,9 +25,10 @@ const Profile: React.FC = () => {
   const history = useHistory();
   const { darkMode } = useTheme();
 
-  const handleLogout = async () => {
-    await logoutUser();
-    history.push("/login");
+  const handleLogout = () => {
+    logoutUser().then(() => {
+      history.push("/login");
+      });
   };
 
   return (

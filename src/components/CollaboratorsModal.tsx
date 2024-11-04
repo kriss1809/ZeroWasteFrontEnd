@@ -1,7 +1,8 @@
 import { useTheme } from "./ThemeContext";
 import { closeOutline } from "ionicons/icons";
 import { IonContent, IonList, IonItem, IonLabel, IonListHeader, IonModal, IonIcon } from "@ionic/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { GetCollaborators } from "../services/apiClient";
 
 interface ModalProps {
   showCollaboratorsModal: boolean;
@@ -10,6 +11,35 @@ interface ModalProps {
 
 const CollaboratorsModal: React.FC<ModalProps> = ({ showCollaboratorsModal, setShowCollaboratorsModal }) => {
   const { darkMode } = useTheme();
+
+  const [collaborators, setCollaborators] = useState<string[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+
+      const waitForToken = new Promise<void>((resolve) => {
+        const checkToken = setInterval(() => {
+          if (sessionStorage.getItem("accessToken")) {
+            clearInterval(checkToken);
+            resolve();
+          }
+        }, 500);
+      });
+
+      await waitForToken;
+      GetCollaborators().then((response) => {
+        if(response){
+          setCollaborators(response.map((collaborator) => collaborator.email));
+        }
+        else{
+          setCollaborators(sessionStorage.getItem("collaborators") ? JSON.parse(sessionStorage.getItem("collaborators")!) : []);
+        }
+      });
+    };
+
+    fetchData();
+    
+  }, []);
 
   return (
     <div className={darkMode ? "dark-mode" : ""}>
@@ -53,9 +83,16 @@ const CollaboratorsModal: React.FC<ModalProps> = ({ showCollaboratorsModal, setS
               />
             </div>
           </IonListHeader>
+
+            {/* pentru fiecare colaborator, avem un IonItem ce contine un IonLabel cu adresa de email
           <IonItem>
             <IonLabel className="label-dark-mode">Item 1</IonLabel>
-          </IonItem>
+          </IonItem> */}
+          {collaborators.map((collaborator, index) => (
+            <IonItem key={index}>
+              <IonLabel className="label-dark-mode">{collaborator}</IonLabel>
+            </IonItem>
+          ))}
         </IonList>
       </IonContent>
     </IonModal>

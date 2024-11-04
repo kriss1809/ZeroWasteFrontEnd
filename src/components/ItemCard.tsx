@@ -54,9 +54,10 @@ const ItemCard: React.FC<ItemProps> = ({id,name, best_before, opened, consumptio
     console.log("Item consumed");
   };
  
-  const handleDeleteClick = async () => {
-    await DeleteProduct(id);
-    console.log("Item deleted");
+  const handleDeleteClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    DeleteProduct(id)
+    history.go(0);
   };
 
    const isExpired = () => {
@@ -103,7 +104,7 @@ const ItemCard: React.FC<ItemProps> = ({id,name, best_before, opened, consumptio
               <IonButton
                 color="danger"
                 size="small"
-                onClick={handleDeleteClick}
+                onClick={(e) => handleDeleteClick(e)}
               >
                 <IonIcon icon={trashOutline} slot="icon-only" />
               </IonButton>
