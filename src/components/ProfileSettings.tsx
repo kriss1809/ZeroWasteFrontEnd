@@ -272,8 +272,10 @@ const ProfileSettings: React.FC = () => {
           </IonButton>
 
           <IonPopover
+            key={showPopoverAllergies ? "open" : "closed"}
             isOpen={showPopoverAllergies}
             onDidDismiss={() => setShowPopoverAllergies(false)}
+            className="custom-popover"
           >
             <IonHeader>
               <IonToolbar>
@@ -314,8 +316,10 @@ const ProfileSettings: React.FC = () => {
           </IonButton>
 
           <IonPopover
+            key={showPopoverPreferences ? "open" : "closed"}
             isOpen={showPopoverPreferences}
             onDidDismiss={() => setShowPopoverPreferences(false)}
+            className="custom-popover"
           >
             <IonHeader>
               <IonToolbar>
