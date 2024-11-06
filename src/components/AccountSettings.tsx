@@ -31,6 +31,9 @@ const AccountSettings: React.FC = () => {
           if (userProfile) {
             setEmail(userProfile.email);
           }
+          else {
+            setEmail(JSON.parse(sessionStorage.getItem("user")!).email);
+          }
         });
 
     }, []);

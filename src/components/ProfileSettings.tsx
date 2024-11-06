@@ -4,7 +4,7 @@ import { useTheme } from "./ThemeContext";
 import { IonPopover, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonCheckbox, IonIcon } from "@ionic/react";
 import { clipboardOutline, copy } from "ionicons/icons";
 import { useHistory } from "react-router-dom";
-import { JoinProductList } from "../services/apiClient";
+import { JoinProductList, UpdateAllergies, UpdateNotificationDay, UpdatePreferences, UpdatePreferredNotificationHour } from "../services/apiClient";
 
 const ProfileSettings: React.FC = () => {
   const [preferredTime, setPreferredTime] = useState<string>("");
@@ -21,9 +21,32 @@ const ProfileSettings: React.FC = () => {
   const [allergies, setAllergies] = useState<string[]>([]);
   const [preferences, setPreferences] = useState<string[]>([]);
 
+useEffect(() => {
+  const fetchUserData = async () => {
+    const waitForUser = new Promise<void>((resolve) => {
+      const checkUser = setInterval(() => {
+        if (sessionStorage.getItem("user")) {
+          clearInterval(checkUser);
+          resolve();
+        }
+      }, 10);
+    });
+
+    await waitForUser;
+
+    const user = JSON.parse(sessionStorage.getItem("user")!);
+    setAllergies(user.allergies || []);
+    setPreferences(user.preferences || []);
+    setNotificationDays(user.notification_day || 1);
+    setPreferredTime(user.preferred_notification_hour || "");
+  };
+
+  fetchUserData();
+}, []);
+
   const allergyOptions: { label: string; value: string }[] = [
     { label: "Celery", value: "celery" },
-    { label: "Cereals containing gluten", value: "cereals" },
+    { label: "Cereals containing gluten", value: "gluten" },
     { label: "Crustaceans", value: "crustaceans" },
     { label: "Eggs", value: "eggs" },
     { label: "Fish", value: "fish" },
@@ -232,7 +255,10 @@ const ProfileSettings: React.FC = () => {
           <IonLabel>Notify me</IonLabel>
           <IonSelect
             value={notificationDays}
-            onIonChange={(e) => setNotificationDays(e.detail.value!)}
+            onIonChange={(e) => {
+              setNotificationDays(e.detail.value!); 
+              UpdateNotificationDay(e.detail.value!);
+            }}
             interface="popover"
           >
             <IonSelectOption value={1} className="label-dark-mode">
@@ -255,7 +281,10 @@ const ProfileSettings: React.FC = () => {
             <IonInput
               value={preferredTime}
               type="time"
-              onIonChange={(e) => setPreferredTime(e.detail.value!)}
+              onIonChange={(e) => {
+                setPreferredTime(e.detail.value!); 
+                UpdatePreferredNotificationHour(e.detail.value!);
+              }}
             />
           </div>
         </div>
@@ -274,7 +303,10 @@ const ProfileSettings: React.FC = () => {
           <IonPopover
             key={showPopoverAllergies ? "open" : "closed"}
             isOpen={showPopoverAllergies}
-            onDidDismiss={() => setShowPopoverAllergies(false)}
+            onDidDismiss={() => {
+              setShowPopoverAllergies(false);
+              UpdateAllergies(allergies);
+             }}
             className="custom-popover"
           >
             <IonHeader>
@@ -318,7 +350,10 @@ const ProfileSettings: React.FC = () => {
           <IonPopover
             key={showPopoverPreferences ? "open" : "closed"}
             isOpen={showPopoverPreferences}
-            onDidDismiss={() => setShowPopoverPreferences(false)}
+            onDidDismiss={() => {
+              setShowPopoverPreferences(false);
+              UpdatePreferences(preferences);
+             }}
             className="custom-popover"
           >
             <IonHeader>
