@@ -145,7 +145,7 @@ export const AddProduct = async (
       `${url}user-product-list/`,
       {
         name,
-        best_before,
+        best_before : best_before ? best_before : null,
         consumption_days: consumption_days ? consumption_days : null,
         opened: opened ? opened : null,
       },

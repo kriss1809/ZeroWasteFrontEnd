@@ -39,18 +39,18 @@ const Home: React.FC = () => {
 useEffect(() => {
   const fetchData = async () => {
 
-    // const waitForToken = new Promise<void>((resolve) => {
-    //   const checkToken = setInterval(() => {
-    //     setLoading(true);
-    //     if (sessionStorage.getItem("accessToken")) {
-    //       clearInterval(checkToken);
-    //       setLoading(false);
-    //       resolve();
-    //     }
-    //   }, 50);
-    // });
+    const waitForToken = new Promise<void>((resolve) => {
+      const checkToken = setInterval(() => {
+        setLoading(true);
+        if (sessionStorage.getItem("accessToken")) {
+          clearInterval(checkToken);
+          setLoading(false);
+          resolve();
+        }
+      }, 50);
+    });
 
-    // await waitForToken;
+    await waitForToken;
 
     GetProductList().then((response) => {
       if(response){

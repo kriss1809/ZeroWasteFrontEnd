@@ -85,10 +85,10 @@ const AddItem: React.FC<AddItemProps> = ({ selectedItem, onCancelEdit }) => {
       return; 
     }
 
-    if (!expirationDate) {
-      setError("Expiration date is required.");
-      return;
-    }
+    // if (!expirationDate) {
+    //   setError("Expiration date is required.");
+    //   return;
+    // }
 
     if (selectedItem){
       UpdateProduct(

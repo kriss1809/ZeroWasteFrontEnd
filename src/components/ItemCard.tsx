@@ -47,7 +47,7 @@ const ItemCard: React.FC<ItemProps> = ({id,name, best_before, opened, consumptio
     return `${parts[2]}.${parts[1]}.${parts[0]}`; // "DD.MM.YYYY"
   };
 
-  best_before = convertDateFormat(best_before); // Convert the date format
+  best_before ? best_before = convertDateFormat(best_before) : best_before; // Convert the date format
   opened ? (opened = convertDateFormat(opened)) : opened; // Convert the date format if opened is not null 
 
   const handleItemConsumed = () => {
@@ -81,7 +81,7 @@ const ItemCard: React.FC<ItemProps> = ({id,name, best_before, opened, consumptio
   return (
     <div className={darkMode ? "dark-mode" : ""}>
       <IonCard
-        className={`item-card ${isExpired() ? "expired" : ""}`}
+        className={`item-card ${best_before ? isExpired() ? "expired" : "" : ""}`}
         onClick={handleItemEdit}
       >
         <IonCardHeader>
