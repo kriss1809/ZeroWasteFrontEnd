@@ -57,7 +57,7 @@ const ItemCard: React.FC<ItemProps> = ({id,name, best_before, opened, consumptio
   const handleDeleteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     DeleteProduct(id)
-    history.go(0);
+    // history.go(0);
   };
 
    const isExpired = () => {

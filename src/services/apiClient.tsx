@@ -297,3 +297,24 @@ export const UpdatePreferredNotificationHour = async (preferred_notification_hou
     console.error(error);
   }
 };
+
+
+export const UploadReceipt = async (file: File) => {
+  try {
+    const formData = new FormData();
+    formData.append("image", file);
+    const response = await axios.post(
+      `${url}upload-receipt/`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+};
