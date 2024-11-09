@@ -11,6 +11,7 @@ import {
 } from "@ionic/react";
 import { closeOutline } from "ionicons/icons";
 import { useState } from "react";
+import { UploadReceipt } from "../services/apiClient";
 
 interface ModalProps {
   showUploadModal: boolean;
@@ -24,11 +25,13 @@ const UploadReceiptModal: React.FC<ModalProps> = ({
   const { darkMode } = useTheme();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string | null>(null); // New state to hold the file name
+  const [file, setFile] = useState<File | null>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       setFileName(file.name); // Set the file name
+      setFile(file); // Set the file
       const reader = new FileReader();
 
       // Check if the uploaded file is an image
@@ -154,6 +157,14 @@ const UploadReceiptModal: React.FC<ModalProps> = ({
                   marginBottom: "1rem",
                 }}
                 className="green-button-gradient"
+                onClick={() => {
+                  setShowUploadModal(false);
+                  UploadReceipt(file!).then((response) => {
+                    if (response) {
+                      window.location.reload();
+                    }
+                  });
+                }}
               >
                 Confirm
               </IonButton>

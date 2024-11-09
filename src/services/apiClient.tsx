@@ -145,7 +145,7 @@ export const AddProduct = async (
       `${url}user-product-list/`,
       {
         name,
-        best_before,
+        best_before : best_before ? best_before : null,
         consumption_days: consumption_days ? consumption_days : null,
         opened: opened ? opened : null,
       },
@@ -289,6 +289,27 @@ export const UpdatePreferredNotificationHour = async (preferred_notification_hou
       {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+
+export const UploadReceipt = async (file: File) => {
+  try {
+    const formData = new FormData();
+    formData.append("image", file);
+    const response = await axios.post(
+      `${url}upload-receipt/`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+          "Content-Type": "multipart/form-data",
         },
       }
     );
