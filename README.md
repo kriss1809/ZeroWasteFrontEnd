@@ -1,14 +1,15 @@
 # ZeroWasteFrontEnd
 
-La preluarea proiectului, se vor rula următoarele comenzi în terminal:
-npm install
-npm install -g @ionic/cli
+La preluarea proiectului, se vor rula următoarele comenzi în terminal: <br>
+<b>npm install</b><br>
+<b>npm install -g @ionic/cli</b><br>
 
-Pentru pornirea aplicației, se va executa comanda "ionic serve". 
-Posibilă eroare:
-ionic : The file ...\npm\ionic.ps1 cannot be loaded because script execution is disabled on this system.
-Soluție: Se deschide Powershell în modul administrator și se rulează "Set-ExecutionPolicy RemoteSigned", apoi se poate rula din nou "ionic serve" pentru a porni aplicația.
+Pentru pornirea aplicației, se va executa comanda <b>ionic serve</b>. <br>
+Posibilă eroare: <br>
+<em>ionic : The file ...\npm\ionic.ps1 cannot be loaded because script execution is disabled on this system.</em><br>
+Soluție: Se deschide Powershell în modul administrator și se rulează <b>Set-ExecutionPolicy RemoteSigned</b>, apoi se poate rula din nou <b>ionic serve</b> pentru a porni aplicația.<br>
 
+<hr>
 
 Echipa noastră își propune să dezvolte o aplicație mobilă care să combată risipa alimentară, ajutând utilizatorii să își gestioneze alimentele și învățându-i să prevină expirarea acestora și să folosească resursele într-un mod inteligent.
 
