@@ -42,7 +42,7 @@ const Home: React.FC = () => {
   
 useEffect(() => {
   const fetchData = async () => {
-    if (isAuthenticated) {
+    
       GetProductList().then((response) => {
         if (response) {
           setProducts(response);
@@ -51,7 +51,7 @@ useEffect(() => {
           setProducts(sessionStorage.getItem("products") ? JSON.parse(sessionStorage.getItem("products")!) : []);
         }
       });
-    }
+    
   };
 
   fetchData();

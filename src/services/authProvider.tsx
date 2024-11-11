@@ -12,7 +12,7 @@ interface AuthContextValue {
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<string | undefined>;
   logout: () => Promise<void>;
-  deleteAccount: (password: string) => Promise<void>;
+  deleteAccount: (password: string) => Promise<any>;
   updateAllergies: (allergies: string[]) => Promise<void>;
   updateNotificationDay: (notificationDay: number) => Promise<void>;
   updatePreferences: (preferences: string[]) => Promise<void>;
@@ -74,8 +74,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const deleteAccount = async (password: string) => {
     try {
-      await UserdeleteAccount(password);
+      const response = await UserdeleteAccount(password);
       setIsAuthenticated(false);
+      return response;
     } catch (error) {
       console.error('Delete account failed:', error);
     }

@@ -40,8 +40,11 @@ const AccountSettings: React.FC = () => {
     };
 
     const handleDeleteAccount = () => {
-      deleteAccount(deletePassword).then(() => {
-        history.push("/login");
+      deleteAccount(deletePassword).then((response) => {
+        setShowDeleteAccountModal(false);
+
+        if(response && response.status === 204)
+          history.push("/successfully-deleted-account");
       });
     };
 
