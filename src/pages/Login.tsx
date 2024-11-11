@@ -30,8 +30,9 @@ const Login: React.FC = () => {
         if (response) {
           setLoading(false);
           history.push("/home");
-        } else 
-          console.log("Login failed");
+        } else {
+          setLoading(false);
+          console.log("Login failed");}
       });
     } catch (error) {
       console.error("Error during login:", error);
@@ -93,7 +94,8 @@ const Login: React.FC = () => {
                 }}
               >
                 Login
-              </IonButton>
+              </IonButton>  
+              {/* Loading spinner */}
               <IonLoading
               isOpen={loading}
               message="Please wait..."
