@@ -10,20 +10,21 @@ import {
 } from "@ionic/react";
 import { useHistory } from "react-router-dom";
 import "../theme/login.css";
-import { loginUser } from "../services/apiClient"; // presupunem că loginUser e definit corect
 import { useTheme } from "../components/ThemeContext"; 
+import { useAuth } from "../services/authProvider";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const history = useHistory(); 
-  const { darkMode} = useTheme();
+  const { darkMode } = useTheme();
+  const { login, isAuthenticated } = useAuth();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      loginUser(email, password).then((response) => {
+      login(email, password).then((response) => {
         if (response) {
           history.push("/home");
         } else 
@@ -80,7 +81,6 @@ const Login: React.FC = () => {
               <IonButton
                 expand="block"
                 className="green-button-gradient"
-                routerLink="/home"
                 type="submit" // Acum este buton de submit, declanșând evenimentul de form
                 style={{
                   marginTop: "40px",

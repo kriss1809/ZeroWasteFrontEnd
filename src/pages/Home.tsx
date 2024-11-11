@@ -9,9 +9,13 @@ import { GetProductList } from "../services/apiClient";
 import { peopleOutline, receiptOutline, closeOutline } from "ionicons/icons";
 import CollaboratorsModal from "../components/CollaboratorsModal";
 import UploadReceiptModal from "../components/UploadReceiptModal";
+import { useWebSocket } from "../services/WebSocketProvider";
+import { useAuth } from "../services/authProvider";
 
 const Home: React.FC = () => {
   const { darkMode } = useTheme();
+  const { sendMessage, messages, isConnected } = useWebSocket();
+  const { isAuthenticated } = useAuth();
   const [selectedItem, setSelectedItem] = useState<{
     id: number;
     name: string;
@@ -59,7 +63,7 @@ useEffect(() => {
       else{
       setProducts(sessionStorage.getItem("products") ? JSON.parse(sessionStorage.getItem("products")!) : []);
     }
-    });
+    }); 
   };
 
   fetchData();
