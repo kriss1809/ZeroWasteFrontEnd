@@ -5,15 +5,16 @@ import {
 } from "@ionic/react";
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { getUserProfile, UserdeleteAccount } from "../services/apiClient";
+import { UserdeleteAccount } from "../services/apiClient";
+import { useAuth } from "../services/authProvider";
 
 const AccountSettings: React.FC = () => {
 
     const history = useHistory();
+    const { user, deleteAccount } = useAuth();
 
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-    const [deleteAccount, setDeleteAccount] = useState<boolean>(false);
 
     const [showChangePasswordModal, setShowChangePasswordModal] =
     useState<boolean>(false);
@@ -27,16 +28,11 @@ const AccountSettings: React.FC = () => {
 
     useEffect(() => {
     
-        getUserProfile().then((userProfile) => {
-          if (userProfile) {
-            setEmail(userProfile.email);
-          }
-          else {
-            setEmail(JSON.parse(sessionStorage.getItem("user")!).email);
-          }
-        });
+      if (user) {
+        setEmail(user.email);
+      }
 
-    }, []);
+    }, [user]);
 
     const handleSaveNewPassword = () => {
       console.log("Parola a fost schimbată");
@@ -44,11 +40,8 @@ const AccountSettings: React.FC = () => {
     };
 
     const handleDeleteAccount = () => {
-      UserdeleteAccount(deletePassword).then((response) => {
-        setShowDeleteAccountModal(false);
-        
-        if(response && response.status === 204)
-          history.push("/successfully-deleted-account");
+      deleteAccount(deletePassword).then(() => {
+        history.push("/login");
       });
     };
 

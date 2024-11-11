@@ -4,12 +4,13 @@ import { useTheme } from "./ThemeContext";
 import { IonPopover, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonCheckbox, IonIcon } from "@ionic/react";
 import { clipboardOutline, copy } from "ionicons/icons";
 import { useHistory } from "react-router-dom";
-import { JoinProductList, UpdateAllergies, UpdateNotificationDay, UpdatePreferences, UpdatePreferredNotificationHour } from "../services/apiClient";
+import { useAuth } from "../services/authProvider";
+import { UpdatePreferredNotificationHour } from "../services/apiClient";
 
 const ProfileSettings: React.FC = () => {
   const [preferredTime, setPreferredTime] = useState<string>("");
   const [notificationDays, setNotificationDays] = useState<number>(1);
-
+  const { user, updateNotificationDay, updateAllergies, updatePreferences, joinProductList  } = useAuth();
   const { darkMode, toggleDarkMode } = useTheme();
 
   useEffect(() => {
@@ -21,28 +22,16 @@ const ProfileSettings: React.FC = () => {
   const [allergies, setAllergies] = useState<string[]>([]);
   const [preferences, setPreferences] = useState<string[]>([]);
 
-useEffect(() => {
-  const fetchUserData = async () => {
-    const waitForUser = new Promise<void>((resolve) => {
-      const checkUser = setInterval(() => {
-        if (sessionStorage.getItem("user")) {
-          clearInterval(checkUser);
-          resolve();
-        }
-      }, 10);
-    });
+  useEffect(() => {
 
-    await waitForUser;
-
-    const user = JSON.parse(sessionStorage.getItem("user")!);
-    setAllergies(user.allergies || []);
-    setPreferences(user.preferences || []);
-    setNotificationDays(user.notification_day || 1);
-    setPreferredTime(user.preferred_notification_hour || "");
-  };
-
-  fetchUserData();
-}, []);
+      if (user) {
+        setAllergies(user.allergies || []);
+        setPreferences(user.preferences || []);
+        setNotificationDays(user.notification_day || 1);
+        setPreferredTime(user.preferred_notification_hour || "");
+      }
+  
+  }, [user]);
 
   const allergyOptions: { label: string; value: string }[] = [
     { label: "Celery", value: "celery" },
@@ -153,7 +142,7 @@ useEffect(() => {
 
     const validateJoinCode = () => {
       if (joinCode.length === 6) {
-        JoinProductList(joinCode).then((response) => {
+        joinProductList(joinCode).then((response) => {
           console.log(response);
           history.push("/home");
         }); 
@@ -257,7 +246,7 @@ useEffect(() => {
             value={notificationDays}
             onIonChange={(e) => {
               setNotificationDays(e.detail.value!); 
-              UpdateNotificationDay(e.detail.value!);
+              updateNotificationDay(e.detail.value!);
             }}
             interface="popover"
           >
@@ -305,7 +294,7 @@ useEffect(() => {
             isOpen={showPopoverAllergies}
             onDidDismiss={() => {
               setShowPopoverAllergies(false);
-              UpdateAllergies(allergies);
+              updateAllergies(allergies);
              }}
             className="custom-popover"
           >
@@ -352,7 +341,7 @@ useEffect(() => {
             isOpen={showPopoverPreferences}
             onDidDismiss={() => {
               setShowPopoverPreferences(false);
-              UpdatePreferences(preferences);
+              updatePreferences(preferences);
              }}
             className="custom-popover"
           >
