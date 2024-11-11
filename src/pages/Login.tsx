@@ -7,6 +7,7 @@ import {
   IonLabel,
   IonInput,
   IonContent,
+  IonLoading,
 } from "@ionic/react";
 import { useHistory } from "react-router-dom";
 import "../theme/login.css";
@@ -19,13 +20,15 @@ const Login: React.FC = () => {
   const history = useHistory(); 
   const { darkMode } = useTheme();
   const { login, isAuthenticated } = useAuth();
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-
+    setLoading(true);
     try {
       login(email, password).then((response) => {
         if (response) {
+          setLoading(false);
           history.push("/home");
         } else 
           console.log("Login failed");
@@ -91,6 +94,11 @@ const Login: React.FC = () => {
               >
                 Login
               </IonButton>
+              <IonLoading
+              isOpen={loading}
+              message="Please wait..."
+              cssClass={darkMode ? "dark-mode" : ""}
+              />
             </form>
 
             <div style={{ marginTop: "20px" }}>

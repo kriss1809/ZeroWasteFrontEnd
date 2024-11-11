@@ -10,9 +10,9 @@ interface MessageData {
 }
 
 interface WebSocketContextValue {
-  sendMessage: (message: any) => void;
-  messages: MessageData[];
-  isConnected: boolean;
+    sendMessage: (message: any) => void;
+    messages: MessageData[];
+    isConnected: boolean;
 }
 
 const WebSocketContext = createContext<WebSocketContextValue | undefined>(undefined);
