@@ -1,6 +1,6 @@
 // Home.tsx
 import React, { useEffect, useState } from "react";
-import { IonHeader, IonPage, IonContent, IonButton, IonLoading, IonIcon, IonModal, IonList, IonItem, IonLabel, IonListHeader } from "@ionic/react";
+import { IonHeader, IonPage, IonContent, IonButton, IonIcon, IonModal, IonList, IonItem, IonLabel, IonListHeader } from "@ionic/react";
 import Menu from "../components/Menu";
 import AddItem from "../components/AddItem";
 import ItemCard from "../components/ItemCard";
@@ -9,9 +9,13 @@ import { GetProductList } from "../services/apiClient";
 import { peopleOutline, receiptOutline, closeOutline } from "ionicons/icons";
 import CollaboratorsModal from "../components/CollaboratorsModal";
 import UploadReceiptModal from "../components/UploadReceiptModal";
+import { useWebSocket } from "../services/WebSocketProvider";
+import { useAuth } from "../services/authProvider";
 
 const Home: React.FC = () => {
   const { darkMode } = useTheme();
+  const { sendMessage, messages, isConnected } = useWebSocket();
+  const { isAuthenticated } = useAuth();
   const [selectedItem, setSelectedItem] = useState<{
     id: number;
     name: string;
@@ -32,34 +36,22 @@ const Home: React.FC = () => {
     consumption_days: string;
   }>>([]);
 
-  const [loading, setLoading] = useState(false);
+
   const [showUploadModal, setshowUploadModal] = useState(false);
   const [showCollaboratorsModal, setshowCollaboratorsModal] = useState(false);
   
 useEffect(() => {
   const fetchData = async () => {
-
-    const waitForToken = new Promise<void>((resolve) => {
-      const checkToken = setInterval(() => {
-        setLoading(true);
-        if (sessionStorage.getItem("accessToken")) {
-          clearInterval(checkToken);
-          setLoading(false);
-          resolve();
+    
+      GetProductList().then((response) => {
+        if (response) {
+          setProducts(response);
         }
-      }, 50);
-    });
-
-    await waitForToken;
-
-    GetProductList().then((response) => {
-      if(response){
-        setProducts(response);
-      }
-      else{
-      setProducts(sessionStorage.getItem("products") ? JSON.parse(sessionStorage.getItem("products")!) : []);
-    }
-    });
+        else {
+          setProducts(sessionStorage.getItem("products") ? JSON.parse(sessionStorage.getItem("products")!) : []);
+        }
+      });
+    
   };
 
   fetchData();
@@ -114,12 +106,6 @@ useEffect(() => {
       <CollaboratorsModal
         showCollaboratorsModal={showCollaboratorsModal}
         setShowCollaboratorsModal={setshowCollaboratorsModal}
-      />
-
-      <IonLoading
-        isOpen={loading}
-        message="Please wait..."
-        cssClass={darkMode ? "dark-mode" : ""}
       />
 
       <IonContent>

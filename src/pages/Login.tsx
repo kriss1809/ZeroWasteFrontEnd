@@ -7,27 +7,32 @@ import {
   IonLabel,
   IonInput,
   IonContent,
+  IonLoading,
 } from "@ionic/react";
 import { useHistory } from "react-router-dom";
 import "../theme/login.css";
-import { loginUser } from "../services/apiClient"; // presupunem că loginUser e definit corect
 import { useTheme } from "../components/ThemeContext"; 
+import { useAuth } from "../services/authProvider";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const history = useHistory(); 
-  const { darkMode} = useTheme();
+  const { darkMode } = useTheme();
+  const { login, isAuthenticated } = useAuth();
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-
+    setLoading(true);
     try {
-      loginUser(email, password).then((response) => {
+      login(email, password).then((response) => {
         if (response) {
+          setLoading(false);
           history.push("/home");
-        } else 
-          console.log("Login failed");
+        } else {
+          setLoading(false);
+          console.log("Login failed");}
       });
     } catch (error) {
       console.error("Error during login:", error);
@@ -80,7 +85,6 @@ const Login: React.FC = () => {
               <IonButton
                 expand="block"
                 className="green-button-gradient"
-                routerLink="/home"
                 type="submit" // Acum este buton de submit, declanșând evenimentul de form
                 style={{
                   marginTop: "40px",
@@ -90,7 +94,13 @@ const Login: React.FC = () => {
                 }}
               >
                 Login
-              </IonButton>
+              </IonButton>  
+              {/* Loading spinner */}
+              <IonLoading
+              isOpen={loading}
+              message="Please wait..."
+              cssClass={darkMode ? "dark-mode" : ""}
+              />
             </form>
 
             <div style={{ marginTop: "20px" }}>

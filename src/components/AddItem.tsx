@@ -43,7 +43,7 @@ const AddItem: React.FC<AddItemProps> = ({ selectedItem, onCancelEdit }) => {
     if (selectedItem) {
       console.log(selectedItem);
       setProductName(selectedItem.name);
-      setExpirationDate(convertDateFormat(selectedItem.best_before));
+      setExpirationDate(selectedItem.best_before?  convertDateFormat(selectedItem.best_before) : "");
       setOpeningDate(selectedItem.opened ? convertDateFormat(selectedItem.opened) : "");
       setRecommendedDays(selectedItem.consumption_days);
       setIsExpanded(true);

@@ -46,7 +46,6 @@ export const getUserProfile = async () => {
         Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
       },
     });
-    sessionStorage.setItem("user", JSON.stringify(response.data));
     return response.data;
   } catch (error) {
     console.error(error);
@@ -67,7 +66,6 @@ export const logoutUser = async () => {
       }
     );
 
-    console.log(response);
     sessionStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
     sessionStorage.clear();
@@ -90,7 +88,6 @@ export const UserdeleteAccount = async (password: string) => {
       },
     });
 
-    console.log(response);
     return response;
   } catch (error) {
     console.error(error);
