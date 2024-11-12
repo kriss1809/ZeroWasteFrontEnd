@@ -14,7 +14,7 @@ import { useAuth } from "../services/authProvider";
 
 const Home: React.FC = () => {
   const { darkMode } = useTheme();
-  const { sendMessage, messages, isConnected } = useWebSocket();
+  const { messages, isConnected } = useWebSocket();
   const { isAuthenticated } = useAuth();
   const [selectedItem, setSelectedItem] = useState<{
     id: number;
@@ -50,7 +50,7 @@ useEffect(() => {
       }
     });
   
-}, []);
+}, [messages, isConnected, isAuthenticated]);
 
 
   const handleEditItem = (

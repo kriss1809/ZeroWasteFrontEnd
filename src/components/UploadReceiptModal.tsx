@@ -161,7 +161,7 @@ const UploadReceiptModal: React.FC<ModalProps> = ({
                   setShowUploadModal(false);
                   UploadReceipt(file!).then((response) => {
                     if (response) {
-                      window.location.reload();
+                      console.log("Receipt uploaded successfully");
                     }
                   });
                 }}
