@@ -40,21 +40,16 @@ const Home: React.FC = () => {
   const [showUploadModal, setshowUploadModal] = useState(false);
   const [showCollaboratorsModal, setshowCollaboratorsModal] = useState(false);
   
-useEffect(() => {
-  const fetchData = async () => {
-    
-      GetProductList().then((response) => {
-        if (response) {
-          setProducts(response);
-        }
-        else {
-          setProducts(sessionStorage.getItem("products") ? JSON.parse(sessionStorage.getItem("products")!) : []);
-        }
-      });
-    
-  };
-
-  fetchData();
+useEffect(() => { 
+    GetProductList().then((response) => {
+      if (response) {
+        setProducts(response);
+      }
+      else {
+        setProducts(sessionStorage.getItem("products") ? JSON.parse(sessionStorage.getItem("products")!) : []);
+      }
+    });
+  
 }, []);
 
 
