@@ -19,7 +19,7 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const history = useHistory(); 
   const { darkMode } = useTheme();
-  const { login, isAuthenticated } = useAuth();
+  const { login } = useAuth();
   const [loading, setLoading] = useState(false);
 
   const handleLogin = (e: React.FormEvent) => {

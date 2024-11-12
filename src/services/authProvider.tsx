@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import {
   loginUser, logoutUser, getUserProfile, UserdeleteAccount,
   UpdateAllergies, UpdateNotificationDay, UpdatePreferences,
-  UpdatePreferredNotificationHour, JoinProductList
+  JoinProductList, ChangePassword
 } from './apiClient';
 import { User } from '../entitites/User';
 
@@ -13,6 +13,7 @@ interface AuthContextValue {
   login: (email: string, password: string) => Promise<string | undefined>;
   logout: () => Promise<void>;
   deleteAccount: (password: string) => Promise<any>;
+  changePassword: (oldPassword: string, newPassword: string, confirm_password: string) => Promise<any>;
   updateAllergies: (allergies: string[]) => Promise<void>;
   updateNotificationDay: (notificationDay: number) => Promise<void>;
   updatePreferences: (preferences: string[]) => Promise<void>;
@@ -82,6 +83,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const changePassword = async (oldPassword: string, newPassword: string, confirm_password: string) => {
+    try {
+      const response = await ChangePassword(oldPassword, newPassword, confirm_password);
+      return response;
+    } catch (error) {
+      console.error('Change password failed:', error);
+    }
+  };
+
   const updateAllergies = async (allergies: string[]) => {
     try {
       await UpdateAllergies(allergies);
@@ -120,7 +130,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, login, logout, deleteAccount, updateAllergies, updateNotificationDay, updatePreferences, joinProductList }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, login, logout, deleteAccount, changePassword, updateAllergies, updateNotificationDay, updatePreferences, joinProductList }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,20 +1,24 @@
 import {
   IonLabel,
   IonButton,
-  IonInput, IonModal
+  IonInput, IonModal,
+  IonLoading
 } from "@ionic/react";
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { UserdeleteAccount } from "../services/apiClient";
 import { useAuth } from "../services/authProvider";
+import { ellipseSharp } from "ionicons/icons";
+
 
 const AccountSettings: React.FC = () => {
 
     const history = useHistory();
-    const { user, deleteAccount } = useAuth();
+    const { user, deleteAccount, changePassword } = useAuth();
 
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+    const [loading, setLoading] = useState(false);
 
     const [showChangePasswordModal, setShowChangePasswordModal] =
     useState<boolean>(false);
@@ -35,18 +39,33 @@ const AccountSettings: React.FC = () => {
     }, [user]);
 
     const handleSaveNewPassword = () => {
-      console.log("Parola a fost schimbată");
-      setShowChangePasswordModal(false);
-    };
+        setLoading(true);
+        changePassword(oldPassword, newPassword, confirmNewPassword).then((response) => {
+          if (response && response.status === 200){
+            setLoading(false);
+            setShowChangePasswordModal(false);}
+          else{
+            console.log("Error changing password");
+            setLoading(false);}
+        });
+      };
 
     const handleDeleteAccount = () => {
-      deleteAccount(deletePassword).then((response) => {
-        setShowDeleteAccountModal(false);
+      setLoading(true);
+      
+        deleteAccount(deletePassword).then((response) => {
+          setShowDeleteAccountModal(false);
 
-        if(response && response.status === 204)
-          history.push("/successfully-deleted-account");
-      });
-    };
+          if(response && response.status === 204){
+            history.push("/successfully-deleted-account");
+            setLoading(false);
+          }
+          else{
+            console.log("Error deleting account");
+            setLoading(false);
+          }
+        });
+      };
 
     const isSaveDisabled = newPassword !== confirmNewPassword;
 
@@ -189,6 +208,11 @@ const AccountSettings: React.FC = () => {
           </IonButton>
         </div>
       </IonModal>
+      {/* Loading spinner */}
+      <IonLoading
+      isOpen={loading}
+      message="Please wait..."
+      />
     </>
   );
 };

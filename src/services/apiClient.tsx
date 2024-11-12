@@ -94,6 +94,31 @@ export const UserdeleteAccount = async (password: string) => {
   }
 };
 
+export const ChangePassword = async (
+  old_password: string,
+  new_password: string,
+  confirm_password: string
+) => {
+  try {
+    const response = await axios.post(
+      `${url}change-password/`,
+      {
+        old_password,
+        new_password,
+        confirm_password,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export const GetProductList = async () => {
   try {
     const response = await axios.get<{ share_code: string; products: any[] }>(
