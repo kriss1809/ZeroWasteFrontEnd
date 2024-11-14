@@ -99,7 +99,7 @@ const AddItem: React.FC<AddItemProps> = ({ selectedItem, onCancelEdit }) => {
         recommendedDays
       ).then((response) => {
         if (response) {
-          window.location.reload();
+          console.log("Product update sended successfully");
         }
       });
     }
@@ -107,7 +107,7 @@ const AddItem: React.FC<AddItemProps> = ({ selectedItem, onCancelEdit }) => {
 
     AddProduct(productName, expirationDate, openingDate, recommendedDays).then((response) => {
     if (response) {
-      window.location.reload();
+      console.log("Product sended successfully");
       }
     });
   }

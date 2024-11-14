@@ -29,16 +29,17 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
             const token = sessionStorage.getItem('accessToken');
             if (!token) return;
 
-            const wsUrl = `${url}/ws/notifications/`;
+            const wsUrl = `${url}ws/notifications/`;
             const socket = new WebSocket(wsUrl);
 
             socket.onopen = () => {
                 setIsConnected(true);
-                socket.send(JSON.stringify({ type: 'authorization', payload: { token } }));
+                socket.send(JSON.stringify({ type: 'authorization', payload: { token, share_code: sessionStorage.getItem("share_code") } }));
             };
 
             socket.onmessage = (event) => {
                 const data = JSON.parse(event.data);
+                console.log('WebSocket message:', data);
                 setMessages((prev) => [...prev, data]);
             };
 
