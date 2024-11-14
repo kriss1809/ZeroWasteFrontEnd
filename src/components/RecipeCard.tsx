@@ -5,11 +5,13 @@ interface RecipeProps {
   time: string;
 }
 
-const RecipeCard: React.FC<RecipeProps> = ({id,name, difficulty_level, time}) => {
-    return(
-
-        <div>ceva</div>
-    );
-}
+const RecipeCard: React.FC<RecipeProps> = ({
+  id,
+  name,
+  difficulty_level,
+  time,
+}) => {
+  return <div>altecva</div>;
+};
 
 export default RecipeCard;
