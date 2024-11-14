@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import {
   loginUser, logoutUser, getUserProfile, UserdeleteAccount,
   UpdateAllergies, UpdateNotificationDay, UpdatePreferences,
-  JoinProductList, ChangePassword
+  JoinProductList, ChangePassword, RefreshAccessToken
 } from './apiClient';
 import { User } from '../entitites/User';
 
@@ -10,6 +10,7 @@ import { User } from '../entitites/User';
 interface AuthContextValue {
   user: User | null;
   isAuthenticated: boolean;
+  accessToken: string | null;
   login: (email: string, password: string) => Promise<string | undefined>;
   logout: () => Promise<void>;
   deleteAccount: (password: string) => Promise<any>;
@@ -18,6 +19,7 @@ interface AuthContextValue {
   updateNotificationDay: (notificationDay: number) => Promise<void>;
   updatePreferences: (preferences: string[]) => Promise<void>;
   joinProductList: (productId: string) => Promise<void>;
+  refreshAccessToken: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
@@ -25,6 +27,7 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
 
  const profile = async () => {
     try {
@@ -56,6 +59,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           const profile = await getUserProfile();
           setUser(profile!);
           setIsAuthenticated(true);
+          setAccessToken(accessToken);
           return accessToken;
       }
     } catch (error) {
@@ -68,6 +72,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       await logoutUser();
 
       setIsAuthenticated(false);
+      setUser(null);
+      setAccessToken(null);
     } catch (error) {
       console.error('Logout failed:', error);
     }
@@ -77,6 +83,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const response = await UserdeleteAccount(password);
       setIsAuthenticated(false);
+      setUser(null);
+      setAccessToken(null);
       return response;
     } catch (error) {
       console.error('Delete account failed:', error);
@@ -128,9 +136,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const refreshAccessToken = async () => {
+    try {
+      const acces = await RefreshAccessToken();
+      if (acces) {
+        setAccessToken(acces);
+      }
+    } catch (error) {
+      console.error('Refresh access token failed:', error);
+    }
+  };
+
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, login, logout, deleteAccount, changePassword, updateAllergies, updateNotificationDay, updatePreferences, joinProductList }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, accessToken , login, logout, deleteAccount, changePassword, updateAllergies, updateNotificationDay, updatePreferences, joinProductList, refreshAccessToken }}>
       {children}
     </AuthContext.Provider>
   );

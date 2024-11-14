@@ -39,6 +39,22 @@ export const registerUser = async (
   }
 };
 
+export const RefreshAccessToken = async () => {
+  try {
+    const response = await axios.post<{ access: string }>(
+      `${url}api/token/refresh/`,
+      {
+        refresh: localStorage.getItem("refreshToken"),
+      }
+    );
+    const { access } = response.data;
+    sessionStorage.setItem("accessToken", access);
+    return access;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const getUserProfile = async () => {
   try {
     const response = await axios.get<User>(`${url}user/`, {

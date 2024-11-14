@@ -15,7 +15,7 @@ import { useAuth } from "../services/authProvider";
 const Home: React.FC = () => {
   const { darkMode } = useTheme();
   const { messages, isConnected } = useWebSocket();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, refreshAccessToken, accessToken } = useAuth();
   const [selectedItem, setSelectedItem] = useState<{
     id: number;
     name: string;
@@ -46,11 +46,12 @@ useEffect(() => {
         setProducts(response);
       }
       else {
-        setProducts(sessionStorage.getItem("products") ? JSON.parse(sessionStorage.getItem("products")!) : []);
+        refreshAccessToken();
+        console.log("Failed to get product list");
       }
     });
   
-}, [messages, isConnected, isAuthenticated]);
+}, [messages, isConnected, isAuthenticated, accessToken]);
 
 
   const handleEditItem = (
