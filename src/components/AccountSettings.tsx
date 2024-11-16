@@ -6,12 +6,12 @@ import {
 } from "@ionic/react";
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { UserdeleteAccount } from "../services/apiClient";
 import { useAuth } from "../services/authProvider";
-import { ellipseSharp } from "ionicons/icons";
-
+import { useTheme } from "./ThemeContext";
 
 const AccountSettings: React.FC = () => {
+
+    const { darkMode } = useTheme();
 
     const history = useHistory();
     const { user, deleteAccount, changePassword } = useAuth();
@@ -68,23 +68,20 @@ const AccountSettings: React.FC = () => {
       };
 
     const isSaveDisabled = newPassword !== confirmNewPassword;
+    
 
   return (
-    <>
+    <div className={`${darkMode ? "dark-mode" : ""}`}>
       <div className="check-in">
         <div className="input">
           <IonLabel position="floating" style={{ marginBottom: "20px" }}>
             Email
           </IonLabel>
-          <IonInput
-            value={email}
-            type="email"
-            readonly
-          />
+          <IonInput value={email} type="email" readonly />
         </div>
 
         <IonButton
-          onClick={() => setShowChangePasswordModal(true)} 
+          onClick={() => setShowChangePasswordModal(true)}
           className="green-button-gradient"
           style={{
             display: "block",
@@ -97,9 +94,14 @@ const AccountSettings: React.FC = () => {
         </IonButton>
       </div>
 
-      <IonModal isOpen={showChangePasswordModal}>
-        <div className="modal-content center-profile">
-          <h2 style={{ textAlign: "center" }}>Change Password</h2>
+      <IonModal
+        isOpen={showChangePasswordModal}
+        className="ion-modal-container"
+      >
+        <div
+          className="modal-content"
+          style={{ backgroundColor: darkMode ? "#2c2c2c" : "white" }}
+        >
           <div>
             <IonLabel position="floating" style={{ marginBottom: "20px" }}>
               Old Password
@@ -145,7 +147,7 @@ const AccountSettings: React.FC = () => {
           <IonButton
             expand="block"
             color="danger"
-            onClick={() => setShowChangePasswordModal(false)} 
+            onClick={() => setShowChangePasswordModal(false)}
             style={{
               marginTop: "10px",
             }}
@@ -167,35 +169,28 @@ const AccountSettings: React.FC = () => {
       >
         Delete Account
       </IonButton>
-      <IonModal isOpen={showDeleteAccountModal}>
-        <div className="modal-content center-profile">
-          <h2 style={{ textAlign: "center", color: "red" }}>
+      <IonModal isOpen={showDeleteAccountModal} className="ion-modal-container">
+        <div
+          className="modal-content"
+          style={{ backgroundColor: darkMode ? "#2c2c2c" : "white" }}
+        >
+          <h4
+            style={{ textAlign: "center", color: "red", marginBottom: "20px" }}
+          >
             Warning! Irreversible action
-          </h2>
-          <p style={{ textAlign: "center", marginBottom: "20px" }}>
-            Please enter your password to confirm you want to delete your
-            account. This action is irreversible!
-          </p>
+          </h4>
           <div>
             <IonLabel position="floating" style={{ marginBottom: "20px" }}>
               Password
             </IonLabel>
             <IonInput
+              placeholder="Type your password"
               value={deletePassword}
               type="password"
               onIonInput={(e) => setDeletePassword(e.detail.value!)}
             />
           </div>
-          <IonButton
-            expand="block"
-            color="danger"
-            onClick={handleDeleteAccount}
-            style={{
-              marginTop: "20px",
-            }}
-          >
-            Yes, Delete My Account
-          </IonButton>
+
           <IonButton
             expand="block"
             className="green-button-gradient"
@@ -204,16 +199,23 @@ const AccountSettings: React.FC = () => {
               marginTop: "10px",
             }}
           >
-            No, Keep My Account
+            Keep my account
+          </IonButton>
+          <IonButton
+            expand="block"
+            color="danger"
+            onClick={handleDeleteAccount}
+            style={{
+              marginTop: "20px",
+            }}
+          >
+            Delete my account
           </IonButton>
         </div>
       </IonModal>
       {/* Loading spinner */}
-      <IonLoading
-      isOpen={loading}
-      message="Please wait..."
-      />
-    </>
+      <IonLoading isOpen={loading} message="Please wait..." />
+    </div>
   );
 };
 
