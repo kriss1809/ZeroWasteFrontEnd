@@ -8,6 +8,7 @@ import {
   IonInput,
   IonContent,
   IonLoading,
+  IonModal,
 } from "@ionic/react";
 import { useHistory } from "react-router-dom";
 import "../theme/login.css";
@@ -39,82 +40,135 @@ const Login: React.FC = () => {
     }
   };
 
+  const [showForgotPasswordModal, setShowForgotPasswordModal] = useState<boolean>(false);
+
   return (
     <IonPage>
-      <IonContent>
-        <div className={darkMode ? "dark-mode" : ""}>
-          <div className="center-content-vertically">
-            <img
-              src="/images/logo.png"
-              alt="Logo"
-              className="img-logo"
-              style={{ objectFit: "cover", maxWidth: "400px" }}
-            />
+      <div
+        className={`${darkMode ? "dark-mode" : ""}`}
+      >
+        <div className="center-content-vertically">
+          <img
+            src="/images/logo.png"
+            alt="Logo"
+            className="img-logo"
+            style={{ objectFit: "cover", maxWidth: "400px" }}
+          />
 
-            {/* Formularul de Login */}
-            <form onSubmit={handleLogin}>
-              {/* Email */}
-              <IonItem style={{ marginTop: "10px", width: "75vw" }}>
-                <IonLabel position="stacked" className="label-dark-mode">
-                  Email
-                </IonLabel>
-                <IonInput
-                  type="email"
-                  placeholder="Type your email"
-                  value={email}
-                  onIonInput={(e) => setEmail(e.detail.value!)}
-                  required
-                />
-              </IonItem>
+          {/* Formularul de Login */}
+          <form onSubmit={handleLogin}>
+            {/* Email */}
+            <IonItem style={{ marginTop: "10px", width: "75vw" }}>
+              <IonLabel position="stacked" className="label-dark-mode">
+                Email
+              </IonLabel>
+              <IonInput
+                type="email"
+                placeholder="Type your email"
+                value={email}
+                onIonInput={(e) => setEmail(e.detail.value!)}
+                required
+              />
+            </IonItem>
 
-              {/* Parola */}
-              <IonItem style={{ marginTop: "10px", width: "75vw" }}>
-                <IonLabel position="stacked" className="label-dark-mode">
-                  Password
-                </IonLabel>
-                <IonInput
-                  type="password"
-                  placeholder="Type your password"
-                  value={password}
-                  onIonInput={(e) => setPassword(e.detail.value!)}
-                  required
-                />
-              </IonItem>
+            {/* Parola */}
+            <IonItem style={{ marginTop: "10px", width: "75vw" }}>
+              <IonLabel position="stacked" className="label-dark-mode">
+                Password
+              </IonLabel>
+              <IonInput
+                type="password"
+                placeholder="Type your password"
+                value={password}
+                onIonInput={(e) => setPassword(e.detail.value!)}
+                required
+              />
+            </IonItem>
 
-              {/* Butonul de login */}
-              <IonButton
-                expand="block"
-                className="green-button-gradient"
-                type="submit" // Acum este buton de submit, declanșând evenimentul de form
+            <div style={{ textAlign: "right", marginTop: "5px" }}>
+              <a
+                onClick={() => setShowForgotPasswordModal(true)}
                 style={{
-                  marginTop: "40px",
-                  backgroundColor: "green",
-                  color: "white",
-                  width: "50vw",
+                  color: "gray",
+                  textDecoration: "none",
+                  fontSize: "smaller",
                 }}
               >
-                Login
-              </IonButton>  
-              {/* Loading spinner */}
-              <IonLoading
+                I forgot my password
+              </a>
+            </div>
+
+            <IonModal
+              isOpen={showForgotPasswordModal}
+              onDidDismiss={() => setShowForgotPasswordModal(false)}
+              className="ion-modal-container"
+            >
+              <div
+                className="modal-content"
+                style={{ backgroundColor: darkMode ? "#2c2c2c" : "white" }}
+              >
+                <div>
+                  <IonLabel
+                    position="floating"
+                    style={{ marginBottom: "20px" }}
+                  >
+                    Email
+                  </IonLabel>
+                  <IonInput
+                    placeholder="Type your email"
+                    value={email}
+                    onIonInput={(e) => setEmail(e.detail.value!)}
+                  />
+                </div>
+
+                <IonButton
+                  expand="block"
+                  className="green-button-gradient"
+                  style={{ marginTop: "20px" }}
+                >
+                  Send Email
+                </IonButton>
+                <IonButton
+                  expand="block"
+                  color="danger"
+                  onClick={() => setShowForgotPasswordModal(false)}
+                  style={{ marginTop: "10px" }}
+                >
+                  Cancel
+                </IonButton>
+              </div>
+            </IonModal>
+
+            {/* Butonul de login */}
+            <IonButton
+              expand="block"
+              className="green-button-gradient"
+              type="submit" // Acum este buton de submit, declanșând evenimentul de form
+              style={{
+                marginTop: "40px",
+                backgroundColor: "green",
+                color: "white",
+                width: "50vw",
+              }}
+            >
+              Login
+            </IonButton>
+            {/* Loading spinner */}
+            <IonLoading
               isOpen={loading}
               message="Please wait..."
               cssClass={darkMode ? "dark-mode" : ""}
-              />
-            </form>
+            />
+          </form>
 
-            <div style={{ marginTop: "20px" }}>
-              <span>Not a member? </span>
-              <a
-                href="/signup"
-                style={{ color: "gray", textDecoration: "none" }}
-              >
-                Create account
-              </a>
-            </div>
+          <div style={{ marginTop: "20px" }}>
+            <span>Not a member? </span>
+            <a href="/signup" style={{ color: "gray", textDecoration: "none" }}>
+              Create account
+            </a>
           </div>
         </div>
-      </IonContent>
+      </div>
     </IonPage>
   );
 };
