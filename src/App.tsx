@@ -36,6 +36,7 @@ import NotFound from "./pages/NotFound";
 import Home from "./pages/Home";
 import Recepies from "./pages/Recepies";
 import { ThemeProvider, useTheme } from "./components/ThemeContext";
+import SetNewPassword from "./pages/SetNewPassword";
 import { useEffect } from "react";
 
 setupIonicReact();
@@ -76,6 +77,9 @@ const MainApp: React.FC = () => {
             </Route>
             <Route exact path="/signup">
               <Signup />
+            </Route>
+            <Route exact path="/set-new-password">
+              <SetNewPassword />
             </Route>
             <Route exact path="/profile">
               <Profile />
