@@ -9,9 +9,12 @@ const NotFound: React.FC = () => {
 
   return (
     <IonPage>
-      <IonContent>
+      <IonContent className="content-container">
         <div className={darkMode ? "dark-mode" : ""}>
-          <div className="center-content">
+          <div
+            className="content"
+            style={{ backgroundColor: darkMode ? "#2c2c2c" : "white" }}
+          >
             <h1 className="title">Page Not Found</h1>
             <p>
               The page you are looking for does not exist. Please check the URL
@@ -21,12 +24,6 @@ const NotFound: React.FC = () => {
               expand="block"
               routerLink="/home"
               className="green-button"
-              style={{
-                marginTop: "20px",
-                backgroundColor: "green",
-                color: "white",
-                width: "90vw"
-              }}
             >
               Go to Home
             </IonButton>

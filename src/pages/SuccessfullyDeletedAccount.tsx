@@ -9,9 +9,12 @@ const SuccessfullyDeletedAccount: React.FC = () => {
 
   return (
     <IonPage>
-      <IonContent className="center-content">
+      <IonContent className="content-container">
         <div className={darkMode ? "dark-mode" : ""}>
-          <div className="center-content">
+          <div
+            className="content"
+            style={{ backgroundColor: darkMode ? "#2c2c2c" : "white" }}
+          >
             <h1 className="title">Account Deleted</h1>
             <p>
               Your account has been successfully deleted. We’re sorry to see you
@@ -22,12 +25,6 @@ const SuccessfullyDeletedAccount: React.FC = () => {
               expand="block"
               routerLink="/signup"
               className="green-button"
-              style={{
-                marginTop: "20px",
-                backgroundColor: "green",
-                color: "white",
-                width: "90vw",
-              }}
             >
               Sign Up
             </IonButton>

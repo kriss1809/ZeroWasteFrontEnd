@@ -10,9 +10,12 @@ const SuccessfullyCreatedAccount: React.FC = () => {
 
   return (
     <IonPage>
-      <IonContent>
+      <IonContent className="content-container">
         <div className={darkMode ? "dark-mode" : ""}>
-          <div className="center-content">
+          <div
+            className="content"
+            style={{ backgroundColor: darkMode ? "#2c2c2c" : "white" }}
+          >
             <h1 className="title">Account Successfully Created!</h1>
             <p>
               Your account has been successfully activated. You can now log in
@@ -22,12 +25,6 @@ const SuccessfullyCreatedAccount: React.FC = () => {
               expand="block"
               routerLink="/login"
               className="green-button"
-              style={{
-                marginTop: "20px",
-                backgroundColor: "green",
-                color: "white",
-                width: "90vw",
-              }}
             >
               Log in
             </IonButton>
@@ -39,4 +36,3 @@ const SuccessfullyCreatedAccount: React.FC = () => {
 };
 
 export default SuccessfullyCreatedAccount;
-
