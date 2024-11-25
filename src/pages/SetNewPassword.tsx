@@ -3,9 +3,16 @@ import { IonPage, IonContent, IonButton, IonItem, IonLabel,IonInput, IonText } f
 import "../theme/info.css";
 import { useTheme } from "../components/ThemeContext";
 import { useState } from "react";
+import { useLocation } from "react-router";
+import { ResetPassword } from "../services/apiClient";
 
 const setNewPassword: React.FC = () => {
   const { darkMode } = useTheme();
+
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const token = searchParams.get('token');
+  const uid = searchParams.get('uid');
 
    const [password, setPassword] = useState<string>("");
    const [confirmPassword, setConfirmPassword] = useState<string>("");
@@ -18,7 +25,21 @@ const setNewPassword: React.FC = () => {
      } else {
        setError(""); // Dacă parolele coincid, se șterge mesajul de eroare
      }
-   };
+  };
+  
+  const handleSubmit = () => {
+    // Verifică dacă parolele coincid
+    if (password !== confirmPassword) {
+      setError("Passwords do not match!");
+      return;
+    }
+    // Trimite datele la server
+    if (!token || !uid) {
+      setError("Invalid token or user ID");
+      return;
+    }
+    ResetPassword(password, confirmPassword, token, Number(uid));
+  }
 
 
   return (
@@ -67,6 +88,7 @@ const setNewPassword: React.FC = () => {
               routerLink="/login"
               className="green-button"
               style={{ marginTop: "10px" }}
+              onClick={handleSubmit}
             >
               Set New Password
             </IonButton>

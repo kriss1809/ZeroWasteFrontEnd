@@ -39,6 +39,18 @@ export const registerUser = async (
   }
 };
 
+export const VerifyEmail = async (token: string, uid: number) => {
+  try {
+    const response = await axios.post(`${url}verify-email/`, {
+      token,
+      uid,
+    });
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export const RefreshAccessToken = async () => {
   try {
     const response = await axios.post<{ access: string }>(
@@ -134,6 +146,37 @@ export const ChangePassword = async (
     console.error(error);
   }
 }
+
+export const ForgotPassword = async (email: string) => {
+  try {
+    const response = await axios.post(`${url}forgot-password/`, {
+      email,
+    });
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export const ResetPassword = async(
+  password: string,
+  confirm_password: string,
+  token: string,
+  uid: number
+) => {
+  try {
+    const response = await axios.post(`${url}reset-password/`, {
+      token,
+      uid,
+      password,
+      confirm_password,
+    });
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 
 export const GetProductList = async () => {
   try {

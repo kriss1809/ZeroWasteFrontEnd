@@ -32,7 +32,7 @@ const Signup: React.FC = () => {
     try {
       registerUser(email, password, confirmPassword).then((response) => {
         if (response) {
-          history.push("/successfully-created-account");
+          // toast
           console.log(response);
         } else {
           console.log("Signup failed");
@@ -135,7 +135,6 @@ const Signup: React.FC = () => {
               <IonButton
                 expand="block"
                 className="green-button-gradient"
-                routerLink="/successfully-created-account"
                 type="submit"
                 style={{
                   marginTop: "40px",
