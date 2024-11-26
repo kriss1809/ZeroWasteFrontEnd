@@ -14,6 +14,7 @@ import { useHistory } from "react-router-dom";
 import "../theme/login.css";
 import { useTheme } from "../components/ThemeContext"; 
 import { useAuth } from "../services/authProvider";
+import { ForgotPassword } from "../services/apiClient";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -39,6 +40,17 @@ const Login: React.FC = () => {
       console.error("Error during login:", error);
     }
   };
+
+  const handleForgotPassword = () => {
+    console.log("Forgot password");
+    ForgotPassword(email).then((response) => {
+      if (response) {
+        console.log("Email sent");
+      } else {
+        console.log("Email not sent");
+      }
+    });
+  }
 
   const [showForgotPasswordModal, setShowForgotPasswordModal] = useState<boolean>(false);
 
@@ -125,6 +137,7 @@ const Login: React.FC = () => {
                   expand="block"
                   className="green-button-gradient"
                   style={{ marginTop: "20px" }}
+                  onClick={handleForgotPassword}
                 >
                   Send Email
                 </IonButton>
