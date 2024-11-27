@@ -5,12 +5,50 @@
 }
 
 .recipe-card {
-  border: 1px solid #ccc;
   border-radius: 8px;
-  padding: 16px;
+  /* padding: 0; */
   margin: 16px 0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2.4rem 4.8rem rgba(0, 0, 0, 0.075);
+  border-radius: 11px;
+  overflow: hidden;
+  /* transition: all 0.01s ease; */
+  cursor: pointer;
   background-color: #fff;
+}
+.recipe-card:hover {
+  /* transform: translateY(-1.5rem) scale(1.02); */
+  box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px,
+    rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px,
+    rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+}
+
+.recipe-actions {
+  display: flex;
+  justify-content: end;
+  gap: 5px;
+}
+
+.like-dislike-button {
+  font-size: 1.5rem;
+}
+
+.title {
+  margin-bottom: 10px;
+}
+
+.recipe-photo {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.recipe-content {
+  padding: 2rem;
+}
+
+.recipe-tag {
+  /* font-size: 1rem; */
+  margin-bottom: 1.5rem;
 }
 
 .recipe-title {
@@ -18,6 +56,17 @@
   font-size: 1.5rem;
   margin-left: 16px;
   margin-bottom: 10px;
+}
+
+.tag-recipe {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  background-color: #ff6f61;
+  color: white;
+  border-radius: 5px;
+  text-transform: uppercase;
+  font-size: 1rem;
 }
 
 .recipe-name {
@@ -32,7 +81,40 @@
 }
 
 .recipe-detail {
-  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
   color: #666;
-  margin: 4px 0;
+  margin: 8px 0;
+}
+
+.recipe-text {
+  line-height: 1;
+  font-size: 1rem;
+}
+
+.recipe-attributes {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  padding: 0;
+}
+
+.recipe-attribute {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1rem;
+  /* font-weight: 400; */
+}
+
+.recipe-icon {
+  font-size: 1.5rem;
+  color: #5d3fd3;
+}
+
+.recipe-attribute span {
+  color: #333; /* Asigură-te că textul are o culoare vizibilă */
+  font-size: 1.2rem;
 }

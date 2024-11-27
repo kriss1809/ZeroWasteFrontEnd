@@ -22,11 +22,11 @@ const Recepies: React.FC = () => {
   const [isFilterModalOpen, setFilterModalOpen] = useState(false);
   const [sortOption, setSortOption] = useState<string | null>(null);
   const [filterOptions, setFilterOptions] = useState<any>({
-    course: null,
-    foodType: null,
-    diet: null,
-    region: null,
-    collection: null,
+    course: [],
+    foodType: [],
+    diet: [],
+    region: [],
+    collection: [],
   });
 
   const courses = ["Appetizer", "Main Course", "Dessert"];
@@ -35,14 +35,22 @@ const Recepies: React.FC = () => {
   const regions = ["Italian", "Mexican", "Indian"];
   const collections = ["Favorites", "Quick Recipes", "Family Meals"];
 
+  const handleSelectChange = (category: string, values: any[]) => {
+    setFilterOptions({
+      ...filterOptions,
+      [category]: values,
+    });
+  };
   return (
     <IonPage>
       <IonContent>
         <div className="page-content">
           <IonHeader>
-            <IonToolbar>
-              <h1 className="recipe-title">All Recipes</h1>
-            </IonToolbar>
+            <div className="title">
+              <IonToolbar>
+                <h1 className="recipe-title">All Recipes</h1>
+              </IonToolbar>
+            </div>
           </IonHeader>
 
           <div className="button-container">
@@ -70,6 +78,13 @@ const Recepies: React.FC = () => {
             <IonHeader>
               <IonToolbar>
                 <IonTitle>Sort By</IonTitle>
+                <IonButton
+                  slot="end"
+                  onClick={() => setSortModalOpen(false)}
+                  color="dark"
+                >
+                  Exit
+                </IonButton>
               </IonToolbar>
             </IonHeader>
             <IonContent>
@@ -98,6 +113,13 @@ const Recepies: React.FC = () => {
             <IonHeader>
               <IonToolbar>
                 <IonTitle>Filter</IonTitle>
+                <IonButton
+                  slot="end"
+                  onClick={() => setFilterModalOpen(false)}
+                  color="dark"
+                >
+                  Exit
+                </IonButton>
               </IonToolbar>
             </IonHeader>
             <IonContent>
@@ -108,11 +130,10 @@ const Recepies: React.FC = () => {
                   <IonSelect
                     value={filterOptions.course}
                     onIonChange={(e) =>
-                      setFilterOptions({
-                        ...filterOptions,
-                        course: e.detail.value,
-                      })
+                      handleSelectChange("course", e.detail.value)
                     }
+                    multiple={true}
+                    placeholder="Select Courses"
                   >
                     {courses.map((course) => (
                       <IonSelectOption key={course} value={course}>
@@ -128,11 +149,10 @@ const Recepies: React.FC = () => {
                   <IonSelect
                     value={filterOptions.foodType}
                     onIonChange={(e) =>
-                      setFilterOptions({
-                        ...filterOptions,
-                        foodType: e.detail.value,
-                      })
+                      handleSelectChange("foodType", e.detail.value)
                     }
+                    multiple={true}
+                    placeholder="Select Food Types"
                   >
                     {foodTypes.map((type) => (
                       <IonSelectOption key={type} value={type}>
@@ -148,11 +168,10 @@ const Recepies: React.FC = () => {
                   <IonSelect
                     value={filterOptions.diet}
                     onIonChange={(e) =>
-                      setFilterOptions({
-                        ...filterOptions,
-                        diet: e.detail.value,
-                      })
+                      handleSelectChange("diet", e.detail.value)
                     }
+                    multiple={true}
+                    placeholder="Select Diets"
                   >
                     {diets.map((diet) => (
                       <IonSelectOption key={diet} value={diet}>
@@ -168,11 +187,10 @@ const Recepies: React.FC = () => {
                   <IonSelect
                     value={filterOptions.region}
                     onIonChange={(e) =>
-                      setFilterOptions({
-                        ...filterOptions,
-                        region: e.detail.value,
-                      })
+                      handleSelectChange("region", e.detail.value)
                     }
+                    multiple={true}
+                    placeholder="Select Regions"
                   >
                     {regions.map((region) => (
                       <IonSelectOption key={region} value={region}>
@@ -188,11 +206,10 @@ const Recepies: React.FC = () => {
                   <IonSelect
                     value={filterOptions.collection}
                     onIonChange={(e) =>
-                      setFilterOptions({
-                        ...filterOptions,
-                        collection: e.detail.value,
-                      })
+                      handleSelectChange("collection", e.detail.value)
                     }
+                    multiple={true}
+                    placeholder="Select Collections"
                   >
                     {collections.map((collection) => (
                       <IonSelectOption key={collection} value={collection}>
@@ -206,8 +223,29 @@ const Recepies: React.FC = () => {
           </IonModal>
 
           {/* Afișare Rețete */}
-          <RecipeCard id={1} name="nume 1" difficulty_level={1} time="2h" />
-          <RecipeCard id={2} name="nume 2" difficulty_level={1} time="2h" />
+          <div className="recipes grid--2-col">
+            <RecipeCard
+              id={1}
+              name="Almond Cookies"
+              difficulty_level={2}
+              time="30min"
+              image="/images/cookie.jpg"
+            />
+            <RecipeCard
+              id={2}
+              name="Chocolate Cake"
+              difficulty_level={1}
+              time="20min"
+              image="/images/hotChocolate.jpeg"
+            />
+            <RecipeCard
+              id={3}
+              name="Turkey Wellington"
+              difficulty_level={3}
+              time="1h 5min"
+              image="/images/Wellington.jpg"
+            />
+          </div>
 
           <Menu />
         </div>
