@@ -1,120 +1,83 @@
-.page-content {
-  margin: 15px;
-  padding: 15px;
-  height: 100%;
-}
-
 .recipe-card {
-  border-radius: 8px;
-  /* padding: 0; */
-  margin: 16px 0;
+  border-radius: 20px;
   box-shadow: 0 2.4rem 4.8rem rgba(0, 0, 0, 0.075);
-  border-radius: 11px;
-  overflow: hidden;
-  /* transition: all 0.01s ease; */
+  border-radius: 20px;
   cursor: pointer;
   background-color: #fff;
-}
-.recipe-card:hover {
-  /* transform: translateY(-1.5rem) scale(1.02); */
-  box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px,
-    rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px,
-    rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
-}
-
-.recipe-actions {
-  display: flex;
-  justify-content: end;
-  gap: 5px;
-}
-
-.like-dislike-button {
-  font-size: 1.5rem;
-}
-
-.title {
-  margin-bottom: 10px;
+  margin: 10px;
+  padding: 10px;
 }
 
 .recipe-photo {
   width: 100%;
-  height: 200px;
-  object-fit: cover;
-}
-
-.recipe-content {
-  padding: 2rem;
-}
-
-.recipe-tag {
-  /* font-size: 1rem; */
-  margin-bottom: 1.5rem;
+  border-radius: 20px;
+  margin-bottom: 10px;
 }
 
 .recipe-title {
   text-align: left;
   font-size: 1.5rem;
-  margin-left: 16px;
-  margin-bottom: 10px;
+  color: black;
 }
 
-.tag-recipe {
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  font-weight: 600;
-  background-color: #ff6f61;
-  color: white;
-  border-radius: 5px;
-  text-transform: uppercase;
-  font-size: 1rem;
-}
-
-.recipe-name {
-  font-size: 1.5rem;
-  margin-bottom: 8px;
-}
-
-.button-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
-}
-
-.recipe-detail {
+.recipe-content{
   display: flex;
-  align-items: center;
-  font-size: 1.2rem;
-  color: #666;
-  margin: 8px 0;
-}
-
-.recipe-text {
-  line-height: 1;
-  font-size: 1rem;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 1rem;
 }
 
 .recipe-attributes {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-  padding: 0;
-}
-
-.recipe-attribute {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 5px;
   font-size: 1rem;
-  /* font-weight: 400; */
+  justify-content: left;
 }
 
-.recipe-icon {
-  font-size: 1.5rem;
-  color: #5d3fd3;
+
+.recipe-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.recipe-attribute span {
-  color: #333; /* Asigură-te că textul are o culoare vizibilă */
-  font-size: 1.2rem;
+.recipe-actions {
+  display: flex;
+  gap: 10px;
+}
+
+
+
+.button-group {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px; /* Spațiu între butoane */
+  justify-content: center;
+}
+
+.icon-button {
+  display: flex;
+  align-items: center; /* Aliniază iconița și textul pe verticală */
+  gap: 10px; /* Spațiu între iconiță și text */
+  background-color: #f0f0f0; /* Fundal pentru buton */
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px; /* Spațiu interior pentru buton */
+  cursor: pointer;
+  font-size: 1rem;
+  color: black;
+  transition: background-color 0.3s ease;
+}
+
+.icon-button:hover {
+  background-color: #e0e0e0; /* Schimbă fundalul la hover */
+}
+
+.icon-button IonIcon {
+  font-size: 1.2rem; /* Ajustează dimensiunea iconiței */
+}
+
+.icon-button span {
+  font-size: 1rem; /* Dimensiunea textului */
 }

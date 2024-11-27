@@ -34,7 +34,7 @@ import SuccessfullyCreatedAccount from "./pages/SuccessfullyCreatedAccount";
 import SuccessfullyDeletedAccount from "./pages/SuccessfullyDeletedAccount";
 import NotFound from "./pages/NotFound";
 import Home from "./pages/Home";
-import Recepies from "./pages/Recepies";
+import Recipes from "./pages/Recipes";
 import { ThemeProvider, useTheme } from "./components/ThemeContext";
 import SetNewPassword from "./pages/SetNewPassword";
 import { useEffect } from "react";
@@ -69,8 +69,8 @@ const MainApp: React.FC = () => {
             <Route exact path="/home">
               <Home />
             </Route>
-            <Route exact path="/recepies">
-              <Recepies />
+            <Route exact path="/recipes">
+              <Recipes />
             </Route>
             <Route exact path="/login">
               <Login />
