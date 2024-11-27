@@ -12,9 +12,11 @@ import {
   IonSelect,
   IonSelectOption,
   IonModal,
+  IonIcon,
 } from "@ionic/react";
 import Menu from "../components/Menu";
 import RecipeCard from "../components/RecipeCard";
+import {filterOutline, optionsOutline } from "ionicons/icons";
 
 const Recipes: React.FC = () => {
   const [isSortModalOpen, setSortModalOpen] = useState(false);
@@ -68,21 +70,21 @@ const Recipes: React.FC = () => {
       </IonHeader>
 
       <IonContent>
-        <div className="button-container">
-          <IonButton
-            expand="block"
+        <div className="button-group">
+          <button
+            className="icon-button"
             onClick={() => setSortModalOpen(true)}
-            className="square-button"
           >
-            Sort By
-          </IonButton>
-          <IonButton
-            expand="block"
+            <IonIcon icon={filterOutline} size="large" />
+            <span>Sort</span>
+          </button>
+          <button
+            className="icon-button"
             onClick={() => setFilterModalOpen(true)}
-            className="square-button"
           >
-            Filter
-          </IonButton>
+            <IonIcon icon={optionsOutline} size="large" />
+            <span>Filter</span>
+          </button>
         </div>
 
         {/* Modal pentru Sort By */}

@@ -1,10 +1,3 @@
-.button-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
-}
-
-
 .recipe-card {
   border-radius: 20px;
   box-shadow: 0 2.4rem 4.8rem rgba(0, 0, 0, 0.075);
@@ -52,4 +45,39 @@
 .recipe-actions {
   display: flex;
   gap: 10px;
+}
+
+
+
+.button-group {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px; /* Spațiu între butoane */
+  justify-content: center;
+}
+
+.icon-button {
+  display: flex;
+  align-items: center; /* Aliniază iconița și textul pe verticală */
+  gap: 10px; /* Spațiu între iconiță și text */
+  background-color: #f0f0f0; /* Fundal pentru buton */
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px; /* Spațiu interior pentru buton */
+  cursor: pointer;
+  font-size: 1rem;
+  color: black;
+  transition: background-color 0.3s ease;
+}
+
+.icon-button:hover {
+  background-color: #e0e0e0; /* Schimbă fundalul la hover */
+}
+
+.icon-button IonIcon {
+  font-size: 1.2rem; /* Ajustează dimensiunea iconiței */
+}
+
+.icon-button span {
+  font-size: 1rem; /* Dimensiunea textului */
 }
