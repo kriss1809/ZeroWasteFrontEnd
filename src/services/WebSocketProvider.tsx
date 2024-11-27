@@ -18,7 +18,7 @@ interface WebSocketContextValue {
 const WebSocketContext = createContext<WebSocketContextValue | undefined>(undefined);
 
 export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, user } = useAuth();
     const [ws, setWs] = useState<WebSocket | null>(null);
     const [messages, setMessages] = useState<MessageData[]>([]);
     const [isConnected, setIsConnected] = useState(false);
@@ -34,7 +34,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
             socket.onopen = () => {
                 setIsConnected(true);
-                socket.send(JSON.stringify({ type: 'authorization', payload: { token, share_code: sessionStorage.getItem("share_code") } }));
+                socket.send(JSON.stringify({ type: 'authorization', payload: { token, share_code: sessionStorage.getItem("share_code"), email: user?.email} }));
             };
 
             socket.onmessage = (event) => {

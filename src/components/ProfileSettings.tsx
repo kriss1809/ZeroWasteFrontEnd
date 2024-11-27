@@ -34,26 +34,26 @@ const ProfileSettings: React.FC = () => {
   }, [user]);
 
   const allergyOptions: { label: string; value: string }[] = [
-    { label: "Celery", value: "celery" },
-    { label: "Cereals containing gluten", value: "gluten" },
-    { label: "Crustaceans", value: "crustaceans" },
-    { label: "Eggs", value: "eggs" },
-    { label: "Fish", value: "fish" },
-    { label: "Lupin", value: "lupin" },
-    { label: "Milk", value: "milk" },
-    { label: "Molluscs", value: "molluscs" },
-    { label: "Mustard", value: "mustard" },
-    { label: "Peanuts", value: "peanuts" },
-    { label: "Sesame", value: "sesame" },
-    { label: "Soybeans", value: "soybeans" },
-    { label: "Sulphur dioxide and sulphites", value: "sulphur" },
+    { label: "Celery", value: "Celery" },
+    { label: "Cereals containing gluten", value: "Cereals" },
+    { label: "Crustaceans", value: "Crustaceans" },
+    { label: "Eggs", value: "Eggs" },
+    { label: "Fish", value: "Fish" },
+    { label: "Lupin", value: "Lupin" },
+    { label: "Milk", value: "Milk" },
+    { label: "Molluscs", value: "Molluscs" },
+    { label: "Mustard", value: "Mustard" },
+    { label: "Peanuts", value: "Peanuts" },
+    { label: "Sesame", value: "Sesame" },
+    { label: "Soybeans", value: "Soybeans" },
+    { label: "Sulphur dioxide and sulphites", value: "Sulphur" },
   ];
 
   const preferenceOptions: { label: string; value: string }[] = [
-    { label: "Dairy-Free", value: "dairy-free" },
-    { label: "Gluten-Free", value: "gluten-free" },
-    { label: "Vegan", value: "vegan" },
-    { label: "Vegetarian", value: "vegetarian" },
+    { label: "Dairy-Free", value: "Dairy-Free" },
+    { label: "Gluten-Free", value: "Gluten-Free" },
+    { label: "Vegan", value: "Vegan" },
+    { label: "Vegetarian", value: "Vegetarian" },
   ];
 
   // Funcții pentru togglarea alergiilor

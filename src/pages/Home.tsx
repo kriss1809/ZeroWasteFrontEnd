@@ -46,8 +46,8 @@ useEffect(() => {
         setProducts(response);
       }
       else {
-        refreshAccessToken();
-        console.log("Failed to get product list");
+        if(localStorage.getItem("refreshToken")){
+          refreshAccessToken();}
       }
     });
   
