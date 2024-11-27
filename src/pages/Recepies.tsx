@@ -13,10 +13,9 @@ import {
   IonSelectOption,
   IonModal,
 } from "@ionic/react";
-import "../theme/RecipesCard.css"; // Asigură-te că ai creat sau modificat acest fișier pentru stiluri
 import Menu from "../components/Menu";
 import RecipeCard from "../components/RecipeCard";
-
+import { text } from "ionicons/icons";
 const Recepies: React.FC = () => {
   const [isSortModalOpen, setSortModalOpen] = useState(false);
   const [isFilterModalOpen, setFilterModalOpen] = useState(false);
@@ -43,16 +42,28 @@ const Recepies: React.FC = () => {
   };
   return (
     <IonPage>
-      <IonContent>
-        <div className="page-content">
-          <IonHeader>
-            <div className="title">
-              <IonToolbar>
-                <h1 className="recipe-title">All Recipes</h1>
-              </IonToolbar>
-            </div>
-          </IonHeader>
-
+        <IonHeader
+            style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                padding: "1rem",
+                borderBottom: "1px solid #e5e5e5",
+                fontSize: "8vw",
+                }}
+          >
+          <div style={{
+            background: "linear-gradient(135deg, #1b8911 0%, #5cb947 100%)",
+            color: "transparent",
+            WebkitBackgroundClip: "text",
+            backgroundClip: "text",
+            fontWeight: "bold",
+          }}>
+            All Recipes
+          </div>
+      </IonHeader>
+      
+          <IonContent>
           <div className="button-container">
             <IonButton
               expand="block"
@@ -245,12 +256,13 @@ const Recepies: React.FC = () => {
               time="1h 5min"
               image="/images/Wellington.jpg"
             />
-          </div>
-
-          <Menu />
         </div>
       </IonContent>
-    </IonPage>
+      
+       <div slot="bottom">
+            <Menu />
+          </div>
+    </IonPage >
   );
 };
 

@@ -86,7 +86,6 @@ const RecipeCard: React.FC<RecipeProps> = ({
         <div className="recipe-actions">
           {/* Buton Like */}
           <IonButton
-            fill="clear"
             color="success"
             onClick={() => setLikes(likes + 1)}
           >
@@ -94,13 +93,13 @@ const RecipeCard: React.FC<RecipeProps> = ({
               className="like-dislike-button"
               icon={thumbsUp}
               slot="icon-only"
+
             />
           </IonButton>
           <span>{likes}</span>
 
           {/* Buton Dislike */}
           <IonButton
-            fill="clear"
             color="danger"
             onClick={() => setDislikes(dislikes + 1)}
           >
@@ -108,6 +107,7 @@ const RecipeCard: React.FC<RecipeProps> = ({
               className="like-dislike-button"
               icon={thumbsDown}
               slot="icon-only"
+
             />
           </IonButton>
           <span>{dislikes}</span>
