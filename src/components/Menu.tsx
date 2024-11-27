@@ -15,9 +15,9 @@ const Menu: React.FC = () => {
         <IonLabel>Products</IonLabel>
       </IonTabButton>
 
-      <IonTabButton tab="recepies" onClick={() => history.push("/recepies")}>
+      <IonTabButton tab="recipes" onClick={() => history.push("/recipes")}>
         <IonIcon icon={listOutline} />
-        <IonLabel>Recepies</IonLabel>
+        <IonLabel>recipes</IonLabel>
       </IonTabButton>
 
       <IonTabButton tab="profile" onClick={() => history.push("/profile")}>
