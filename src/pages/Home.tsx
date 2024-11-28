@@ -11,6 +11,8 @@ import CollaboratorsModal from "../components/CollaboratorsModal";
 import UploadReceiptModal from "../components/UploadReceiptModal";
 import { useWebSocket } from "../services/WebSocketProvider";
 import { useAuth } from "../services/authProvider";
+import { search } from "ionicons/icons";
+import { IonGrid, IonRow, IonCol, IonInput } from "@ionic/react";
 
 const Home: React.FC = () => {
   const { darkMode } = useTheme();
@@ -106,6 +108,16 @@ useEffect(() => {
 
       <IonContent>
         <div className={darkMode ? "dark-mode" : ""}>
+
+          <IonCol size="12" sizeMd="12" className="align-items-center">
+            <div className="search-container">
+              <IonInput placeholder="Search a recipe" />
+              <IonButton className="green-button-gradient">
+                <IonIcon icon={search} />
+              </IonButton>
+            </div>
+          </IonCol>
+
           {products.map((product: any) => (
             <ItemCard
               key={product.id}
