@@ -1,47 +1,16 @@
 import React, { useState } from "react";
-import {
-  IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonButton,
-  IonList,
-  IonItem,
-  IonLabel,
-  IonSelect,
-  IonSelectOption,
-  IonModal,
-  IonIcon,
-} from "@ionic/react";
+import {IonPage, IonHeader, IonToolbar,IonTitle,IonContent,IonButton,IonList,IonItem,IonLabel,IonSelect,IonSelectOption,IonModal,IonIcon,IonInput, IonGrid, IonRow, IonCol} from "@ionic/react";
 import Menu from "../components/Menu";
 import RecipeCard from "../components/RecipeCard";
-import {filterOutline, optionsOutline } from "ionicons/icons";
+import {browsers, filterOutline, flameOutline, optionsOutline, search } from "ionicons/icons";
+import { useTheme } from "../components/ThemeContext";
+import { restaurantOutline, timerOutline, heartOutline } from "ionicons/icons";
+
 
 const Recipes: React.FC = () => {
-  const [isSortModalOpen, setSortModalOpen] = useState(false);
-  const [isFilterModalOpen, setFilterModalOpen] = useState(false);
-  const [sortOption, setSortOption] = useState<string | null>(null);
-  const [filterOptions, setFilterOptions] = useState<any>({
-    course: [],
-    foodType: [],
-    diet: [],
-    region: [],
-    collection: [],
-  });
+ const [isFilterPanelVisible, setFilterPanelVisible] = useState(false);
+  const { darkMode } = useTheme();
 
-  const courses = ["Appetizer", "Main Course", "Dessert"];
-  const foodTypes = ["Vegetarian", "Vegan", "Non-Vegetarian"];
-  const diets = ["Low Carb", "High Protein", "Keto"];
-  const regions = ["Italian", "Mexican", "Indian"];
-  const collections = ["Favorites", "Quick Recipes", "Family Meals"];
-
-  const handleSelectChange = (category: string, values: any[]) => {
-    setFilterOptions({
-      ...filterOptions,
-      [category]: values,
-    });
-  };
   return (
     <IonPage>
       <IonHeader
@@ -70,198 +39,193 @@ const Recipes: React.FC = () => {
       </IonHeader>
 
       <IonContent>
-        <div className="button-group">
-          <button
-            className="icon-button"
-            onClick={() => setSortModalOpen(true)}
-          >
-            <IonIcon icon={filterOutline} size="large" />
-            <span>Sort</span>
-          </button>
-          <button
-            className="icon-button"
-            onClick={() => setFilterModalOpen(true)}
-          >
-            <IonIcon icon={optionsOutline} size="large" />
-            <span>Filter</span>
-          </button>
-        </div>
-
-        {/* Modal pentru Sort By */}
-        <IonModal
-          isOpen={isSortModalOpen}
-          onDidDismiss={() => setSortModalOpen(false)}
-        >
-          <IonHeader>
-            <IonToolbar>
-              <IonTitle>Sort By</IonTitle>
-              <IonButton
-                slot="end"
-                onClick={() => setSortModalOpen(false)}
-                color="dark"
-              >
-                Exit
+        <div className={darkMode ? "dark-mode" : ""}>
+          <IonCol size="12" sizeMd="12" className="align-items-center">
+            <div className="search-container">
+              <IonInput placeholder="Search a recipe" />
+              <IonButton className="green-button-gradient">
+                <IonIcon icon={search} />
               </IonButton>
-            </IonToolbar>
-          </IonHeader>
-          <IonContent>
-            <IonList>
-              {["Newest", "Relevance", "Time", "Difficulty"].map((option) => (
-                <IonItem
-                  button
-                  key={option}
-                  onClick={() => {
-                    setSortOption(option);
-                    setSortModalOpen(false);
-                  }}
-                >
-                  <IonLabel>{option}</IonLabel>
-                </IonItem>
-              ))}
-            </IonList>
-          </IonContent>
-        </IonModal>
-
-        {/* Modal pentru Filter */}
-        <IonModal
-          isOpen={isFilterModalOpen}
-          onDidDismiss={() => setFilterModalOpen(false)}
-        >
-          <IonHeader>
-            <IonToolbar>
-              <IonTitle>Filter</IonTitle>
-              <IonButton
-                slot="end"
-                onClick={() => setFilterModalOpen(false)}
-                color="dark"
+              <IonButton 
+                onClick={() => setFilterPanelVisible(!isFilterPanelVisible)}
+                className="green-button-gradient"
+                style={{ marginLeft: "5px" }}
               >
-                Exit
+                <IonIcon icon={optionsOutline} />
               </IonButton>
-            </IonToolbar>
-          </IonHeader>
-          <IonContent>
-            <IonList>
-              {/* Course */}
-              <IonItem>
-                <IonLabel>Course</IonLabel>
-                <IonSelect
-                  value={filterOptions.course}
-                  onIonChange={(e) =>
-                    handleSelectChange("course", e.detail.value)
-                  }
-                  multiple={true}
-                  placeholder="Select Courses"
-                >
-                  {courses.map((course) => (
-                    <IonSelectOption key={course} value={course}>
-                      {course}
-                    </IonSelectOption>
-                  ))}
-                </IonSelect>
-              </IonItem>
+            </div>
+          </IonCol>
 
-              {/* Food Type */}
-              <IonItem>
-                <IonLabel>Food Type</IonLabel>
-                <IonSelect
-                  value={filterOptions.foodType}
-                  onIonChange={(e) =>
-                    handleSelectChange("foodType", e.detail.value)
-                  }
-                  multiple={true}
-                  placeholder="Select Food Types"
-                >
-                  {foodTypes.map((type) => (
-                    <IonSelectOption key={type} value={type}>
-                      {type}
+        {isFilterPanelVisible && (
+          <div id="filter-panel">
+            <IonCol size="12" sizeMd="12">
+              <div className="filter-container">
+                {/* Difficulty Filter */}
+                <div className="filter-field">
+                  <IonIcon icon={flameOutline} size="large" />
+                  <IonSelect
+                    interface="popover"
+                    multiple={true}
+                    style={{ padding: 0 }}
+                    placeholder="Difficulty"
+                    className="transparent-select"
+                  >
+                    <IonSelectOption className="label-dark-mode" value="1">
+                      1
                     </IonSelectOption>
-                  ))}
-                </IonSelect>
-              </IonItem>
-
-              {/* Diet */}
-              <IonItem>
-                <IonLabel>Diet</IonLabel>
-                <IonSelect
-                  value={filterOptions.diet}
-                  onIonChange={(e) =>
-                    handleSelectChange("diet", e.detail.value)
-                  }
-                  multiple={true}
-                  placeholder="Select Diets"
-                >
-                  {diets.map((diet) => (
-                    <IonSelectOption key={diet} value={diet}>
-                      {diet}
+                    <IonSelectOption className="label-dark-mode" value="2">
+                      2
                     </IonSelectOption>
-                  ))}
-                </IonSelect>
-              </IonItem>
-
-              {/* Region */}
-              <IonItem>
-                <IonLabel>Region</IonLabel>
-                <IonSelect
-                  value={filterOptions.region}
-                  onIonChange={(e) =>
-                    handleSelectChange("region", e.detail.value)
-                  }
-                  multiple={true}
-                  placeholder="Select Regions"
-                >
-                  {regions.map((region) => (
-                    <IonSelectOption key={region} value={region}>
-                      {region}
+                    <IonSelectOption className="label-dark-mode" value="3">
+                      3
                     </IonSelectOption>
-                  ))}
-                </IonSelect>
-              </IonItem>
-
-              {/* Collection */}
-              <IonItem>
-                <IonLabel>Collection</IonLabel>
-                <IonSelect
-                  value={filterOptions.collection}
-                  onIonChange={(e) =>
-                    handleSelectChange("collection", e.detail.value)
-                  }
-                  multiple={true}
-                  placeholder="Select Collections"
-                >
-                  {collections.map((collection) => (
-                    <IonSelectOption key={collection} value={collection}>
-                      {collection}
+                    <IonSelectOption
+                      className="label-dark-mode"
+                      value="allDifficulties"
+                    >
+                      All recipes
                     </IonSelectOption>
-                  ))}
-                </IonSelect>
-              </IonItem>
-            </IonList>
-          </IonContent>
-        </IonModal>
+                  </IonSelect>
+                </div>
 
-        {/* Afișare Rețete */}
-        <div>
-          <RecipeCard
-            id={1}
-            name="Almond Cookies"
-            difficulty_level={2}
-            time="30min"
-            image="https://cdn.recipes.lidl/images/en-GB/en-GB_91edbf64-ff53-4aca-a0f2-4dc72eed7475/recipe_640x360_tCAMP2024_RecipesSevenStuWestPinacoladapancakes1440x810_STYLE_GBR_FGBR.jpg"
-          />
-          <RecipeCard
-            id={2}
-            name="Chocolate Cake"
-            difficulty_level={1}
-            time="20min"
-            image="https://cdn.recipes.lidl/images/en-GB/en-GB_91edbf64-ff53-4aca-a0f2-4dc72eed7475/recipe_640x360_tCAMP2024_RecipesSevenStuWestPinacoladapancakes1440x810_STYLE_GBR_FGBR.jpg"
-          />
-          <RecipeCard
-            id={3}
-            name="Turkey Wellington"
-            difficulty_level={3}
-            time="1h 5min"
-            image="https://cdn.recipes.lidl/images/en-GB/en-GB_91edbf64-ff53-4aca-a0f2-4dc72eed7475/recipe_640x360_tCAMP2024_RecipesSevenStuWestPinacoladapancakes1440x810_STYLE_GBR_FGBR.jpg"
-          />
+                {/* Type Filter */}
+                <div className="filter-field">
+                  <IonIcon icon={restaurantOutline} size="large" />
+                  <IonSelect
+                    interface="popover"
+                    multiple={false}
+                    style={{ padding: 0 }}
+                    placeholder="Type"
+                    className="transparent-select"
+                  >
+                    <IonSelectOption
+                      className="label-dark-mode"
+                      value="Breakfast"
+                    >
+                      Breakfast
+                    </IonSelectOption>
+                    <IonSelectOption
+                      className="label-dark-mode"
+                      value="Starters"
+                    >
+                      Starters
+                    </IonSelectOption>
+                    <IonSelectOption className="label-dark-mode" value="Mains">
+                      Mains
+                    </IonSelectOption>
+                    <IonSelectOption className="label-dark-mode" value="Sides">
+                      Sides
+                    </IonSelectOption>
+                    <IonSelectOption
+                      className="label-dark-mode"
+                      value="Desserts"
+                    >
+                      Desserts
+                    </IonSelectOption>
+                    <IonSelectOption className="label-dark-mode" value="Snacks">
+                      Snacks
+                    </IonSelectOption>
+                    <IonSelectOption className="label-dark-mode" value="Drinks">
+                      Drinks
+                    </IonSelectOption>
+                    <IonSelectOption
+                      className="label-dark-mode"
+                      value="AllTypes"
+                    >
+                      All types
+                    </IonSelectOption>
+                  </IonSelect>
+                </div>
+              </div>
+            </IonCol>
+
+            {/* Additional Filters */}
+            <IonCol size="12" sizeMd="12">
+              <div className="filter-container">
+                {/* Time Filter */}
+                <div className="filter-field">
+                  <IonIcon icon={timerOutline} size="large" />
+                  <IonSelect
+                    interface="popover"
+                    multiple={false}
+                    placeholder="Total time"
+                    style={{ padding: 0 }}
+                    className="transparent-select"
+                  >
+                    <IonSelectOption className="label-dark-mode" value="<30">
+                      &lt; 30 min
+                    </IonSelectOption>
+                    <IonSelectOption className="label-dark-mode" value="<60">
+                      &lt; 60 min
+                    </IonSelectOption>
+                    <IonSelectOption className="label-dark-mode" value="<120">
+                      &lt; 120 min
+                    </IonSelectOption>
+                    <IonSelectOption className="label-dark-mode" value="<180">
+                      &lt; 180 min
+                    </IonSelectOption>
+                    <IonSelectOption
+                      className="label-dark-mode"
+                      value="AllTimes"
+                    >
+                      All recipes
+                    </IonSelectOption>
+                  </IonSelect>
+                </div>
+
+                {/* Favourites Filter */}
+                <div className="filter-field">
+                  <IonIcon icon={heartOutline} size="large" />
+                  <IonSelect
+                    interface="popover"
+                    multiple={false}
+                    placeholder="Favourites"
+                    style={{ padding: 0 }}
+                    className="transparent-select"
+                  >
+                    <IonSelectOption className="label-dark-mode" value="liked">
+                      Liked
+                    </IonSelectOption>
+                    <IonSelectOption
+                      className="label-dark-mode"
+                      value="disliked"
+                    >
+                      Disliked
+                    </IonSelectOption>
+                    <IonSelectOption className="label-dark-mode" value="all">
+                      All recipes
+                    </IonSelectOption>
+                  </IonSelect>
+                </div>
+              </div>
+            </IonCol>
+          </div>
+        )}
+
+          {/* Afișare Rețete */}
+          <div>
+            <RecipeCard
+              id={1}
+              name="Almond Cookies"
+              difficulty_level={2}
+              time="30min"
+              image="https://cdn.recipes.lidl/images/en-GB/en-GB_91edbf64-ff53-4aca-a0f2-4dc72eed7475/recipe_640x360_tCAMP2024_RecipesSevenStuWestPinacoladapancakes1440x810_STYLE_GBR_FGBR.jpg"
+            />
+            <RecipeCard
+              id={2}
+              name="Chocolate Cake"
+              difficulty_level={1}
+              time="20min"
+              image="https://cdn.recipes.lidl/images/en-GB/en-GB_91edbf64-ff53-4aca-a0f2-4dc72eed7475/recipe_640x360_tCAMP2024_RecipesSevenStuWestPinacoladapancakes1440x810_STYLE_GBR_FGBR.jpg"
+            />
+            <RecipeCard
+              id={3}
+              name="Turkey Wellington"
+              difficulty_level={3}
+              time="1h 5min"
+              image="https://cdn.recipes.lidl/images/en-GB/en-GB_91edbf64-ff53-4aca-a0f2-4dc72eed7475/recipe_640x360_tCAMP2024_RecipesSevenStuWestPinacoladapancakes1440x810_STYLE_GBR_FGBR.jpg"
+            />
+          </div>
         </div>
       </IonContent>
 

@@ -1,11 +1,14 @@
 .recipe-card {
   border-radius: 20px;
   box-shadow: 0 2.4rem 4.8rem rgba(0, 0, 0, 0.075);
-  border-radius: 20px;
   cursor: pointer;
-  background-color: #fff;
   margin: 10px;
   padding: 10px;
+}
+
+.dark-mode .recipe-card {
+  background-color: #333;
+  color: white;
 }
 
 .recipe-photo {
@@ -17,7 +20,7 @@
 .recipe-title {
   text-align: left;
   font-size: 1.5rem;
-  color: black;
+  /* color: black; */
 }
 
 .recipe-content{
@@ -47,37 +50,43 @@
   gap: 10px;
 }
 
-
-
-.button-group {
-  margin-top: 10px;
+.search-container {
   display: flex;
-  gap: 10px; /* Spațiu între butoane */
-  justify-content: center;
+  align-items: center;
+  margin: 0 20px;
 }
 
-.icon-button {
+
+.search-container ion-input {
+  margin-right: 8px;
+  border-bottom: 1px solid #ccc;
+}
+
+.filter-container {
   display: flex;
-  align-items: center; /* Aliniază iconița și textul pe verticală */
-  gap: 10px; /* Spațiu între iconiță și text */
-  background-color: #f0f0f0; /* Fundal pentru buton */
-  border: none;
+  align-items: center;
+  margin: 0 20px;
+  gap: 16px;
+  align-items: center;
+}
+
+
+.filter-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: rgba(0, 0, 0, 0.1); /* Fundal semi-transparent */
   border-radius: 8px;
-  padding: 10px 20px; /* Spațiu interior pentru buton */
-  cursor: pointer;
-  font-size: 1rem;
-  color: black;
-  transition: background-color 0.3s ease;
+  padding: 8px 12px; /* Spațiu interior */
+  flex: 0 0 48%; /* Ocupă aproximativ jumătate din spațiu */
+  box-sizing: border-box; /* Include padding-ul în dimensiune */
 }
 
-.icon-button:hover {
-  background-color: #e0e0e0; /* Schimbă fundalul la hover */
+.transparent-select {
+  --background: transparent; /* Fundal transparent */
+  --padding-start: 0;
 }
 
-.icon-button IonIcon {
-  font-size: 1.2rem; /* Ajustează dimensiunea iconiței */
-}
-
-.icon-button span {
-  font-size: 1rem; /* Dimensiunea textului */
+.transparent-select ion-select-option {
+  color: #fff; /* Opțional, pentru mod întunecat */
 }

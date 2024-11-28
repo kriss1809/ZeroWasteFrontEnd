@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { IonIcon, IonButton } from "@ionic/react";
+import { IonIcon } from "@ionic/react";
 import {
   timerOutline,
   flameOutline,
   heartDislikeOutline,
   heartOutline,
+  heartDislike,
+  heart,
 } from "ionicons/icons";
 import "../theme/RecipesCard.css";
 
@@ -13,7 +15,7 @@ export interface RecipeProps {
   name: string;
   difficulty_level: number;
   time: string;
-  image: string; 
+  image: string;
 }
 
 const RecipeCard: React.FC<RecipeProps> = ({
@@ -23,7 +25,22 @@ const RecipeCard: React.FC<RecipeProps> = ({
   time,
   image,
 }) => {
+  const [liked, setLiked] = useState(false);
+  const [disliked, setDisliked] = useState(false);
 
+  const handleLikeClick = () => {
+    setLiked(!liked);
+    if (disliked) {
+      setDisliked(false); // Dacă a fost apăsat dislike, îl resetăm
+    }
+  };
+
+  const handleDislikeClick = () => {
+    setDisliked(!disliked);
+    if (liked) {
+      setLiked(false); // Dacă a fost apăsat like, îl resetăm
+    }
+  };
 
   const getDifficultyLabel = (level: number) => {
     switch (level) {
@@ -50,16 +67,18 @@ const RecipeCard: React.FC<RecipeProps> = ({
             {/* Buton Like */}
             <IonIcon
               className="like-dislike-button"
-              icon={heartOutline}
+              icon={liked ? heart : heartOutline}
               size="large"
               color="success"
+              onClick={handleLikeClick}
             />
             {/* Buton Dislike */}
             <IonIcon
               className="like-dislike-button"
-              icon={heartDislikeOutline}
+              icon={disliked ? heartDislike : heartDislikeOutline}
               size="large"
               color="danger"
+              onClick={handleDislikeClick}
             />
           </div>
         </div>
