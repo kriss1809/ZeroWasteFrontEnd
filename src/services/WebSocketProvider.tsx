@@ -57,7 +57,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
                 socket.close();
             };
         };
-    }, [isAuthenticated, user]);
+    }, [isAuthenticated]);
 
     const sendMessage = (message: any) => {
         if (ws && isConnected) {

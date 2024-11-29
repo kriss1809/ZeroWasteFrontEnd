@@ -37,7 +37,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const profile = await getUserProfile();
       if (profile) {
         setUser(profile);
-        setIsAuthenticated(true);
+        if (!isAuthenticated)
+        {
+          setIsAuthenticated(true);
+        }
       }
     } catch (error) {
       console.error('Failed to load profile:', error);
