@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useAuth } from './authProvider';
 
-// const url = "ws://localhost:8000/"
-const url = "ws://192.168.100.92:8000/";
+const url = "ws://localhost:8000/"
+// const url = "ws://192.168.100.92:8000/";
 
 interface MessageData {
   type: string;
@@ -18,15 +18,15 @@ interface WebSocketContextValue {
 const WebSocketContext = createContext<WebSocketContextValue | undefined>(undefined);
 
 export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const { isAuthenticated, user } = useAuth();
+    const { isAuthenticated, accessToken, user } = useAuth();
     const [ws, setWs] = useState<WebSocket | null>(null);
     const [messages, setMessages] = useState<MessageData[]>([]);
     const [isConnected, setIsConnected] = useState(false);
 
     useEffect(() => {
-        if (isAuthenticated) {
+        if (isAuthenticated && user) {
             console.log("Connecting to WebSocket");
-            const token = sessionStorage.getItem('accessToken');
+            const token = accessToken;
             if (!token) return;
 
             const wsUrl = `${url}ws/notifications/`;
@@ -57,7 +57,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
                 socket.close();
             };
         };
-    }, [isAuthenticated]);
+    }, [isAuthenticated, user]);
 
     const sendMessage = (message: any) => {
         if (ws && isConnected) {

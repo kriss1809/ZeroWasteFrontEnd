@@ -10,7 +10,7 @@ import { UpdatePreferredNotificationHour } from "../services/apiClient";
 const ProfileSettings: React.FC = () => {
   const [preferredTime, setPreferredTime] = useState<string>("");
   const [notificationDays, setNotificationDays] = useState<number>(1);
-  const { user, updateNotificationDay, updateAllergies, updatePreferences, joinProductList  } = useAuth();
+  const { user, updateNotificationDay, updateAllergies, updatePreferences, joinProductList, share_code  } = useAuth();
   const { darkMode, toggleDarkMode } = useTheme();
 
   useEffect(() => {
@@ -84,13 +84,13 @@ const ProfileSettings: React.FC = () => {
 
     const handleShare = () => {
       // AICI CODUL PRIMIT DE LA SERVER
-      const Code = sessionStorage.getItem("share_code");
+      const Code = share_code;
 
       if (Code) {
         setShareCode(Code);
         setShowJoinInput(false); // Ascunde inputul de Join dacă era deschis
       } else {
-        console.error("share_code nu este definit în sessionStorage");
+        console.error("share_code nu este definit");
         setErrorMessage("Nu s-a putut obține codul de partajare.");
       }
 

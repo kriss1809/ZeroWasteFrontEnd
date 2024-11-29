@@ -1,8 +1,8 @@
 import axios from "axios";
-import { User } from "../entitites/User";
+import { User } from "../entities/User";
 
-const url = "http://192.168.100.92:8000/";
-// const url = "http://localhost:8000/";
+// const url = "http://192.168.100.92:8000/";
+const url = "http://localhost:8000/";
 export const loginUser = async (email: string, password: string) => {
   try {
     const response = await axios.post<{ access: string; refresh: string }>(
@@ -190,8 +190,7 @@ export const GetProductList = async () => {
     );
     const { share_code, products } = response.data;
     sessionStorage.setItem("share_code", share_code);
-    sessionStorage.setItem("products", JSON.stringify(products));
-    return products;
+    return { share_code, products };
   } catch (error) {
     console.error(error);
   }

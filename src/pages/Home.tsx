@@ -1,59 +1,30 @@
 // Home.tsx
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { IonHeader, IonPage, IonContent, IonButton, IonIcon, IonModal, IonList, IonItem, IonLabel, IonListHeader } from "@ionic/react";
 import Menu from "../components/Menu";
 import AddItem from "../components/AddItem";
 import ItemCard from "../components/ItemCard";
 import { useTheme } from "../components/ThemeContext";
-import { GetProductList } from "../services/apiClient";
 import { peopleOutline, receiptOutline, closeOutline } from "ionicons/icons";
 import CollaboratorsModal from "../components/CollaboratorsModal";
 import UploadReceiptModal from "../components/UploadReceiptModal";
-import { useWebSocket } from "../services/WebSocketProvider";
-import { useAuth } from "../services/authProvider";
 import { search } from "ionicons/icons";
-import { IonGrid, IonRow, IonCol, IonInput } from "@ionic/react";
+import {  IonCol, IonInput } from "@ionic/react";
+import { Product } from "../entities/Product";
+import { useProductList } from "../services/ProductListProvider";
 
 const Home: React.FC = () => {
   const { darkMode } = useTheme();
-  const { messages, isConnected } = useWebSocket();
-  const { isAuthenticated, refreshAccessToken, accessToken } = useAuth();
-  const [selectedItem, setSelectedItem] = useState<{
-    id: number;
-    name: string;
-    best_before: string;
-    opened: string; 
-    consumption_days: string; 
-  } | null>(null);
+  const { products } = useProductList();
+  const [selectedItem, setSelectedItem] = useState< Product | null>(null);
 
   const handleCancelEdit = () => {
-    setSelectedItem(null); // Clear the selected item when canceling
+    setSelectedItem(null); 
   };
-
-  const [products, setProducts] = useState<Array<{
-    id: number;
-    name: string;
-    best_before: string;
-    opened: string;
-    consumption_days: string;
-  }>>([]);
 
 
   const [showUploadModal, setshowUploadModal] = useState(false);
-  const [showCollaboratorsModal, setshowCollaboratorsModal] = useState(false);
-  
-useEffect(() => { 
-    GetProductList().then((response) => {
-      if (response) {
-        setProducts(response);
-      }
-      else {
-        if(localStorage.getItem("refreshToken")){
-          refreshAccessToken();}
-      }
-    });
-  
-}, [messages, isConnected, isAuthenticated, accessToken]);
+  const [showCollaboratorsModal, setshowCollaboratorsModal] = useState(false); 
 
 
   const handleEditItem = (

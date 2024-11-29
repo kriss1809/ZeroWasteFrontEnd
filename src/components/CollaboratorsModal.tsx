@@ -3,6 +3,7 @@ import { closeOutline } from "ionicons/icons";
 import { IonContent, IonList, IonItem, IonLabel, IonListHeader, IonModal, IonIcon } from "@ionic/react";
 import { useEffect, useState } from "react";
 import { GetCollaborators } from "../services/apiClient";
+import { useAuth } from "../services/authProvider";
 
 interface ModalProps {
   showCollaboratorsModal: boolean;
@@ -13,13 +14,14 @@ const CollaboratorsModal: React.FC<ModalProps> = ({ showCollaboratorsModal, setS
   const { darkMode } = useTheme();
 
   const [collaborators, setCollaborators] = useState<string[]>([]);
+  const {accessToken} = useAuth();
 
   useEffect(() => {
     const fetchData = async () => {
 
       const waitForToken = new Promise<void>((resolve) => {
         const checkToken = setInterval(() => {
-          if (sessionStorage.getItem("accessToken")) {
+          if (accessToken) {
             clearInterval(checkToken);
             resolve();
           }

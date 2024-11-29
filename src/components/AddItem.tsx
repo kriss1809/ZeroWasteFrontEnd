@@ -10,7 +10,7 @@ import {
 } from "@ionic/react";
 import "../theme/addItem.css";
 import { useTheme } from "./ThemeContext";
-import { AddProduct, UpdateProduct } from "../services/apiClient";
+import { useProductList } from "../services/ProductListProvider";
 
 interface AddItemProps {
   selectedItem: {
@@ -31,6 +31,7 @@ const AddItem: React.FC<AddItemProps> = ({ selectedItem, onCancelEdit }) => {
   const [recommendedDays, setRecommendedDays] = useState("");
   const [error, setError] = useState("");
   const { darkMode } = useTheme();
+  const { addProduct, updateProduct } = useProductList();
 
   const addItemRef = useRef<HTMLDivElement>(null);
 
@@ -91,25 +92,16 @@ const AddItem: React.FC<AddItemProps> = ({ selectedItem, onCancelEdit }) => {
     // }
 
     if (selectedItem){
-      UpdateProduct(
+      updateProduct(
         selectedItem.id,
         productName,
         expirationDate,
         openingDate,
         recommendedDays
-      ).then((response) => {
-        if (response) {
-          console.log("Product update sended successfully");
-        }
-      });
+      );
     }
     else{
-
-    AddProduct(productName, expirationDate, openingDate, recommendedDays).then((response) => {
-    if (response) {
-      console.log("Product sended successfully");
-      }
-    });
+      addProduct(productName, expirationDate, openingDate, recommendedDays);
   }
     resetForm();
   };
