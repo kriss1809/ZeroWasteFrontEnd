@@ -21,9 +21,10 @@ interface AddItemProps {
     consumption_days: string;
   } | null; // Updated prop
   onCancelEdit: () => void;
+  setSelectedItem: (item: any) => void;
 }
 
-const AddItem: React.FC<AddItemProps> = ({ selectedItem, onCancelEdit }) => {
+const AddItem: React.FC<AddItemProps> = ({ selectedItem, onCancelEdit, setSelectedItem }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [productName, setProductName] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
@@ -42,7 +43,6 @@ const AddItem: React.FC<AddItemProps> = ({ selectedItem, onCancelEdit }) => {
 
   useEffect(() => {
     if (selectedItem) {
-      console.log(selectedItem);
       setProductName(selectedItem.name);
       setExpirationDate(selectedItem.best_before?  convertDateFormat(selectedItem.best_before) : "");
       setOpeningDate(selectedItem.opened ? convertDateFormat(selectedItem.opened) : "");
@@ -86,10 +86,6 @@ const AddItem: React.FC<AddItemProps> = ({ selectedItem, onCancelEdit }) => {
       return; 
     }
 
-    // if (!expirationDate) {
-    //   setError("Expiration date is required.");
-    //   return;
-    // }
 
     if (selectedItem){
       updateProduct(
@@ -99,6 +95,7 @@ const AddItem: React.FC<AddItemProps> = ({ selectedItem, onCancelEdit }) => {
         openingDate,
         recommendedDays
       );
+      setSelectedItem(null);
     }
     else{
       addProduct(productName, expirationDate, openingDate, recommendedDays);

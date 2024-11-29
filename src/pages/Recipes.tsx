@@ -1,20 +1,28 @@
-import React, { useState } from "react";
-import {IonPage, IonHeader, IonToolbar,IonTitle,IonContent,IonButton,IonList,IonItem,IonLabel,IonSelect,IonSelectOption,IonModal,IonIcon,IonInput, IonGrid, IonRow, IonCol} from "@ionic/react";
+import React, { useEffect, useState } from "react";
+import {IonPage, IonHeader, IonToolbar,IonTitle,IonContent,IonButton,IonList,IonItem,IonLabel,IonSelect,IonSelectOption,IonModal,IonIcon,IonInput, IonGrid, IonRow, IonCol, IonInfiniteScroll, IonInfiniteScrollContent} from "@ionic/react";
 import Menu from "../components/Menu";
 import RecipeCard from "../components/RecipeCard";
-import {browsers, filterOutline, flameOutline, key, optionsOutline, search } from "ionicons/icons";
+import { search, optionsOutline, flameOutline, restaurantOutline, timerOutline, heartOutline } from "ionicons/icons";
 import { useTheme } from "../components/ThemeContext";
-import { restaurantOutline, timerOutline, heartOutline } from "ionicons/icons";
-import { useRecipes } from "../services/RecipesProvider"; 
+import { useRecipes } from "../services/RecipesProvider";
 import { Recipe } from "../entities/Recipe";
 
-
 const Recipes: React.FC = () => {
- const [isFilterPanelVisible, setFilterPanelVisible] = useState(false);
+  const [isFilterPanelVisible, setFilterPanelVisible] = useState(false);
   const { darkMode } = useTheme();
-  const { recipes } = useRecipes();
+  const { recipes, loadMoreRecipes, hasMore, resetRecipes } = useRecipes();
 
-  
+  const handleInfiniteScroll = async (event: CustomEvent<void>) => {
+    if (hasMore) {
+      await loadMoreRecipes();
+    }
+    (event.target as HTMLIonInfiniteScrollElement).complete();
+  };
+
+  useEffect(() => {
+    return () =>{
+    resetRecipes();}
+  }, []);
 
   return (
     <IonPage>
@@ -221,6 +229,17 @@ const Recipes: React.FC = () => {
               />
             ))}
           </div>
+
+          <IonInfiniteScroll
+            threshold="100px"
+            disabled={!hasMore}
+            onIonInfinite={handleInfiniteScroll}
+          >
+            <IonInfiniteScrollContent
+              loadingText="Loading more recipes..."
+              loadingSpinner="bubbles"
+            ></IonInfiniteScrollContent>
+          </IonInfiniteScroll>
         </div>
       </IonContent>
 

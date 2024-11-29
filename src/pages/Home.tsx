@@ -104,7 +104,7 @@ const Home: React.FC = () => {
       </IonContent>
 
       <div slot="bottom">
-        <AddItem selectedItem={selectedItem} onCancelEdit={handleCancelEdit} />
+        <AddItem selectedItem={selectedItem} onCancelEdit={handleCancelEdit} setSelectedItem={setSelectedItem} />
         <Menu />
       </div>
     </IonPage>

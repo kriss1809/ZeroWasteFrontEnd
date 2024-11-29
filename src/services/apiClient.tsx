@@ -400,15 +400,23 @@ export const UploadReceipt = async (file: File) => {
   }
 };
 
-export const GetRecipes = async () => {
+export const GetRecipes = async (limit: number, offset: number) => {
   try {
-    const response = await axios.get<Recipe[]>(`${url}recipes/`, {
+    const response = await axios.get<{  count: number;
+  next: string | null;
+  previous: string | null;
+  results: Recipe[];}>(`${url}recipes/`, {
       headers: {
         Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+      },
+      params: {
+        limit,
+        offset,
       },
     });
     return response.data;
   } catch (error) {
     console.error(error);
+    return null;
   }
-}
+};
