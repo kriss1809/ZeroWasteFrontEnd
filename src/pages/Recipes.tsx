@@ -2,14 +2,19 @@ import React, { useState } from "react";
 import {IonPage, IonHeader, IonToolbar,IonTitle,IonContent,IonButton,IonList,IonItem,IonLabel,IonSelect,IonSelectOption,IonModal,IonIcon,IonInput, IonGrid, IonRow, IonCol} from "@ionic/react";
 import Menu from "../components/Menu";
 import RecipeCard from "../components/RecipeCard";
-import {browsers, filterOutline, flameOutline, optionsOutline, search } from "ionicons/icons";
+import {browsers, filterOutline, flameOutline, key, optionsOutline, search } from "ionicons/icons";
 import { useTheme } from "../components/ThemeContext";
 import { restaurantOutline, timerOutline, heartOutline } from "ionicons/icons";
+import { useRecipes } from "../services/RecipesProvider"; 
+import { Recipe } from "../entities/Recipe";
 
 
 const Recipes: React.FC = () => {
  const [isFilterPanelVisible, setFilterPanelVisible] = useState(false);
   const { darkMode } = useTheme();
+  const { recipes } = useRecipes();
+
+  
 
   return (
     <IonPage>
@@ -204,27 +209,17 @@ const Recipes: React.FC = () => {
 
           {/* Afișare Rețete */}
           <div>
-            <RecipeCard
-              id={1}
-              name="Almond Cookies"
-              difficulty_level={2}
-              time="30min"
-              image="https://cdn.recipes.lidl/images/en-GB/en-GB_91edbf64-ff53-4aca-a0f2-4dc72eed7475/recipe_640x360_tCAMP2024_RecipesSevenStuWestPinacoladapancakes1440x810_STYLE_GBR_FGBR.jpg"
-            />
-            <RecipeCard
-              id={2}
-              name="Chocolate Cake"
-              difficulty_level={1}
-              time="20min"
-              image="https://cdn.recipes.lidl/images/en-GB/en-GB_91edbf64-ff53-4aca-a0f2-4dc72eed7475/recipe_640x360_tCAMP2024_RecipesSevenStuWestPinacoladapancakes1440x810_STYLE_GBR_FGBR.jpg"
-            />
-            <RecipeCard
-              id={3}
-              name="Turkey Wellington"
-              difficulty_level={3}
-              time="1h 5min"
-              image="https://cdn.recipes.lidl/images/en-GB/en-GB_91edbf64-ff53-4aca-a0f2-4dc72eed7475/recipe_640x360_tCAMP2024_RecipesSevenStuWestPinacoladapancakes1440x810_STYLE_GBR_FGBR.jpg"
-            />
+            {recipes.map((recipe: Recipe) => (
+              < RecipeCard
+                key={recipe.id}
+                id={recipe.id}
+                name={recipe.name}
+                difficulty_level={recipe.difficulty}
+                time={recipe.time}
+                image={recipe.image}
+              
+              />
+            ))}
           </div>
         </div>
       </IonContent>

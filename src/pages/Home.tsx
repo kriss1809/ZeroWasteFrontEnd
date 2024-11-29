@@ -82,7 +82,7 @@ const Home: React.FC = () => {
 
           <IonCol size="12" sizeMd="12" className="align-items-center">
             <div className="search-container">
-              <IonInput placeholder="Search a recipe" />
+              <IonInput placeholder="Search a product" />
               <IonButton className="green-button-gradient">
                 <IonIcon icon={search} />
               </IonButton>

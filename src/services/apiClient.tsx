@@ -1,5 +1,6 @@
 import axios from "axios";
 import { User } from "../entities/User";
+import { Recipe } from "../entities/Recipe";
 
 // const url = "http://192.168.100.92:8000/";
 const url = "http://localhost:8000/";
@@ -398,3 +399,16 @@ export const UploadReceipt = async (file: File) => {
     console.error(error);
   }
 };
+
+export const GetRecipes = async () => {
+  try {
+    const response = await axios.get<Recipe[]>(`${url}recipes/`, {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}

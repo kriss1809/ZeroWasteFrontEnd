@@ -14,7 +14,7 @@ export interface RecipeProps {
   id: number;
   name: string;
   difficulty_level: number;
-  time: string;
+  time: number;
   image: string;
 }
 
@@ -27,6 +27,11 @@ const RecipeCard: React.FC<RecipeProps> = ({
 }) => {
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
+  const hours = Math.floor(time / 60); // Orele întregi
+  const minutes = time % 60; // Minutele rămase (întregi)
+
+  const timeString = `${hours > 0 ? `${hours}h` : ""}${hours > 0 && minutes > 0 ? " " : ""}${minutes > 0 ? `${minutes} min` : ""}`;
+
 
   const handleLikeClick = () => {
     setLiked(!liked);
@@ -85,7 +90,7 @@ const RecipeCard: React.FC<RecipeProps> = ({
 
         <div className="recipe-attributes">
           <IonIcon icon={timerOutline} className="recipe-icon" />
-          {time}
+          {timeString}
           <IonIcon icon={flameOutline} className="recipe-icon" />
           {getDifficultyLabel(difficulty_level)}
         </div>
