@@ -6,4 +6,5 @@ export interface Recipe {
     difficulty: number;
     time: number;
     recipe_type: string;
+    rating: boolean|null;
 }

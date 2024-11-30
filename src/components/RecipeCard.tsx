@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IonIcon } from "@ionic/react";
 import {
   timerOutline,
@@ -9,6 +9,7 @@ import {
   heart,
 } from "ionicons/icons";
 import "../theme/RecipesCard.css";
+import { useRecipes } from "../services/RecipesProvider";
 
 export interface RecipeProps {
   id: number;
@@ -16,6 +17,7 @@ export interface RecipeProps {
   difficulty_level: number;
   time: number;
   image: string;
+  rating: boolean | null;
 }
 
 const RecipeCard: React.FC<RecipeProps> = ({
@@ -24,27 +26,40 @@ const RecipeCard: React.FC<RecipeProps> = ({
   difficulty_level,
   time,
   image,
+  rating,
 }) => {
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
-  const hours = Math.floor(time / 60); // Orele întregi
-  const minutes = time % 60; // Minutele rămase (întregi)
+  const hours = Math.floor(time / 60); 
+  const minutes = time % 60; 
+  const { rateRecipe } = useRecipes();
 
   const timeString = `${hours > 0 ? `${hours}h` : ""}${hours > 0 && minutes > 0 ? " " : ""}${minutes > 0 ? `${minutes} min` : ""}`;
 
+  useEffect(() => {
+    if (rating !== null) {
+      if (rating) {
+        setLiked(true);
+      } else {
+        setDisliked(true);
+      }
+    }
+  }, [rating]);
 
   const handleLikeClick = () => {
     setLiked(!liked);
     if (disliked) {
-      setDisliked(false); // Dacă a fost apăsat dislike, îl resetăm
+      setDisliked(false);
     }
+    rateRecipe(id, !liked ? !liked : null);
   };
 
   const handleDislikeClick = () => {
     setDisliked(!disliked);
     if (liked) {
-      setLiked(false); // Dacă a fost apăsat like, îl resetăm
+      setLiked(false);
     }
+    rateRecipe(id, !disliked ? disliked : null);
   };
 
   const getDifficultyLabel = (level: number) => {

@@ -225,7 +225,7 @@ const Recipes: React.FC = () => {
                 difficulty_level={recipe.difficulty}
                 time={recipe.time}
                 image={recipe.image}
-              
+                rating={recipe.rating}
               />
             ))}
           </div>

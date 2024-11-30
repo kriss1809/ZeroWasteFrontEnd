@@ -420,3 +420,24 @@ export const GetRecipes = async (limit: number, offset: number) => {
     return null;
   }
 };
+
+
+export const RateRecipe = async (recipe_id: number, rating: boolean|null) => {
+  try {
+    const response = await axios.post(
+      `${url}rate-recipe/`,
+      {
+        recipe_id,
+        rating,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+};

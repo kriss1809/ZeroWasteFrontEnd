@@ -1,12 +1,13 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Recipe } from '../entities/Recipe';
-import { GetRecipes } from './apiClient';
+import { GetRecipes, RateRecipe } from './apiClient';
 import { useAuth } from './authProvider';
 import { useWebSocket } from './WebSocketProvider';
 
 interface RecipesContextValue {
     recipes: Recipe[];
     getRecipes: () => Promise<void>;
+    rateRecipe: (recipeId: number, rating: boolean|null) => Promise<void>;
     loadMoreRecipes: () => Promise<void>;
     resetRecipes: () => Promise<void>;
     hasMore: boolean;
@@ -44,7 +45,7 @@ export const RecipesProvider: React.FC<{ children: React.ReactNode }> = ({ child
         if (response) {
             setRecipes((prev) => (isInitialLoad ? response.results : [...prev, ...response.results]));
             setOffset((prev) => prev + limit);
-            setHasMore(!!response.next); // Verificăm dacă există o altă pagină
+            setHasMore(!!response.next); 
         } else {
             if (localStorage.getItem("refreshToken")) {
                 refreshAccessToken();
@@ -53,12 +54,26 @@ export const RecipesProvider: React.FC<{ children: React.ReactNode }> = ({ child
         setIsLoading(false);
     };
 
+    const rateRecipe = async (recipeId: number, rating: boolean | null) => {
+        RateRecipe(recipeId, rating).then((response) => {
+            if (response) {
+                setRecipes((prev) => prev.map((recipe) => {
+                    if (recipe.id === recipeId) {
+                        return { ...recipe, rating };
+                    }
+                    return recipe;
+                }));
+            }
+        });
+
+    };
+
     const loadMoreRecipes = async () => {
         await getRecipes();
     };
 
     return (
-        <RecipesContext.Provider value={{ recipes, getRecipes, loadMoreRecipes, hasMore, isLoading, resetRecipes }}>
+        <RecipesContext.Provider value={{ recipes, getRecipes, rateRecipe, loadMoreRecipes, hasMore, isLoading, resetRecipes }}>
             {children}
         </RecipesContext.Provider>
     );
