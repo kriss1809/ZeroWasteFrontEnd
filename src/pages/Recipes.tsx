@@ -28,17 +28,29 @@ const Recipes: React.FC = () => {
     (event.target as HTMLIonInfiniteScrollElement).complete();
   };
 
-  const handleFilter = async () => {
+const handleFilter = async () => {
+  try {
     setFilterPanelVisible(false);
+
     if ((time === null || time === 0) && difficulty.length === 0 && recipeType === null && favourites === null) {
       setFiltered(false);
       resetRecipes();
-    }
-    else {
+    } else {
       setFiltered(true);
-      await loadMoreFilteredRecipes(time, difficulty, recipeType, favourites, true);
+
+      try {
+        await loadMoreFilteredRecipes(time, difficulty, recipeType, favourites, true);
+      } catch (error: any) {
+        alert("Error loading filtered recipes: " + error.detail);
+        resetRecipes();
+        setFiltered(false);
+      }
     }
+  } catch (error: any) {
+    console.log("Unexpected error", error.detail);
   }
+};
+
 
   const handleFilterContainer = () => {
     setTime(null);

@@ -73,7 +73,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           return accessToken;
       }
     } catch (error) {
-      console.error('Login failed:', error);
+      throw error;
     }
   };
 

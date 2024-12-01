@@ -83,15 +83,19 @@ const filterRecipes = async (
     if (isInitialLoad) {
         setOffset(0);
     }
-    const response = await FilterRecipes({ time, difficulty, recipe_type, favourites }, limit, isInitialLoad ? 0 : offset);
-    if (response) {
-        setRecipes((prev) => (isInitialLoad ? response.results : [...prev, ...response.results]));
-        setOffset((prev) => prev + limit);
-        setHasMore(!!response.next);
-    } else {
-        if (localStorage.getItem("refreshToken")) {
-            refreshAccessToken();
-        }
+    try{
+        const response = await FilterRecipes({ time, difficulty, recipe_type, favourites }, limit, isInitialLoad ? 0 : offset);
+        if (response) {
+            setRecipes((prev) => (isInitialLoad ? response.results : [...prev, ...response.results]));
+            setOffset((prev) => prev + limit);
+            setHasMore(!!response.next);
+        } else {
+            if (localStorage.getItem("refreshToken")) {
+                refreshAccessToken();
+            }
+            }
+    } catch (error) {
+        throw error;
     }
     setIsLoading(false);
 };

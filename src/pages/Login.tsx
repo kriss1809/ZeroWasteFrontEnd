@@ -25,21 +25,24 @@ const Login: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      login(email, password).then((response) => {
-        if (response) {
-          setLoading(false);
-          history.push("/home");
-        } else {
-          setLoading(false);
-          console.log("Login failed");}
-      });
-    } catch (error) {
-      console.error("Error during login:", error);
-    }
-  };
+  e.preventDefault();
+  setLoading(true);
+
+  login(email, password)
+    .then((response) => {
+      if (response) {
+        setLoading(false);
+        history.push("/home");
+      } else {
+        setLoading(false);
+        console.log("Login failed");
+      }
+    })
+    .catch((error) => {
+      setLoading(false);
+      console.log("Error during login:", error);
+    });
+};
 
   const handleForgotPassword = () => {
     console.log("Forgot password");

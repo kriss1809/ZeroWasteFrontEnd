@@ -18,8 +18,8 @@ export const loginUser = async (email: string, password: string) => {
     sessionStorage.setItem("accessToken", access);
     localStorage.setItem("refreshToken", refresh);
     return access;
-  } catch (error) {
-    console.error(error);
+  } catch (error: any) {
+    throw error.response.data;
   }
 };
 
@@ -465,8 +465,7 @@ export const FilterRecipes = async (filter: RecipeFilter, limit: number, offset:
       },
   });
     return response.data;
-  } catch (error) {
-    console.error(error);
-    return null;
+  } catch (error: any) {
+    throw error.response.data;
   }
 };
