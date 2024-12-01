@@ -8,9 +8,9 @@ interface RecipesContextValue {
     recipes: Recipe[];
     getRecipes: () => Promise<void>;
     rateRecipe: (recipeId: number, rating: boolean | null) => Promise<void>;
-    filterRecipes: (time: number | null, difficulty: number[], recipe_type: string | null) => Promise<void>;
+    filterRecipes: (time: number | null, difficulty: number[], recipe_type: string | null,  favourites: boolean | null,) => Promise<void>;
     loadMoreRecipes: () => Promise<void>;
-    loadMoreFilteredRecipes: (time: number | null, difficulty: number[], recipe_type: string | null, isInitialLoad: boolean) => Promise<void>;
+    loadMoreFilteredRecipes: (time: number | null, difficulty: number[], recipe_type: string | null, favourites: boolean | null, isInitialLoad: boolean) => Promise<void>;
     resetRecipes: () => Promise<void>;
     hasMore: boolean;
     isLoading: boolean;
@@ -74,6 +74,7 @@ const filterRecipes = async (
     time: number | null,
     difficulty: number[],
     recipe_type: string | null,
+    favourites: boolean | null,
     isInitialLoad = false
 ) => {
     if (isLoading || (!hasMore && !isInitialLoad)) return;
@@ -82,7 +83,7 @@ const filterRecipes = async (
     if (isInitialLoad) {
         setOffset(0);
     }
-    const response = await FilterRecipes({ time, difficulty, recipe_type }, limit, isInitialLoad ? 0 : offset);
+    const response = await FilterRecipes({ time, difficulty, recipe_type, favourites }, limit, isInitialLoad ? 0 : offset);
     if (response) {
         setRecipes((prev) => (isInitialLoad ? response.results : [...prev, ...response.results]));
         setOffset((prev) => prev + limit);
@@ -98,10 +99,11 @@ const filterRecipes = async (
 const loadMoreFilteredRecipes = async (
     time: number | null,
     difficulty: number[],
-    recipe_type: string| null,
+    recipe_type: string | null,
+    favourites: boolean | null,
     isInitialLoad : boolean = false
 ) => {
-    await filterRecipes(time, difficulty, recipe_type, isInitialLoad);
+    await filterRecipes(time, difficulty, recipe_type, favourites, isInitialLoad);
 };
 
     const loadMoreRecipes = async () => {

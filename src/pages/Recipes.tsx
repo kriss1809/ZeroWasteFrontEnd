@@ -15,11 +15,12 @@ const Recipes: React.FC = () => {
   const [time, setTime] = useState<number | null>(null);
   const [difficulty, setDifficulty] = useState<number[]>([]);
   const [recipeType, setRecipeType] = useState<string | null>(null);
+  const [favourites, setFavourites] = useState<boolean | null>(null);
 
   const handleInfiniteScroll = async (event: CustomEvent<void>) => {
     if (hasMore) {
       if (filtered) {
-        await loadMoreFilteredRecipes(time, difficulty, recipeType, false );
+        await loadMoreFilteredRecipes(time, difficulty, recipeType, favourites, false );
       } else {
         await loadMoreRecipes();
       }
@@ -29,13 +30,13 @@ const Recipes: React.FC = () => {
 
   const handleFilter = async () => {
     setFilterPanelVisible(false);
-    if ((time === null || time === 0) && difficulty.length === 0 && recipeType === null) {
+    if ((time === null || time === 0) && difficulty.length === 0 && recipeType === null && favourites === null) {
       setFiltered(false);
       resetRecipes();
     }
     else {
       setFiltered(true);
-      await loadMoreFilteredRecipes(time, difficulty, recipeType, true);
+      await loadMoreFilteredRecipes(time, difficulty, recipeType, favourites, true);
     }
   }
 
@@ -43,6 +44,7 @@ const Recipes: React.FC = () => {
     setTime(null);
     setDifficulty([]);
     setRecipeType(null);
+    setFavourites(null);
     setFilterPanelVisible(!isFilterPanelVisible);
   }
 
@@ -225,17 +227,18 @@ const Recipes: React.FC = () => {
                     placeholder="Favourites"
                     style={{ padding: 0 }}
                     className="transparent-select"
+                    onIonChange={(e) => setFavourites(e.detail.value)}
                   >
-                    <IonSelectOption className="label-dark-mode" value="liked">
+                    <IonSelectOption className="label-dark-mode" value={true}>
                       Liked
                     </IonSelectOption>
                     <IonSelectOption
                       className="label-dark-mode"
-                      value="disliked"
+                      value={false}
                     >
                       Disliked
                     </IonSelectOption>
-                    <IonSelectOption className="label-dark-mode" value="all">
+                    <IonSelectOption className="label-dark-mode" value={null}>
                       All recipes
                     </IonSelectOption>
                   </IonSelect>

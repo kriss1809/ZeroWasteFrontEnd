@@ -445,7 +445,8 @@ export const RateRecipe = async (recipe_id: number, rating: boolean|null) => {
 interface RecipeFilter {
   time: number | null;
   difficulty: number[];
-  recipe_type: string| null;
+  recipe_type: string | null;
+  favourites: boolean | null;
 }
 
 export const FilterRecipes = async (filter: RecipeFilter, limit: number, offset: number) => {
@@ -463,7 +464,6 @@ export const FilterRecipes = async (filter: RecipeFilter, limit: number, offset:
         offset,
       },
   });
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error(error);
