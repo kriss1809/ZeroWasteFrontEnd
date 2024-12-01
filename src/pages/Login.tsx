@@ -7,6 +7,7 @@ import {
   IonLabel,
   IonInput,
   IonContent,
+  IonToast,
   IonLoading,
   IonModal,
 } from "@ionic/react";
@@ -23,6 +24,8 @@ const Login: React.FC = () => {
   const { darkMode } = useTheme();
   const { login } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [toastmessage, setToastMessage] = useState<string>("");
 
   const handleLogin = (e: React.FormEvent) => {
   e.preventDefault();
@@ -40,7 +43,8 @@ const Login: React.FC = () => {
     })
     .catch((error) => {
       setLoading(false);
-      console.log("Error during login:", error);
+      setShowToast(true);
+      setToastMessage(error.detail);
     });
 };
 
@@ -174,6 +178,15 @@ const Login: React.FC = () => {
               isOpen={loading}
               message="Please wait..."
               cssClass={darkMode ? "dark-mode" : ""}
+            />
+            {/* Toast */}
+            <IonToast
+              isOpen={showToast}
+              onDidDismiss={() => setShowToast(false)}
+              message={toastmessage}
+              duration={3000}
+              position="top"
+              style={{marginTop : "20px"}}
             />
           </form>
 
