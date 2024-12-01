@@ -441,3 +441,32 @@ export const RateRecipe = async (recipe_id: number, rating: boolean|null) => {
     console.error(error);
   }
 };
+
+interface RecipeFilter {
+  time: number | null;
+  difficulty: number[];
+  recipe_type: string| null;
+}
+
+export const FilterRecipes = async (filter: RecipeFilter, limit: number, offset: number) => {
+  try {
+    const response = await axios.get<{  count: number;
+  next: string | null;
+  previous: string | null;
+  results: Recipe[];}>(`${url}filter-recipes/`, {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+      },
+      params: {
+        filter,
+        limit,
+        offset,
+      },
+  });
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};

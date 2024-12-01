@@ -10,14 +10,41 @@ import { Recipe } from "../entities/Recipe";
 const Recipes: React.FC = () => {
   const [isFilterPanelVisible, setFilterPanelVisible] = useState(false);
   const { darkMode } = useTheme();
-  const { recipes, loadMoreRecipes, hasMore, resetRecipes } = useRecipes();
+  const { recipes, loadMoreRecipes, hasMore, resetRecipes, loadMoreFilteredRecipes } = useRecipes();
+  const [filtered, setFiltered] = useState<boolean>(false);
+  const [time, setTime] = useState<number | null>(null);
+  const [difficulty, setDifficulty] = useState<number[]>([]);
+  const [recipeType, setRecipeType] = useState<string | null>(null);
 
   const handleInfiniteScroll = async (event: CustomEvent<void>) => {
     if (hasMore) {
-      await loadMoreRecipes();
+      if (filtered) {
+        await loadMoreFilteredRecipes(time, difficulty, recipeType, false );
+      } else {
+        await loadMoreRecipes();
+      }
     }
     (event.target as HTMLIonInfiniteScrollElement).complete();
   };
+
+  const handleFilter = async () => {
+    setFilterPanelVisible(false);
+    if ((time === null || time === 0) && difficulty.length === 0 && recipeType === null) {
+      setFiltered(false);
+      resetRecipes();
+    }
+    else {
+      setFiltered(true);
+      await loadMoreFilteredRecipes(time, difficulty, recipeType, true);
+    }
+  }
+
+  const handleFilterContainer = () => {
+    setTime(null);
+    setDifficulty([]);
+    setRecipeType(null);
+    setFilterPanelVisible(!isFilterPanelVisible);
+  }
 
   useEffect(() => {
     return () =>{
@@ -60,7 +87,7 @@ const Recipes: React.FC = () => {
                 <IonIcon icon={search} />
               </IonButton>
               <IonButton 
-                onClick={() => setFilterPanelVisible(!isFilterPanelVisible)}
+                onClick={() => handleFilterContainer()}
                 className="green-button-gradient"
                 style={{ marginLeft: "5px" }}
               >
@@ -82,19 +109,20 @@ const Recipes: React.FC = () => {
                     style={{ padding: 0 }}
                     placeholder="Difficulty"
                     className="transparent-select"
+                    onIonChange={(e) => setDifficulty(e.detail.value)}  
                   >
-                    <IonSelectOption className="label-dark-mode" value="1">
+                    <IonSelectOption className="label-dark-mode" value={1}>
                       1
                     </IonSelectOption>
-                    <IonSelectOption className="label-dark-mode" value="2">
+                    <IonSelectOption className="label-dark-mode" value={2}>
                       2
                     </IonSelectOption>
-                    <IonSelectOption className="label-dark-mode" value="3">
+                    <IonSelectOption className="label-dark-mode" value={3}>
                       3
                     </IonSelectOption>
                     <IonSelectOption
                       className="label-dark-mode"
-                      value="allDifficulties"
+                      value={[]}
                     >
                       All recipes
                     </IonSelectOption>
@@ -110,6 +138,7 @@ const Recipes: React.FC = () => {
                     style={{ padding: 0 }}
                     placeholder="Type"
                     className="transparent-select"
+                    onIonChange={(e) => setRecipeType(e.detail.value)}
                   >
                     <IonSelectOption
                       className="label-dark-mode"
@@ -143,7 +172,7 @@ const Recipes: React.FC = () => {
                     </IonSelectOption>
                     <IonSelectOption
                       className="label-dark-mode"
-                      value="AllTypes"
+                      value={null}
                     >
                       All types
                     </IonSelectOption>
@@ -164,22 +193,23 @@ const Recipes: React.FC = () => {
                     placeholder="Total time"
                     style={{ padding: 0 }}
                     className="transparent-select"
+                    onIonChange={(e) => setTime(Number(e.detail.value))}
                   >
-                    <IonSelectOption className="label-dark-mode" value="<30">
+                    <IonSelectOption className="label-dark-mode" value="30">
                       &lt; 30 min
                     </IonSelectOption>
-                    <IonSelectOption className="label-dark-mode" value="<60">
+                    <IonSelectOption className="label-dark-mode" value="60">
                       &lt; 60 min
                     </IonSelectOption>
-                    <IonSelectOption className="label-dark-mode" value="<120">
+                    <IonSelectOption className="label-dark-mode" value="120">
                       &lt; 120 min
                     </IonSelectOption>
-                    <IonSelectOption className="label-dark-mode" value="<180">
+                    <IonSelectOption className="label-dark-mode" value="180">
                       &lt; 180 min
                     </IonSelectOption>
                     <IonSelectOption
                       className="label-dark-mode"
-                      value="AllTimes"
+                      value={null}
                     >
                       All recipes
                     </IonSelectOption>
@@ -211,7 +241,17 @@ const Recipes: React.FC = () => {
                   </IonSelect>
                 </div>
               </div>
-            </IonCol>
+              </IonCol>
+              
+              <IonCol size="12" sizeMd="12">
+              <IonButton
+                  className="filter-container green-button-gradient"
+                  style={{ justifyContent: "center", fontSize: "0.75rem" }}
+                  onClick={handleFilter}
+              >
+                Apply filters
+                </IonButton>
+              </IonCol>
           </div>
         )}
 

@@ -1,14 +1,16 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Recipe } from '../entities/Recipe';
-import { GetRecipes, RateRecipe } from './apiClient';
+import { GetRecipes, RateRecipe, FilterRecipes } from './apiClient';
 import { useAuth } from './authProvider';
 import { useWebSocket } from './WebSocketProvider';
 
 interface RecipesContextValue {
     recipes: Recipe[];
     getRecipes: () => Promise<void>;
-    rateRecipe: (recipeId: number, rating: boolean|null) => Promise<void>;
+    rateRecipe: (recipeId: number, rating: boolean | null) => Promise<void>;
+    filterRecipes: (time: number | null, difficulty: number[], recipe_type: string | null) => Promise<void>;
     loadMoreRecipes: () => Promise<void>;
+    loadMoreFilteredRecipes: (time: number | null, difficulty: number[], recipe_type: string | null, isInitialLoad: boolean) => Promise<void>;
     resetRecipes: () => Promise<void>;
     hasMore: boolean;
     isLoading: boolean;
@@ -19,10 +21,10 @@ const RecipesContext = createContext<RecipesContextValue | undefined>(undefined)
 export const RecipesProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [recipes, setRecipes] = useState<Recipe[]>([]);
     const [offset, setOffset] = useState<number>(0);
-    const [limit] = useState<number>(10); // Numărul de elemente per pagină
+    const [limit] = useState<number>(10);
     const [hasMore, setHasMore] = useState<boolean>(true);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const { isAuthenticated, accessToken, refreshAccessToken } = useAuth();
+    const { accessToken, refreshAccessToken } = useAuth();
     const { messages } = useWebSocket();
 
     useEffect(() => {
@@ -68,12 +70,46 @@ export const RecipesProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
     };
 
+const filterRecipes = async (
+    time: number | null,
+    difficulty: number[],
+    recipe_type: string | null,
+    isInitialLoad = false
+) => {
+    if (isLoading || (!hasMore && !isInitialLoad)) return;
+
+    setIsLoading(true);
+    if (isInitialLoad) {
+        setOffset(0);
+    }
+    const response = await FilterRecipes({ time, difficulty, recipe_type }, limit, isInitialLoad ? 0 : offset);
+    if (response) {
+        setRecipes((prev) => (isInitialLoad ? response.results : [...prev, ...response.results]));
+        setOffset((prev) => prev + limit);
+        setHasMore(!!response.next);
+    } else {
+        if (localStorage.getItem("refreshToken")) {
+            refreshAccessToken();
+        }
+    }
+    setIsLoading(false);
+};
+
+const loadMoreFilteredRecipes = async (
+    time: number | null,
+    difficulty: number[],
+    recipe_type: string| null,
+    isInitialLoad : boolean = false
+) => {
+    await filterRecipes(time, difficulty, recipe_type, isInitialLoad);
+};
+
     const loadMoreRecipes = async () => {
         await getRecipes();
     };
 
     return (
-        <RecipesContext.Provider value={{ recipes, getRecipes, rateRecipe, loadMoreRecipes, hasMore, isLoading, resetRecipes }}>
+        <RecipesContext.Provider value={{ recipes, getRecipes, rateRecipe, filterRecipes, loadMoreFilteredRecipes, loadMoreRecipes, hasMore, isLoading, resetRecipes }}>
             {children}
         </RecipesContext.Provider>
     );
