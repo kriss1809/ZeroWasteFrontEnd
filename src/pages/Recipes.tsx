@@ -16,6 +16,7 @@ const Recipes: React.FC = () => {
   const [difficulty, setDifficulty] = useState<number[]>([]);
   const [recipeType, setRecipeType] = useState<string | null>(null);
   const [favourites, setFavourites] = useState<boolean | null>(null);
+  const [nothingFound, setNothingFound] = useState<boolean>(false);
 
   const handleInfiniteScroll = async (event: CustomEvent<void>) => {
     if (hasMore) {
@@ -31,7 +32,7 @@ const Recipes: React.FC = () => {
 const handleFilter = async () => {
   try {
     setFilterPanelVisible(false);
-
+    setNothingFound(false);
     if ((time === null || time === 0) && difficulty.length === 0 && recipeType === null && favourites === null) {
       setFiltered(false);
       resetRecipes();
@@ -41,7 +42,7 @@ const handleFilter = async () => {
       try {
         await loadMoreFilteredRecipes(time, difficulty, recipeType, favourites, true);
       } catch (error: any) {
-        alert("Error loading filtered recipes: " + error.detail);
+        setNothingFound(true);
         resetRecipes();
         setFiltered(false);
       }
@@ -272,7 +273,11 @@ const handleFilter = async () => {
 
           {/* Afișare Rețete */}
           <div>
-            {recipes.map((recipe: Recipe) => (
+            {nothingFound &&
+              <div style={{ textAlign: "center", fontFamily: "Amaranth", fontWeight: "700", fontSize: "1.5rem", marginTop: "20px" }}>
+              No Recipe Found
+              </div>}
+            {!nothingFound && recipes.map((recipe: Recipe) => (
               < RecipeCard
                 key={recipe.id}
                 id={recipe.id}
