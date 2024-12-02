@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import {IonPage, IonHeader, IonToolbar,IonTitle,IonContent,IonButton,IonList,IonItem,IonLabel,IonSelect,IonSelectOption,IonModal,IonIcon,IonInput, IonGrid, IonRow, IonCol, IonInfiniteScroll, IonInfiniteScrollContent} from "@ionic/react";
 import Menu from "../components/Menu";
 import RecipeCard from "../components/RecipeCard";
-import { search, optionsOutline, flameOutline, restaurantOutline, timerOutline, heartOutline } from "ionicons/icons";
+import { search, optionsOutline, flameOutline, restaurantOutline, timerOutline, heartOutline, closeOutline } from "ionicons/icons";
 import { useTheme } from "../components/ThemeContext";
 import { useRecipes } from "../services/RecipesProvider";
 import { Recipe } from "../entities/Recipe";
@@ -10,19 +10,25 @@ import { Recipe } from "../entities/Recipe";
 const Recipes: React.FC = () => {
   const [isFilterPanelVisible, setFilterPanelVisible] = useState(false);
   const { darkMode } = useTheme();
-  const { recipes, loadMoreRecipes, hasMore, resetRecipes, loadMoreFilteredRecipes } = useRecipes();
+  const { recipes, loadMoreRecipes, hasMore, resetRecipes, loadMoreFilteredRecipes, loadMoreSearchRecipes } = useRecipes();
   const [filtered, setFiltered] = useState<boolean>(false);
   const [time, setTime] = useState<number | null>(null);
   const [difficulty, setDifficulty] = useState<number[]>([]);
   const [recipeType, setRecipeType] = useState<string | null>(null);
   const [favourites, setFavourites] = useState<boolean | null>(null);
   const [nothingFound, setNothingFound] = useState<boolean>(false);
+  const [searchText, setSearchText] = useState<string>("");
+  const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
 
   const handleInfiniteScroll = async (event: CustomEvent<void>) => {
     if (hasMore) {
       if (filtered) {
         await loadMoreFilteredRecipes(time, difficulty, recipeType, favourites, false );
-      } else {
+      }
+      else if (isSearchActive) {
+        await loadMoreSearchRecipes(searchText, false);
+      }
+      else {
         await loadMoreRecipes();
       }
     }
@@ -30,28 +36,50 @@ const Recipes: React.FC = () => {
   };
 
 const handleFilter = async () => {
-  try {
-    setFilterPanelVisible(false);
+    try {
+      setFilterPanelVisible(false);
+      setNothingFound(false);
+      if ((time === null || time === 0) && difficulty.length === 0 && recipeType === null && favourites === null) {
+        setFiltered(false);
+        resetRecipes();
+      } else {
+        setFiltered(true);
+
+        try {
+          await loadMoreFilteredRecipes(time, difficulty, recipeType, favourites, true);
+        } catch (error: any) {
+          setNothingFound(true);
+          resetRecipes();
+          setFiltered(false);
+        }
+      }
+    } catch (error: any) {
+      console.log("Unexpected error", error.detail);
+    }
+  };
+
+  const handleSearch = async () => {
+    setIsSearchActive(searchText.trim() !== "");
     setNothingFound(false);
-    if ((time === null || time === 0) && difficulty.length === 0 && recipeType === null && favourites === null) {
-      setFiltered(false);
+    if (searchText.trim() === "") {
       resetRecipes();
     } else {
-      setFiltered(true);
-
       try {
-        await loadMoreFilteredRecipes(time, difficulty, recipeType, favourites, true);
+        await loadMoreSearchRecipes(searchText, true);
+        setFiltered(true);
       } catch (error: any) {
         setNothingFound(true);
         resetRecipes();
-        setFiltered(false);
       }
     }
-  } catch (error: any) {
-    console.log("Unexpected error", error.detail);
-  }
-};
+  };
 
+    const handleCloseSearch = () => {
+    setIsSearchActive(false);
+    setSearchText("");
+    setNothingFound(false);  
+    resetRecipes();  
+  };
 
   const handleFilterContainer = () => {
     setTime(null);
@@ -97,10 +125,19 @@ const handleFilter = async () => {
         <div className={darkMode ? "dark-mode" : ""}>
           <IonCol size="12" sizeMd="12" className="align-items-center">
             <div className="search-container">
-              <IonInput placeholder="Search a recipe" />
-              <IonButton className="green-button-gradient">
+              <IonInput placeholder="Search a recipe" value={searchText} onIonInput={(e) => setSearchText(e.detail.value!)} />
+              <IonButton className="green-button-gradient" onClick={handleSearch}>
                 <IonIcon icon={search} />
               </IonButton>
+              {isSearchActive && (
+                <IonButton
+                  className="green-button-gradient"
+                  onClick={handleCloseSearch}
+                  style={{ marginLeft: "5px" }}
+                >
+                  <IonIcon icon={closeOutline} />
+                </IonButton>
+              )}
               <IonButton 
                 onClick={() => handleFilterContainer()}
                 className="green-button-gradient"

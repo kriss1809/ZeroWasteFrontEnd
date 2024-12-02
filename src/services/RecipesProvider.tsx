@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Recipe } from '../entities/Recipe';
-import { GetRecipes, RateRecipe, FilterRecipes } from './apiClient';
+import { GetRecipes, RateRecipe, FilterRecipes, SearchRecipes } from './apiClient';
 import { useAuth } from './authProvider';
 import { useWebSocket } from './WebSocketProvider';
 
@@ -8,9 +8,11 @@ interface RecipesContextValue {
     recipes: Recipe[];
     getRecipes: () => Promise<void>;
     rateRecipe: (recipeId: number, rating: boolean | null) => Promise<void>;
-    filterRecipes: (time: number | null, difficulty: number[], recipe_type: string | null,  favourites: boolean | null,) => Promise<void>;
+    filterRecipes: (time: number | null, difficulty: number[], recipe_type: string | null, favourites: boolean | null,) => Promise<void>;
+    searchRecipes: (searchText: string) => Promise<void>;
     loadMoreRecipes: () => Promise<void>;
     loadMoreFilteredRecipes: (time: number | null, difficulty: number[], recipe_type: string | null, favourites: boolean | null, isInitialLoad: boolean) => Promise<void>;
+    loadMoreSearchRecipes: (searchText: string, isInitialLoad: boolean) => Promise<void>;
     resetRecipes: () => Promise<void>;
     hasMore: boolean;
     isLoading: boolean;
@@ -98,24 +100,52 @@ const filterRecipes = async (
         throw error;
     }
     setIsLoading(false);
-};
+    };
+    
+    const searchRecipes = async (searchText: string, isInitialLoad = false) => {
+        if (isLoading || (!hasMore && !isInitialLoad)) return;
+        setIsLoading(true);
+        if (isInitialLoad) {
+            setOffset(0);
+        }
+        try {
+            const response = await SearchRecipes(searchText, limit, isInitialLoad ? 0 : offset);
+            if (response) {
+                setRecipes(response.results);
+                setOffset((prev) => prev + limit);
+                setHasMore(!!response.next);
+            } else {
+                if (localStorage.getItem("refreshToken")) {
+                    refreshAccessToken();
+                }
+            }
+        } catch (error) {
+            throw error;
+        }
+        setIsLoading(false);
+    };
 
-const loadMoreFilteredRecipes = async (
-    time: number | null,
-    difficulty: number[],
-    recipe_type: string | null,
-    favourites: boolean | null,
-    isInitialLoad : boolean = false
-) => {
-    await filterRecipes(time, difficulty, recipe_type, favourites, isInitialLoad);
-};
+
+    const loadMoreFilteredRecipes = async (
+        time: number | null,
+        difficulty: number[],
+        recipe_type: string | null,
+        favourites: boolean | null,
+        isInitialLoad : boolean = false
+    ) => {
+        await filterRecipes(time, difficulty, recipe_type, favourites, isInitialLoad);
+    };
+
+    const loadMoreSearchRecipes = async (searchText: string, isInitialLoad = false) => {
+        await searchRecipes(searchText,isInitialLoad);
+    };
 
     const loadMoreRecipes = async () => {
         await getRecipes();
     };
 
     return (
-        <RecipesContext.Provider value={{ recipes, getRecipes, rateRecipe, filterRecipes, loadMoreFilteredRecipes, loadMoreRecipes, hasMore, isLoading, resetRecipes }}>
+        <RecipesContext.Provider value={{ recipes, getRecipes, rateRecipe, filterRecipes, searchRecipes, loadMoreFilteredRecipes, loadMoreSearchRecipes, loadMoreRecipes, hasMore, isLoading, resetRecipes }}>
             {children}
         </RecipesContext.Provider>
     );

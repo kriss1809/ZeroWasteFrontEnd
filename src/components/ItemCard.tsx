@@ -50,9 +50,6 @@ const ItemCard: React.FC<ItemProps> = ({id,name, best_before, opened, consumptio
   best_before ? best_before = convertDateFormat(best_before) : best_before; // Convert the date format
   opened ? (opened = convertDateFormat(opened)) : opened; // Convert the date format if opened is not null 
 
-  const handleItemConsumed = () => {
-    console.log("Item consumed");
-  };
  
   const handleDeleteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -96,7 +93,7 @@ const ItemCard: React.FC<ItemProps> = ({id,name, best_before, opened, consumptio
               <IonButton
                 color="success"
                 size="small"
-                onClick={handleItemConsumed}
+                onClick={handleDeleteClick}
               >
                 <IonIcon icon={restaurantOutline} slot="icon-only" />
               </IonButton>

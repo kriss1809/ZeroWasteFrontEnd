@@ -469,3 +469,24 @@ export const FilterRecipes = async (filter: RecipeFilter, limit: number, offset:
     throw error.response.data;
   }
 };
+
+export const SearchRecipes = async (search: string, limit: number, offset: number) => {
+  try {
+    const response = await axios.get<{  count: number;
+  next: string | null;
+  previous: string | null;
+  results: Recipe[];}>(`${url}search-recipes/`, {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+      },
+      params: {
+        search,
+        limit,
+        offset,
+      },
+  });
+    return response.data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
+};
