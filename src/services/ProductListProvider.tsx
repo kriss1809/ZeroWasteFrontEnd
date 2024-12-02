@@ -18,14 +18,13 @@ const ProductListContext = createContext<ProductListContextValue | undefined>(un
 
 export const ProductListProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [products, setProducts] = useState<Product[]>([]);
-    const { isAuthenticated, refreshAccessToken, accessToken, setShareCode } = useAuth();
+    const { refreshAccessToken, accessToken, setShareCode } = useAuth();
     const { messages, isConnected } = useWebSocket();
     const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
 
     useEffect(() => {
         if (accessToken) {
             getProductList();
-            setFilteredProducts(products);
         }
     }, [accessToken, isConnected, messages]);
 
@@ -33,6 +32,7 @@ export const ProductListProvider: React.FC<{ children: React.ReactNode }> = ({ c
         const response = await GetProductList();
         if (response) {
             setProducts(response.products);
+            setFilteredProducts(response.products);
             setShareCode(response.share_code);
         }
         else {
