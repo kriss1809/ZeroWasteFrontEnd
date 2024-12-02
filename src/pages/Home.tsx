@@ -15,12 +15,27 @@ import { useProductList } from "../services/ProductListProvider";
 
 const Home: React.FC = () => {
   const { darkMode } = useTheme();
-  const { products } = useProductList();
+  const { filteredProducts, searchProduct } = useProductList();
   const [selectedItem, setSelectedItem] = useState< Product | null>(null);
+  const [searchText, setSearchText] = useState<string>("");
+  const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
 
   const handleCancelEdit = () => {
     setSelectedItem(null); 
   };
+
+  const handleSearch = () => {
+    setIsSearchActive(searchText.trim() !== "");
+    searchProduct(searchText);
+  };
+
+  const handleCloseSearch = () => {
+    setIsSearchActive(false);
+    setSearchText("");
+    searchProduct("");
+  };
+
+
 
 
   const [showUploadModal, setshowUploadModal] = useState(false);
@@ -82,14 +97,18 @@ const Home: React.FC = () => {
 
           <IonCol size="12" sizeMd="12" className="align-items-center">
             <div className="search-container">
-              <IonInput placeholder="Search a product" />
-              <IonButton className="green-button-gradient">
+              <IonInput placeholder="Search a product" value={searchText} onIonInput={(e) => setSearchText(e.detail.value!) }/>
+              <IonButton className="green-button-gradient" onClick={handleSearch}>
                 <IonIcon icon={search} />
               </IonButton>
+              {isSearchActive &&
+                <IonButton className="green-button-gradient" onClick={handleCloseSearch} style={{ marginLeft: "5px" }}>
+                <IonIcon icon={closeOutline} />
+              </IonButton>}
             </div>
           </IonCol>
 
-          {products.map((product: any) => (
+          {filteredProducts.map((product: any) => (
             <ItemCard
               key={product.id}
               id={product.id}

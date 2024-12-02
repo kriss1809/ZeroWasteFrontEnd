@@ -6,10 +6,12 @@ import { useWebSocket } from './WebSocketProvider';
 
 interface ProductListContextValue {
     products: Product[];
+    filteredProducts: Product[];    
     getProductList: () => Promise<void>;
     deleteProduct: (product_id: number) => Promise<void>;
     updateProduct: (id: number,productName:string, expirationDate:string, openingDate:string, recommendedDays:string ) => Promise<void>;
-    addProduct: (productName:string, expirationDate:string, openingDate:string, recommendedDays:string) => Promise<void>;
+    addProduct: (productName: string, expirationDate: string, openingDate: string, recommendedDays: string) => Promise<void>;
+    searchProduct: (searchText: string) => Promise<void>;
 }
 
 const ProductListContext = createContext<ProductListContextValue | undefined>(undefined);
@@ -18,10 +20,12 @@ export const ProductListProvider: React.FC<{ children: React.ReactNode }> = ({ c
     const [products, setProducts] = useState<Product[]>([]);
     const { isAuthenticated, refreshAccessToken, accessToken, setShareCode } = useAuth();
     const { messages, isConnected } = useWebSocket();
+    const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
 
     useEffect(() => {
         if (accessToken) {
             getProductList();
+            setFilteredProducts(products);
         }
     }, [accessToken, isConnected, messages]);
 
@@ -49,8 +53,19 @@ export const ProductListProvider: React.FC<{ children: React.ReactNode }> = ({ c
         await AddProduct(productName, expirationDate, openingDate, recommendedDays);
     };
 
+    const searchProduct = async (searchText: string) => {
+        if (searchText.trim() === "") {
+            setFilteredProducts(products);
+        } else {
+            const filtered = products.filter((product) => {
+                return product.name.toLowerCase().includes(searchText.toLowerCase());
+            });
+            setFilteredProducts(filtered);
+        }
+    };
+
     return (
-        <ProductListContext.Provider value={{ products, getProductList, deleteProduct, updateProduct, addProduct }}>
+        <ProductListContext.Provider value={{ products, filteredProducts, getProductList, deleteProduct, updateProduct, addProduct, searchProduct }}>
             {children}
         </ProductListContext.Provider>
     );
