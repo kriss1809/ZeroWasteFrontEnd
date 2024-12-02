@@ -286,6 +286,7 @@ const handleFilter = async () => {
                 time={recipe.time}
                 image={recipe.image}
                 rating={recipe.rating}
+                link = {recipe.link}
               />
             ))}
           </div>
