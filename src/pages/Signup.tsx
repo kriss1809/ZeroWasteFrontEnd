@@ -32,7 +32,7 @@ const Signup: React.FC = () => {
     try {
       registerUser(email, password, confirmPassword).then((response) => {
         if (response) {
-          // toast
+          history.push("/login");
           console.log(response);
         } else {
           console.log("Signup failed");

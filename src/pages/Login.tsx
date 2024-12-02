@@ -7,6 +7,7 @@ import {
   IonLabel,
   IonInput,
   IonContent,
+  IonToast,
   IonLoading,
   IonModal,
 } from "@ionic/react";
@@ -23,23 +24,29 @@ const Login: React.FC = () => {
   const { darkMode } = useTheme();
   const { login } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [toastmessage, setToastMessage] = useState<string>("");
 
   const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      login(email, password).then((response) => {
-        if (response) {
-          setLoading(false);
-          history.push("/home");
-        } else {
-          setLoading(false);
-          console.log("Login failed");}
-      });
-    } catch (error) {
-      console.error("Error during login:", error);
-    }
-  };
+  e.preventDefault();
+  setLoading(true);
+
+  login(email, password)
+    .then((response) => {
+      if (response) {
+        setLoading(false);
+        history.push("/home");
+      } else {
+        setLoading(false);
+        console.log("Login failed");
+      }
+    })
+    .catch((error) => {
+      setLoading(false);
+      setShowToast(true);
+      setToastMessage(error.detail);
+    });
+};
 
   const handleForgotPassword = () => {
     console.log("Forgot password");
@@ -171,6 +178,15 @@ const Login: React.FC = () => {
               isOpen={loading}
               message="Please wait..."
               cssClass={darkMode ? "dark-mode" : ""}
+            />
+            {/* Toast */}
+            <IonToast
+              isOpen={showToast}
+              onDidDismiss={() => setShowToast(false)}
+              message={toastmessage}
+              duration={3000}
+              position="top"
+              style={{marginTop : "20px"}}
             />
           </form>
 

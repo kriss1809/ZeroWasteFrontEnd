@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IonIcon } from "@ionic/react";
 import {
   timerOutline,
@@ -9,13 +9,17 @@ import {
   heart,
 } from "ionicons/icons";
 import "../theme/RecipesCard.css";
+import { useRecipes } from "../services/RecipesProvider";
+import { Browser } from "@capacitor/browser";
 
 export interface RecipeProps {
   id: number;
   name: string;
   difficulty_level: number;
-  time: string;
+  time: number;
   image: string;
+  rating: boolean | null;
+  link: string;
 }
 
 const RecipeCard: React.FC<RecipeProps> = ({
@@ -24,22 +28,40 @@ const RecipeCard: React.FC<RecipeProps> = ({
   difficulty_level,
   time,
   image,
+  rating,
+  link,
 }) => {
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
+  const hours = Math.floor(time / 60); 
+  const minutes = time % 60; 
+  const { rateRecipe } = useRecipes();
+  const openLink = async () => {
+    await Browser.open({ url: link });
+  };
+
+  const timeString = `${hours > 0 ? `${hours}h` : ""}${hours > 0 && minutes > 0 ? " " : ""}${minutes > 0 ? `${minutes} min` : ""}`;
+
+useEffect(() => {
+  setLiked(rating === true);
+  setDisliked(rating === false);
+}, [rating]);
+
 
   const handleLikeClick = () => {
     setLiked(!liked);
     if (disliked) {
-      setDisliked(false); // Dacă a fost apăsat dislike, îl resetăm
+      setDisliked(false);
     }
+    rateRecipe(id, !liked ? !liked : null);
   };
 
   const handleDislikeClick = () => {
     setDisliked(!disliked);
     if (liked) {
-      setLiked(false); // Dacă a fost apăsat like, îl resetăm
+      setLiked(false);
     }
+    rateRecipe(id, !disliked ? disliked : null);
   };
 
   const getDifficultyLabel = (level: number) => {
@@ -56,13 +78,17 @@ const RecipeCard: React.FC<RecipeProps> = ({
   };
 
   return (
+   
     <div className="recipe-card">
       {/* Imaginea rețetei */}
+      <div onClick={() => openLink()}>
       <img src={image} alt={name} className="recipe-photo" />
-
+      </div>
       <div className="recipe-content">
         <div className="recipe-header">
-          <span className="recipe-title">{name}</span>
+          <div onClick={() => openLink()}>
+            <span className="recipe-title">{name}</span>
+          </div>
           <div className="recipe-actions">
             {/* Buton Like */}
             <IonIcon
@@ -85,12 +111,12 @@ const RecipeCard: React.FC<RecipeProps> = ({
 
         <div className="recipe-attributes">
           <IonIcon icon={timerOutline} className="recipe-icon" />
-          {time}
+          {timeString}
           <IonIcon icon={flameOutline} className="recipe-icon" />
           {getDifficultyLabel(difficulty_level)}
         </div>
       </div>
-    </div>
+      </div>
   );
 };
 

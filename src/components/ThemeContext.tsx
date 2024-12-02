@@ -6,6 +6,9 @@ import React, {
   ReactNode,
 } from "react";
 
+import { UpdateDarkMode } from "../services/apiClient";
+import { useAuth } from "../services/authProvider";
+
 interface ThemeContextType {
   darkMode: boolean;
   toggleDarkMode: () => void;
@@ -16,16 +19,14 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export const ThemeProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  // Retrieve the initial darkMode value from localStorage
-  const [darkMode, setDarkMode] = useState<boolean>(() => {
-    const savedMode = localStorage.getItem("darkMode");
-    return savedMode === "true"; // Default to false if not set
-  });
+
+  const { user } = useAuth();
+  const [darkMode, setDarkMode] = useState<boolean>(false);
 
   const toggleDarkMode = () => {
     setDarkMode((prevMode) => {
       const newMode = !prevMode;
-      localStorage.setItem("darkMode", String(newMode)); // Save the new mode to localStorage
+      UpdateDarkMode();
       return newMode;
     });
   };
@@ -33,6 +34,12 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({
   useEffect(() => {
     document.body.classList.toggle("dark-mode", darkMode);
   }, [darkMode]);
+
+  useEffect(() => {
+    if (user) {
+      setDarkMode(user.dark_mode);
+    }
+  }, [user]);
 
   return (
     <ThemeContext.Provider value={{ darkMode, toggleDarkMode }}>

@@ -1,8 +1,9 @@
 import axios from "axios";
-import { User } from "../entitites/User";
+import { User } from "../entities/User";
+import { Recipe } from "../entities/Recipe";
 
-const url = "http://192.168.100.92:8000/";
-// const url = "http://localhost:8000/";
+// const url = "http://192.168.100.92:8000/";
+const url = "http://localhost:8000/";
 export const loginUser = async (email: string, password: string) => {
   try {
     const response = await axios.post<{ access: string; refresh: string }>(
@@ -17,8 +18,8 @@ export const loginUser = async (email: string, password: string) => {
     sessionStorage.setItem("accessToken", access);
     localStorage.setItem("refreshToken", refresh);
     return access;
-  } catch (error) {
-    console.error(error);
+  } catch (error: any) {
+    throw error.response.data;
   }
 };
 
@@ -190,8 +191,7 @@ export const GetProductList = async () => {
     );
     const { share_code, products } = response.data;
     sessionStorage.setItem("share_code", share_code);
-    sessionStorage.setItem("products", JSON.stringify(products));
-    return products;
+    return { share_code, products };
   } catch (error) {
     console.error(error);
   }
@@ -379,6 +379,23 @@ export const UpdatePreferredNotificationHour = async (preferred_notification_hou
   }
 };
 
+export const UpdateDarkMode = async () => {
+  try {
+    const response = await axios.patch(
+      `${url}user/update/dark_mode/`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 
 export const UploadReceipt = async (file: File) => {
   try {
@@ -397,5 +414,96 @@ export const UploadReceipt = async (file: File) => {
     return response;
   } catch (error) {
     console.error(error);
+  }
+};
+
+export const GetRecipes = async (limit: number, offset: number) => {
+  try {
+    const response = await axios.get<{  count: number;
+  next: string | null;
+  previous: string | null;
+  results: Recipe[];}>(`${url}recipes/`, {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+      },
+      params: {
+        limit,
+        offset,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
+
+export const RateRecipe = async (recipe_id: number, rating: boolean|null) => {
+  try {
+    const response = await axios.post(
+      `${url}rate-recipe/`,
+      {
+        recipe_id,
+        rating,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+interface RecipeFilter {
+  time: number | null;
+  difficulty: number[];
+  recipe_type: string | null;
+  favourites: boolean | null;
+}
+
+export const FilterRecipes = async (filter: RecipeFilter, limit: number, offset: number) => {
+  try {
+    const response = await axios.get<{  count: number;
+  next: string | null;
+  previous: string | null;
+  results: Recipe[];}>(`${url}filter-recipes/`, {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+      },
+      params: {
+        filter,
+        limit,
+        offset,
+      },
+  });
+    return response.data;
+  } catch (error: any) {
+    throw error.response.data;
+  }
+};
+
+export const SearchRecipes = async (search: string, limit: number, offset: number) => {
+  try {
+    const response = await axios.get<{  count: number;
+  next: string | null;
+  previous: string | null;
+  results: Recipe[];}>(`${url}search-recipes/`, {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+      },
+      params: {
+        search,
+        limit,
+        offset,
+      },
+  });
+    return response.data;
+  } catch (error: any) {
+    throw error.response.data;
   }
 };

@@ -10,7 +10,7 @@ import {
 } from "@ionic/react";
 import "../theme/addItem.css";
 import { useTheme } from "./ThemeContext";
-import { AddProduct, UpdateProduct } from "../services/apiClient";
+import { useProductList } from "../services/ProductListProvider";
 
 interface AddItemProps {
   selectedItem: {
@@ -21,9 +21,10 @@ interface AddItemProps {
     consumption_days: string;
   } | null; // Updated prop
   onCancelEdit: () => void;
+  setSelectedItem: (item: any) => void;
 }
 
-const AddItem: React.FC<AddItemProps> = ({ selectedItem, onCancelEdit }) => {
+const AddItem: React.FC<AddItemProps> = ({ selectedItem, onCancelEdit, setSelectedItem }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [productName, setProductName] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
@@ -31,6 +32,7 @@ const AddItem: React.FC<AddItemProps> = ({ selectedItem, onCancelEdit }) => {
   const [recommendedDays, setRecommendedDays] = useState("");
   const [error, setError] = useState("");
   const { darkMode } = useTheme();
+  const { addProduct, updateProduct } = useProductList();
 
   const addItemRef = useRef<HTMLDivElement>(null);
 
@@ -41,7 +43,6 @@ const AddItem: React.FC<AddItemProps> = ({ selectedItem, onCancelEdit }) => {
 
   useEffect(() => {
     if (selectedItem) {
-      console.log(selectedItem);
       setProductName(selectedItem.name);
       setExpirationDate(selectedItem.best_before?  convertDateFormat(selectedItem.best_before) : "");
       setOpeningDate(selectedItem.opened ? convertDateFormat(selectedItem.opened) : "");
@@ -85,31 +86,19 @@ const AddItem: React.FC<AddItemProps> = ({ selectedItem, onCancelEdit }) => {
       return; 
     }
 
-    // if (!expirationDate) {
-    //   setError("Expiration date is required.");
-    //   return;
-    // }
 
     if (selectedItem){
-      UpdateProduct(
+      updateProduct(
         selectedItem.id,
         productName,
         expirationDate,
         openingDate,
         recommendedDays
-      ).then((response) => {
-        if (response) {
-          console.log("Product update sended successfully");
-        }
-      });
+      );
+      setSelectedItem(null);
     }
     else{
-
-    AddProduct(productName, expirationDate, openingDate, recommendedDays).then((response) => {
-    if (response) {
-      console.log("Product sended successfully");
-      }
-    });
+      addProduct(productName, expirationDate, openingDate, recommendedDays);
   }
     resetForm();
   };

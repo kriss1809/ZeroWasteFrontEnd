@@ -4,13 +4,15 @@ import {
   UpdateAllergies, UpdateNotificationDay, UpdatePreferences,
   JoinProductList, ChangePassword, RefreshAccessToken
 } from './apiClient';
-import { User } from '../entitites/User';
+import { User } from '../entities/User';
 
 
 interface AuthContextValue {
   user: User | null;
   isAuthenticated: boolean;
   accessToken: string | null;
+  share_code: string;
+  setShareCode: (share_code: string) => void;
   login: (email: string, password: string) => Promise<string | undefined>;
   logout: () => Promise<void>;
   deleteAccount: (password: string) => Promise<any>;
@@ -28,13 +30,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [share_code, setShareCode] = useState<string>('');
 
  const profile = async () => {
     try {
       const profile = await getUserProfile();
       if (profile) {
         setUser(profile);
-        setIsAuthenticated(true);
+        if (!isAuthenticated)
+        {
+          setIsAuthenticated(true);
+        }
       }
     } catch (error) {
       console.error('Failed to load profile:', error);
@@ -48,7 +54,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const token = sessionStorage.getItem('accessToken');
     if (token) {
       profile();
+      setAccessToken(token);
       setIsAuthenticated(true);
+      if (sessionStorage.getItem('share_code')) {
+        setShareCode(sessionStorage.getItem('share_code')!);
+      }
     }
   }, []);
 
@@ -63,7 +73,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           return accessToken;
       }
     } catch (error) {
-      console.error('Login failed:', error);
+      throw error;
     }
   };
 
@@ -85,6 +95,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setIsAuthenticated(false);
       setUser(null);
       setAccessToken(null);
+      sessionStorage.clear();
+      localStorage.clear();
       return response;
     } catch (error) {
       console.error('Delete account failed:', error);
@@ -149,7 +161,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, accessToken , login, logout, deleteAccount, changePassword, updateAllergies, updateNotificationDay, updatePreferences, joinProductList, refreshAccessToken }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, accessToken , login, logout, deleteAccount, changePassword, updateAllergies, updateNotificationDay, updatePreferences, joinProductList, refreshAccessToken, share_code, setShareCode }}>
       {children}
     </AuthContext.Provider>
   );

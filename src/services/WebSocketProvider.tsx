@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useAuth } from './authProvider';
 
-// const url = "ws://localhost:8000/"
-const url = "ws://192.168.100.92:8000/";
+const url = "ws://localhost:8000/"
+// const url = "ws://192.168.100.92:8000/";
 
 interface MessageData {
   type: string;
@@ -12,35 +12,52 @@ interface MessageData {
 interface WebSocketContextValue {
     sendMessage: (message: any) => void;
     messages: MessageData[];
+    productMessages: MessageData[];
+    recipeMessages: MessageData[];
     isConnected: boolean;
 }
 
 const WebSocketContext = createContext<WebSocketContextValue | undefined>(undefined);
 
 export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const { isAuthenticated, user } = useAuth();
+    const { isAuthenticated, accessToken, user } = useAuth();
     const [ws, setWs] = useState<WebSocket | null>(null);
     const [messages, setMessages] = useState<MessageData[]>([]);
+    const [productMessages, setProductMessages] = useState<MessageData[]>([]);
+    const [recipeMessages, setRecipeMessages] = useState<MessageData[]>([]);
     const [isConnected, setIsConnected] = useState(false);
 
     useEffect(() => {
-        if (isAuthenticated) {
+        if (isAuthenticated && user) {
             console.log("Connecting to WebSocket");
-            const token = sessionStorage.getItem('accessToken');
+            const token = accessToken;
             if (!token) return;
 
             const wsUrl = `${url}ws/notifications/`;
             const socket = new WebSocket(wsUrl);
 
             socket.onopen = () => {
-                setIsConnected(true);
                 socket.send(JSON.stringify({ type: 'authorization', payload: { token, share_code: sessionStorage.getItem("share_code"), email: user?.email} }));
             };
 
             socket.onmessage = (event) => {
                 const data = JSON.parse(event.data);
                 console.log('WebSocket message:', data);
-                setMessages((prev) => [...prev, data]);
+
+                if (data.type === "authorization") {
+                    if (data.payload.status === "success") {
+                        setIsConnected(true);
+                    }
+                }
+                if (data.type === "recipe") {
+                    setRecipeMessages((prev) => [...prev, data.payload]);
+                }
+                else if (data.type === "product_message") {
+                    setProductMessages((prev) => [...prev, data.payload]);
+                }
+                else {
+                    setMessages((prev) => [...prev, data]);
+                }
             };
 
             socket.onclose = () => {
@@ -57,6 +74,10 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
                 socket.close();
             };
         };
+        if (!isAuthenticated && ws) {
+            ws.close();
+            setWs(null);
+        }
     }, [isAuthenticated]);
 
     const sendMessage = (message: any) => {
@@ -66,7 +87,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     };
 
     return (
-        <WebSocketContext.Provider value={{ sendMessage, messages, isConnected }}>
+        <WebSocketContext.Provider value={{ sendMessage, messages, isConnected, productMessages, recipeMessages }}>
         {children}
         </WebSocketContext.Provider>
     );
