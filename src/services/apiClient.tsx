@@ -379,6 +379,23 @@ export const UpdatePreferredNotificationHour = async (preferred_notification_hou
   }
 };
 
+export const UpdateDarkMode = async () => {
+  try {
+    const response = await axios.patch(
+      `${url}user/update/dark_mode/`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 
 export const UploadReceipt = async (file: File) => {
   try {

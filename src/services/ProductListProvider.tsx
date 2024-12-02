@@ -19,14 +19,40 @@ const ProductListContext = createContext<ProductListContextValue | undefined>(un
 export const ProductListProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [products, setProducts] = useState<Product[]>([]);
     const { refreshAccessToken, accessToken, setShareCode } = useAuth();
-    const { messages, isConnected } = useWebSocket();
+    const { productMessages, isConnected } = useWebSocket();
     const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+
+    const handleMessages = (message: any) => {
+        if (message.type === 'add_product') {
+            setProducts((prev) => [message.data, ...prev]);
+            setFilteredProducts((prev) => [message.data, ...prev]);
+        }
+        if (message.type === 'delete_product') {
+            setProducts((prev) => prev.filter((product) => product.id !== message.data));
+            setFilteredProducts((prev) => prev.filter((product) => product.id !== message.data));
+        }
+        if (message.type === 'update_product') {
+            setProducts((prev) => prev.map((product) => product.id === message.data.id ? message.data : product));
+            setFilteredProducts((prev) => prev.map((product) => product.id === message.data.id ? message.data : product));
+        }
+        if (message.type === 'add_products') {
+            getProductList();    
+        }
+    }
 
     useEffect(() => {
         if (accessToken) {
             getProductList();
         }
-    }, [accessToken, isConnected, messages]);
+    }, [accessToken, isConnected]);
+
+    useEffect(() => {
+        if (productMessages.length > 0 && accessToken) {
+            const lastMessage = productMessages[productMessages.length - 1]; 
+            handleMessages(lastMessage); 
+        }
+    }, [productMessages]);
+
 
     const getProductList = async () => {
         const response = await GetProductList();

@@ -3,6 +3,7 @@ import { Recipe } from '../entities/Recipe';
 import { GetRecipes, RateRecipe, FilterRecipes, SearchRecipes } from './apiClient';
 import { useAuth } from './authProvider';
 import { useWebSocket } from './WebSocketProvider';
+import { get } from 'axios';
 
 interface RecipesContextValue {
     recipes: Recipe[];
@@ -27,13 +28,15 @@ export const RecipesProvider: React.FC<{ children: React.ReactNode }> = ({ child
     const [hasMore, setHasMore] = useState<boolean>(true);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const { accessToken, refreshAccessToken } = useAuth();
-    const { messages } = useWebSocket();
+    const { recipeMessages, isConnected } = useWebSocket();
 
     useEffect(() => {
-        if (accessToken) {
+        if (accessToken && isConnected) {
+            console.log("Getting recipes");
             resetRecipes();
         }
-    }, [accessToken, messages]);
+    }, [accessToken, recipeMessages, isConnected]);
+
 
     const resetRecipes = async () => {
         setRecipes([]);

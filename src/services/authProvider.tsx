@@ -95,6 +95,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setIsAuthenticated(false);
       setUser(null);
       setAccessToken(null);
+      sessionStorage.clear();
+      localStorage.clear();
       return response;
     } catch (error) {
       console.error('Delete account failed:', error);

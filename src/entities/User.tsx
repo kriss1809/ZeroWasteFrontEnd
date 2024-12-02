@@ -4,4 +4,5 @@ export interface User {
     preferences: string[];
     allergies: string[];
     notification_day: number;
+    dark_mode: boolean;
 }
