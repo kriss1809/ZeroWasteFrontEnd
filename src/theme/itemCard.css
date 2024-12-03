@@ -10,6 +10,10 @@
   background: linear-gradient(135deg, #b71c1c 0%, #f44336 100%);
 }
 
+.item-card.soon-to-expire{
+  background: linear-gradient(135deg, #f4a742 0%, #f4d742 100%);
+}
+
 .item-card-title {
   font-size: 1.2em;
   font-weight: bold;

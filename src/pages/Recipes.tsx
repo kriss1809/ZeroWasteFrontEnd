@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import {IonPage, IonHeader, IonToolbar,IonTitle,IonContent,IonButton,IonList,IonItem,IonLabel,IonSelect,IonSelectOption,IonModal,IonIcon,IonInput, IonGrid, IonRow, IonCol, IonInfiniteScroll, IonInfiniteScrollContent} from "@ionic/react";
 import Menu from "../components/Menu";
 import RecipeCard from "../components/RecipeCard";
-import { search, optionsOutline, flameOutline, restaurantOutline, timerOutline, heartOutline, closeOutline } from "ionicons/icons";
+import { search, optionsOutline, flameOutline, restaurantOutline, timerOutline, heartOutline, closeOutline, refreshCircle, refreshCircleOutline, sync } from "ionicons/icons";
 import { useTheme } from "../components/ThemeContext";
 import { useRecipes } from "../services/RecipesProvider";
 import { Recipe } from "../entities/Recipe";
@@ -59,8 +59,9 @@ const handleFilter = async () => {
   };
 
   const handleSearch = async () => {
-    setIsSearchActive(searchText.trim() !== "");
+    setIsSearchActive(true);
     setNothingFound(false);
+    setFilterPanelVisible(false);
     if (searchText.trim() === "") {
       resetRecipes();
     } else {
@@ -74,20 +75,28 @@ const handleFilter = async () => {
     }
   };
 
-    const handleCloseSearch = () => {
+  const handleCloseSearch = () => {
     setIsSearchActive(false);
     setSearchText("");
-    setNothingFound(false);  
-    resetRecipes();  
+    setNothingFound(false);
+    resetRecipes();
   };
 
   const handleFilterContainer = () => {
+    setIsSearchActive(false);
+    setFilterPanelVisible(!isFilterPanelVisible);
     setTime(null);
     setDifficulty([]);
     setRecipeType(null);
     setFavourites(null);
-    setFilterPanelVisible(!isFilterPanelVisible);
-  }
+  };
+
+  const handleRefresh = () => {
+    setIsSearchActive(false);
+    setFilterPanelVisible(false);
+    resetRecipes();
+  };
+
 
   useEffect(() => {
     return () =>{
@@ -124,208 +133,269 @@ const handleFilter = async () => {
       <IonContent>
         <div className={darkMode ? "dark-mode" : ""}>
           <IonCol size="12" sizeMd="12" className="align-items-center">
-            <div className="search-container">
-              <IonInput placeholder="Search a recipe" value={searchText} onIonInput={(e) => setSearchText(e.detail.value!)} />
-              <IonButton className="green-button-gradient" onClick={handleSearch}>
-                <IonIcon icon={search} />
-              </IonButton>
-              {isSearchActive && (
-                <IonButton
-                  className="green-button-gradient"
-                  onClick={handleCloseSearch}
-                  style={{ marginLeft: "5px" }}
+            <>
+              {!isSearchActive && !isFilterPanelVisible && (
+                <span
+                  className="search-container"
+                  style={{ display: "flex", justifyContent: "space-between" }}
                 >
-                  <IonIcon icon={closeOutline} />
-                </IonButton>
+                  <IonButton
+                    onClick={() => setIsSearchActive(true)}
+                    className="green-button-gradient"
+                    style={{ width: "30%" }}
+                  >
+                    <IonIcon icon={search} />
+                  </IonButton>
+                  <IonButton
+                    onClick={handleFilterContainer}
+                    className="green-button-gradient"
+                    style={{ width: "30%" }}
+                  >
+                    <IonIcon icon={optionsOutline} />
+                  </IonButton>
+                  <IonButton
+                    onClick={handleRefresh}
+                    className="green-button-gradient"
+                    style={{ width: "30%" }}
+                  >
+                    <IonIcon icon={sync} />
+                  </IonButton>
+                </span>
               )}
-              <IonButton 
-                onClick={() => handleFilterContainer()}
-                className="green-button-gradient"
-                style={{ marginLeft: "5px" }}
-              >
-                <IonIcon icon={optionsOutline} />
-              </IonButton>
-            </div>
+              {isSearchActive && (
+                <div className="search-container">
+                  <IonInput
+                    placeholder="Search a recipe"
+                    value={searchText}
+                    onIonInput={(e) => setSearchText(e.detail.value!)}
+                  />
+                  <IonButton
+                    className="green-button-gradient"
+                    onClick={handleSearch}
+                  >
+                    <IonIcon icon={search} />
+                  </IonButton>
+                  <IonButton
+                    color="danger"
+                    onClick={handleCloseSearch}
+                    style={{ marginLeft: "5px" }}
+                  >
+                    <IonIcon icon={closeOutline} />
+                  </IonButton>
+                </div>
+              )}
+            </>
+
+            {isFilterPanelVisible && (
+              <div id="filter-panel">
+                <IonCol size="12" sizeMd="12">
+                  <div className="filter-container">
+                    {/* Difficulty Filter */}
+                    <div className="filter-field">
+                      <IonIcon icon={flameOutline} size="large" />
+                      <IonSelect
+                        interface="popover"
+                        multiple={true}
+                        style={{ padding: 0 }}
+                        placeholder="Difficulty"
+                        className="transparent-select"
+                        onIonChange={(e) => setDifficulty(e.detail.value)}
+                      >
+                        <IonSelectOption className="label-dark-mode" value={1}>
+                          1
+                        </IonSelectOption>
+                        <IonSelectOption className="label-dark-mode" value={2}>
+                          2
+                        </IonSelectOption>
+                        <IonSelectOption className="label-dark-mode" value={3}>
+                          3
+                        </IonSelectOption>
+                        <IonSelectOption className="label-dark-mode" value={[]}>
+                          All recipes
+                        </IonSelectOption>
+                      </IonSelect>
+                    </div>
+
+                    {/* Type Filter */}
+                    <div className="filter-field">
+                      <IonIcon icon={restaurantOutline} size="large" />
+                      <IonSelect
+                        interface="popover"
+                        multiple={false}
+                        style={{ padding: 0 }}
+                        placeholder="Type"
+                        className="transparent-select"
+                        onIonChange={(e) => setRecipeType(e.detail.value)}
+                      >
+                        <IonSelectOption
+                          className="label-dark-mode"
+                          value="Breakfast"
+                        >
+                          Breakfast
+                        </IonSelectOption>
+                        <IonSelectOption
+                          className="label-dark-mode"
+                          value="Starters"
+                        >
+                          Starters
+                        </IonSelectOption>
+                        <IonSelectOption
+                          className="label-dark-mode"
+                          value="Mains"
+                        >
+                          Mains
+                        </IonSelectOption>
+                        <IonSelectOption
+                          className="label-dark-mode"
+                          value="Sides"
+                        >
+                          Sides
+                        </IonSelectOption>
+                        <IonSelectOption
+                          className="label-dark-mode"
+                          value="Desserts"
+                        >
+                          Desserts
+                        </IonSelectOption>
+                        <IonSelectOption
+                          className="label-dark-mode"
+                          value="Snacks"
+                        >
+                          Snacks
+                        </IonSelectOption>
+                        <IonSelectOption
+                          className="label-dark-mode"
+                          value="Drinks"
+                        >
+                          Drinks
+                        </IonSelectOption>
+                        <IonSelectOption
+                          className="label-dark-mode"
+                          value={null}
+                        >
+                          All types
+                        </IonSelectOption>
+                      </IonSelect>
+                    </div>
+                  </div>
+                </IonCol>
+
+                {/* Additional Filters */}
+                <IonCol size="12" sizeMd="12">
+                  <div className="filter-container">
+                    {/* Time Filter */}
+                    <div className="filter-field">
+                      <IonIcon icon={timerOutline} size="large" />
+                      <IonSelect
+                        interface="popover"
+                        multiple={false}
+                        placeholder="Total time"
+                        style={{ padding: 0 }}
+                        className="transparent-select"
+                        onIonChange={(e) => setTime(Number(e.detail.value))}
+                      >
+                        <IonSelectOption className="label-dark-mode" value="30">
+                          &lt; 30 min
+                        </IonSelectOption>
+                        <IonSelectOption className="label-dark-mode" value="60">
+                          &lt; 60 min
+                        </IonSelectOption>
+                        <IonSelectOption
+                          className="label-dark-mode"
+                          value="120"
+                        >
+                          &lt; 120 min
+                        </IonSelectOption>
+                        <IonSelectOption
+                          className="label-dark-mode"
+                          value="180"
+                        >
+                          &lt; 180 min
+                        </IonSelectOption>
+                        <IonSelectOption
+                          className="label-dark-mode"
+                          value={null}
+                        >
+                          All recipes
+                        </IonSelectOption>
+                      </IonSelect>
+                    </div>
+
+                    {/* Favourites Filter */}
+                    <div className="filter-field">
+                      <IonIcon icon={heartOutline} size="large" />
+                      <IonSelect
+                        interface="popover"
+                        multiple={false}
+                        placeholder="Favourites"
+                        style={{ padding: 0 }}
+                        className="transparent-select"
+                        onIonChange={(e) => setFavourites(e.detail.value)}
+                      >
+                        <IonSelectOption
+                          className="label-dark-mode"
+                          value={true}
+                        >
+                          Liked
+                        </IonSelectOption>
+                        <IonSelectOption
+                          className="label-dark-mode"
+                          value={false}
+                        >
+                          Disliked
+                        </IonSelectOption>
+                        <IonSelectOption
+                          className="label-dark-mode"
+                          value={null}
+                        >
+                          All recipes
+                        </IonSelectOption>
+                      </IonSelect>
+                    </div>
+                  </div>
+                </IonCol>
+
+                <IonCol size="12" sizeMd="12">
+                  <IonButton
+                    className="filter-container green-button-gradient"
+                    style={{ justifyContent: "center", fontSize: "0.75rem" }}
+                    onClick={handleFilter}
+                  >
+                    Apply filters
+                  </IonButton>
+                </IonCol>
+              </div>
+            )}
           </IonCol>
-
-        {isFilterPanelVisible && (
-          <div id="filter-panel">
-            <IonCol size="12" sizeMd="12">
-              <div className="filter-container">
-                {/* Difficulty Filter */}
-                <div className="filter-field">
-                  <IonIcon icon={flameOutline} size="large" />
-                  <IonSelect
-                    interface="popover"
-                    multiple={true}
-                    style={{ padding: 0 }}
-                    placeholder="Difficulty"
-                    className="transparent-select"
-                    onIonChange={(e) => setDifficulty(e.detail.value)}  
-                  >
-                    <IonSelectOption className="label-dark-mode" value={1}>
-                      1
-                    </IonSelectOption>
-                    <IonSelectOption className="label-dark-mode" value={2}>
-                      2
-                    </IonSelectOption>
-                    <IonSelectOption className="label-dark-mode" value={3}>
-                      3
-                    </IonSelectOption>
-                    <IonSelectOption
-                      className="label-dark-mode"
-                      value={[]}
-                    >
-                      All recipes
-                    </IonSelectOption>
-                  </IonSelect>
-                </div>
-
-                {/* Type Filter */}
-                <div className="filter-field">
-                  <IonIcon icon={restaurantOutline} size="large" />
-                  <IonSelect
-                    interface="popover"
-                    multiple={false}
-                    style={{ padding: 0 }}
-                    placeholder="Type"
-                    className="transparent-select"
-                    onIonChange={(e) => setRecipeType(e.detail.value)}
-                  >
-                    <IonSelectOption
-                      className="label-dark-mode"
-                      value="Breakfast"
-                    >
-                      Breakfast
-                    </IonSelectOption>
-                    <IonSelectOption
-                      className="label-dark-mode"
-                      value="Starters"
-                    >
-                      Starters
-                    </IonSelectOption>
-                    <IonSelectOption className="label-dark-mode" value="Mains">
-                      Mains
-                    </IonSelectOption>
-                    <IonSelectOption className="label-dark-mode" value="Sides">
-                      Sides
-                    </IonSelectOption>
-                    <IonSelectOption
-                      className="label-dark-mode"
-                      value="Desserts"
-                    >
-                      Desserts
-                    </IonSelectOption>
-                    <IonSelectOption className="label-dark-mode" value="Snacks">
-                      Snacks
-                    </IonSelectOption>
-                    <IonSelectOption className="label-dark-mode" value="Drinks">
-                      Drinks
-                    </IonSelectOption>
-                    <IonSelectOption
-                      className="label-dark-mode"
-                      value={null}
-                    >
-                      All types
-                    </IonSelectOption>
-                  </IonSelect>
-                </div>
-              </div>
-            </IonCol>
-
-            {/* Additional Filters */}
-            <IonCol size="12" sizeMd="12">
-              <div className="filter-container">
-                {/* Time Filter */}
-                <div className="filter-field">
-                  <IonIcon icon={timerOutline} size="large" />
-                  <IonSelect
-                    interface="popover"
-                    multiple={false}
-                    placeholder="Total time"
-                    style={{ padding: 0 }}
-                    className="transparent-select"
-                    onIonChange={(e) => setTime(Number(e.detail.value))}
-                  >
-                    <IonSelectOption className="label-dark-mode" value="30">
-                      &lt; 30 min
-                    </IonSelectOption>
-                    <IonSelectOption className="label-dark-mode" value="60">
-                      &lt; 60 min
-                    </IonSelectOption>
-                    <IonSelectOption className="label-dark-mode" value="120">
-                      &lt; 120 min
-                    </IonSelectOption>
-                    <IonSelectOption className="label-dark-mode" value="180">
-                      &lt; 180 min
-                    </IonSelectOption>
-                    <IonSelectOption
-                      className="label-dark-mode"
-                      value={null}
-                    >
-                      All recipes
-                    </IonSelectOption>
-                  </IonSelect>
-                </div>
-
-                {/* Favourites Filter */}
-                <div className="filter-field">
-                  <IonIcon icon={heartOutline} size="large" />
-                  <IonSelect
-                    interface="popover"
-                    multiple={false}
-                    placeholder="Favourites"
-                    style={{ padding: 0 }}
-                    className="transparent-select"
-                    onIonChange={(e) => setFavourites(e.detail.value)}
-                  >
-                    <IonSelectOption className="label-dark-mode" value={true}>
-                      Liked
-                    </IonSelectOption>
-                    <IonSelectOption
-                      className="label-dark-mode"
-                      value={false}
-                    >
-                      Disliked
-                    </IonSelectOption>
-                    <IonSelectOption className="label-dark-mode" value={null}>
-                      All recipes
-                    </IonSelectOption>
-                  </IonSelect>
-                </div>
-              </div>
-              </IonCol>
-              
-              <IonCol size="12" sizeMd="12">
-              <IonButton
-                  className="filter-container green-button-gradient"
-                  style={{ justifyContent: "center", fontSize: "0.75rem" }}
-                  onClick={handleFilter}
-              >
-                Apply filters
-                </IonButton>
-              </IonCol>
-          </div>
-        )}
 
           {/* Afișare Rețete */}
           <div>
-            {nothingFound &&
-              <div style={{ textAlign: "center", fontFamily: "Amaranth", fontWeight: "700", fontSize: "1.5rem", marginTop: "20px" }}>
-              No Recipe Found
-              </div>}
-            {!nothingFound && recipes.map((recipe: Recipe) => (
-              < RecipeCard
-                key={recipe.id}
-                id={recipe.id}
-                name={recipe.name}
-                difficulty_level={recipe.difficulty}
-                time={recipe.time}
-                image={recipe.image}
-                rating={recipe.rating}
-                link = {recipe.link}
-              />
-            ))}
+            {nothingFound && (
+              <div
+                style={{
+                  textAlign: "center",
+                  fontFamily: "Amaranth",
+                  fontWeight: "700",
+                  fontSize: "1.5rem",
+                  marginTop: "20px",
+                }}
+              >
+                No Recipe Found
+              </div>
+            )}
+            {!nothingFound &&
+              recipes.map((recipe: Recipe) => (
+                <RecipeCard
+                  key={recipe.id}
+                  id={recipe.id}
+                  name={recipe.name}
+                  difficulty_level={recipe.difficulty}
+                  time={recipe.time}
+                  image={recipe.image}
+                  rating={recipe.rating}
+                  link={recipe.link}
+                />
+              ))}
           </div>
 
           <IonInfiniteScroll
