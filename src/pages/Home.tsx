@@ -16,12 +16,12 @@ import { useProductList } from "../services/ProductListProvider";
 const Home: React.FC = () => {
   const { darkMode } = useTheme();
   const { filteredProducts, searchProduct } = useProductList();
-  const [selectedItem, setSelectedItem] = useState< Product | null>(null);
+  const [selectedItem, setSelectedItem] = useState<Product | null>(null);
   const [searchText, setSearchText] = useState<string>("");
   const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
 
   const handleCancelEdit = () => {
-    setSelectedItem(null); 
+    setSelectedItem(null);
   };
 
   const handleSearch = () => {
@@ -35,12 +35,8 @@ const Home: React.FC = () => {
     searchProduct("");
   };
 
-
-
-
   const [showUploadModal, setshowUploadModal] = useState(false);
-  const [showCollaboratorsModal, setshowCollaboratorsModal] = useState(false); 
-
+  const [showCollaboratorsModal, setshowCollaboratorsModal] = useState(false);
 
   const handleEditItem = (
     id: number,
@@ -49,8 +45,30 @@ const Home: React.FC = () => {
     opened: string,
     consumption_days: string
   ) => {
-    setSelectedItem({id, name, best_before, opened, consumption_days });
+    setSelectedItem({ id, name, best_before, opened, consumption_days });
   };
+
+  // Funcție pentru sortare după data de expirare
+  const sortProductsByDate = (products: Product[]) => {
+    return products.sort((a, b) => {
+      if (!a.best_before && !b.best_before) {
+        return 0; // Ambele sunt null
+      }
+      if (!a.best_before) {
+        return 1; // `a` este null, deci merge la final
+      }
+      if (!b.best_before) {
+        return -1; // `b` este null, deci merge la final
+      }
+      // Ambele au date, comparăm normal
+      const dateA = new Date(a.best_before);
+      const dateB = new Date(b.best_before);
+      return dateA.getTime() - dateB.getTime();
+    });
+  };
+
+  // Aplicăm sortarea
+  const sortedProducts = sortProductsByDate(filteredProducts);
 
   return (
     <IonPage>
@@ -94,17 +112,28 @@ const Home: React.FC = () => {
 
       <IonContent>
         <div className={darkMode ? "dark-mode" : ""}>
-
           <IonCol size="12" sizeMd="12" className="align-items-center">
             <div className="search-container">
-              <IonInput placeholder="Search a product" value={searchText} onIonInput={(e) => setSearchText(e.detail.value!) }/>
-              <IonButton className="green-button-gradient" onClick={handleSearch}>
+              <IonInput
+                placeholder="Search a product"
+                value={searchText}
+                onIonInput={(e) => setSearchText(e.detail.value!)}
+              />
+              <IonButton
+                className="green-button-gradient"
+                onClick={handleSearch}
+              >
                 <IonIcon icon={search} />
               </IonButton>
-              {isSearchActive &&
-                <IonButton className="green-button-gradient" onClick={handleCloseSearch} style={{ marginLeft: "5px" }}>
-                <IonIcon icon={closeOutline} />
-              </IonButton>}
+              {isSearchActive && (
+                <IonButton
+                  className="green-button-gradient"
+                  onClick={handleCloseSearch}
+                  style={{ marginLeft: "5px" }}
+                >
+                  <IonIcon icon={closeOutline} />
+                </IonButton>
+              )}
             </div>
           </IonCol>
 
@@ -123,7 +152,11 @@ const Home: React.FC = () => {
       </IonContent>
 
       <div slot="bottom">
-        <AddItem selectedItem={selectedItem} onCancelEdit={handleCancelEdit} setSelectedItem={setSelectedItem} />
+        <AddItem
+          selectedItem={selectedItem}
+          onCancelEdit={handleCancelEdit}
+          setSelectedItem={setSelectedItem}
+        />
         <Menu />
       </div>
     </IonPage>

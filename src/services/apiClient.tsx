@@ -2,8 +2,8 @@ import axios from "axios";
 import { User } from "../entities/User";
 import { Recipe } from "../entities/Recipe";
 
-// const url = "http://192.168.100.92:8000/";
-const url = "http://localhost:8000/";
+const url = "http://192.168.100.92:8000/";
+// const url = "http://localhost:8000/";
 export const loginUser = async (email: string, password: string) => {
   try {
     const response = await axios.post<{ access: string; refresh: string }>(

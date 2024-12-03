@@ -3,14 +3,12 @@ import React from "react";
 import {
   IonButton,
   IonContent,
-  IonHeader,
   IonPage,
-  IonTitle,
-  IonToolbar,
   IonItem,
   IonLabel,
   IonInput,
-  IonText
+  IonText,
+  IonToast
 } from "@ionic/react";
 import "../theme/login.css";
 import { registerUser } from '../services/apiClient';
@@ -26,18 +24,29 @@ const Signup: React.FC = () => {
   const [emailError, setEmailError] = useState<string>("");
   const history = useHistory();
 
+  const [showToast, setShowToast] = useState(false);
+  const [toastmessage, setToastMessage] = useState<string>("");
+
   const handleSignup = (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
       registerUser(email, password, confirmPassword).then((response) => {
         if (response) {
-          history.push("/login");
+          setShowToast(true);
+          setToastMessage(
+            "Please verify your email to complete the registration."
+          );
           console.log(response);
+
+          // Redirecționare după activarea toast-ului
+          setTimeout(() => {
+            history.push("/login");
+          }, 3000); // Așteaptă ca toast-ul să fie afișat
         } else {
           console.log("Signup failed");
         }
-      }); 
+      });
     } catch (error) {
       console.error("Error during signup:", error);
     }
@@ -71,7 +80,6 @@ const Signup: React.FC = () => {
 
   return (
     <IonPage>
-      <IonContent>
         <div className={darkMode ? "dark-mode" : ""}>
           <div className="center-content-vertically">
             <img
@@ -158,7 +166,16 @@ const Signup: React.FC = () => {
             </form>
           </div>
         </div>
-      </IonContent>
+
+        {/* Toast */}
+        <IonToast
+          isOpen={showToast}
+          onDidDismiss={() => setShowToast(false)}
+          message={toastmessage}
+          duration={3000}
+          position="top"
+          style={{ marginTop: "20px" }}
+        />
     </IonPage>
   );
 };
