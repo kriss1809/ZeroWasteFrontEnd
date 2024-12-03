@@ -1,5 +1,5 @@
 // Home.tsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { IonHeader, IonPage, IonContent, IonButton, IonIcon, IonModal, IonList, IonItem, IonLabel, IonListHeader } from "@ionic/react";
 import Menu from "../components/Menu";
 import AddItem from "../components/AddItem";
@@ -19,6 +19,7 @@ const Home: React.FC = () => {
   const [selectedItem, setSelectedItem] = useState<Product | null>(null);
   const [searchText, setSearchText] = useState<string>("");
   const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
+  const [nothingFound, setNothingFound] = useState<boolean>(false);
 
   const handleCancelEdit = () => {
     setSelectedItem(null);
@@ -26,14 +27,28 @@ const Home: React.FC = () => {
 
   const handleSearch = () => {
     setIsSearchActive(searchText.trim() !== "");
-    searchProduct(searchText);
+    searchProduct(searchText); // Declanșează căutarea
   };
+
+  // Monitorizează filteredProducts pentru a seta `nothingFound`
+  useEffect(() => {
+    if (isSearchActive) {
+      setNothingFound(filteredProducts.length === 0);
+    }
+  }, [filteredProducts, isSearchActive]);
 
   const handleCloseSearch = () => {
     setIsSearchActive(false);
     setSearchText("");
     searchProduct("");
   };
+
+  useEffect(() => {
+    if (searchText.trim() === "") {
+      searchProduct(""); // Încărcați lista completă
+      setNothingFound(false); // Asigură că mesajul "No Recipe Found" dispare
+    }
+  }, [searchText, searchProduct]);
 
   const [showUploadModal, setshowUploadModal] = useState(false);
   const [showCollaboratorsModal, setshowCollaboratorsModal] = useState(false);
@@ -137,17 +152,32 @@ const Home: React.FC = () => {
             </div>
           </IonCol>
 
-          {filteredProducts.map((product: any) => (
-            <ItemCard
-              key={product.id}
-              id={product.id}
-              name={product.name}
-              best_before={product.best_before}
-              opened={product.opened}
-              consumption_days={product.consumption_days}
-              onEdit={handleEditItem}
-            />
-          ))}
+          {nothingFound && (
+            <div
+              style={{
+                textAlign: "center",
+                fontFamily: "Amaranth",
+                fontWeight: "700",
+                fontSize: "1.5rem",
+                marginTop: "20px",
+              }}
+            >
+              No Recipe Found
+            </div>
+          )}
+
+          {!nothingFound &&
+            filteredProducts.map((product: any) => (
+              <ItemCard
+                key={product.id}
+                id={product.id}
+                name={product.name}
+                best_before={product.best_before}
+                opened={product.opened}
+                consumption_days={product.consumption_days}
+                onEdit={handleEditItem}
+              />
+            ))}
         </div>
       </IonContent>
 

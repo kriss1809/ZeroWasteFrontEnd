@@ -202,16 +202,16 @@ const handleFilter = async () => {
                         onIonChange={(e) => setDifficulty(e.detail.value)}
                       >
                         <IonSelectOption className="label-dark-mode" value={1}>
-                          1
+                          Easy
                         </IonSelectOption>
                         <IonSelectOption className="label-dark-mode" value={2}>
-                          2
+                          Medium
                         </IonSelectOption>
                         <IonSelectOption className="label-dark-mode" value={3}>
-                          3
+                          Hard
                         </IonSelectOption>
                         <IonSelectOption className="label-dark-mode" value={[]}>
-                          All recipes
+                          All difficulties
                         </IonSelectOption>
                       </IonSelect>
                     </div>
@@ -298,19 +298,19 @@ const handleFilter = async () => {
                           &lt; 30 min
                         </IonSelectOption>
                         <IonSelectOption className="label-dark-mode" value="60">
-                          &lt; 60 min
+                          &lt; 1h
                         </IonSelectOption>
                         <IonSelectOption
                           className="label-dark-mode"
                           value="120"
                         >
-                          &lt; 120 min
+                          &lt; 2h
                         </IonSelectOption>
                         <IonSelectOption
                           className="label-dark-mode"
                           value="180"
                         >
-                          &lt; 180 min
+                          &lt; 3h
                         </IonSelectOption>
                         <IonSelectOption
                           className="label-dark-mode"
