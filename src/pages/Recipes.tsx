@@ -80,20 +80,26 @@ const handleFilter = async () => {
     setSearchText("");
     setNothingFound(false);
     resetRecipes();
+    setTime(null);
+    setDifficulty([]);
+    setRecipeType(null);
+    setFavourites(null);
+    setFiltered(false);
   };
 
   const handleFilterContainer = () => {
     setIsSearchActive(false);
     setFilterPanelVisible(!isFilterPanelVisible);
-    setTime(null);
-    setDifficulty([]);
-    setRecipeType(null);
-    setFavourites(null);
   };
 
   const handleRefresh = () => {
     refreshRecipes().then(() => {
       setNothingFound(false);
+      setTime(null);
+      setDifficulty([]);
+      setRecipeType(null);
+      setFavourites(null);
+      setFiltered(false);
     });
   };
 
@@ -197,6 +203,7 @@ const handleFilter = async () => {
                         interface="popover"
                         multiple={true}
                         style={{ padding: 0 }}
+                        value={difficulty}
                         placeholder="Difficulty"
                         className="transparent-select"
                         onIonChange={(e) => setDifficulty(e.detail.value)}
@@ -223,6 +230,7 @@ const handleFilter = async () => {
                         interface="popover"
                         multiple={false}
                         style={{ padding: 0 }}
+                        value={recipeType}
                         placeholder="Type"
                         className="transparent-select"
                         onIonChange={(e) => setRecipeType(e.detail.value)}
@@ -290,6 +298,7 @@ const handleFilter = async () => {
                         interface="popover"
                         multiple={false}
                         placeholder="Total time"
+                        value={time?.toString()}
                         style={{ padding: 0 }}
                         className="transparent-select"
                         onIonChange={(e) => setTime(Number(e.detail.value))}
@@ -328,6 +337,7 @@ const handleFilter = async () => {
                         interface="popover"
                         multiple={false}
                         placeholder="Favourites"
+                        value={favourites}
                         style={{ padding: 0 }}
                         className="transparent-select"
                         onIonChange={(e) => setFavourites(e.detail.value)}
