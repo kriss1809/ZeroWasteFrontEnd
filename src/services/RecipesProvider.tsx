@@ -10,11 +10,11 @@ interface RecipesContextValue {
     recipes: Recipe[];
     getRecipes: () => Promise<void>;
     rateRecipe: (recipeId: number, rating: boolean | null) => Promise<void>;
-    filterRecipes: (time: number | null, difficulty: number[], recipe_type: string | null, favourites: boolean | null,) => Promise<void>;
+    filterRecipes: (time: number | null, difficulty: number[] | null, recipe_type: string | null, favourites: boolean | null,) => Promise<void>;
     searchRecipes: (searchText: string) => Promise<void>;
     refreshRecipes: () => Promise<void>;
     loadMoreRecipes: () => Promise<void>;
-    loadMoreFilteredRecipes: (time: number | null, difficulty: number[], recipe_type: string | null, favourites: boolean | null, isInitialLoad: boolean) => Promise<void>;
+    loadMoreFilteredRecipes: (time: number | null, difficulty: number[] | null, recipe_type: string | null, favourites: boolean | null, isInitialLoad: boolean) => Promise<void>;
     loadMoreSearchRecipes: (searchText: string, isInitialLoad: boolean) => Promise<void>;
     resetRecipes: () => Promise<void>;
     hasMore: boolean;
@@ -79,7 +79,7 @@ export const RecipesProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
 const filterRecipes = async (
     time: number | null,
-    difficulty: number[],
+    difficulty: number[] | null,
     recipe_type: string | null,
     favourites: boolean | null,
     isInitialLoad = false
@@ -137,7 +137,7 @@ const filterRecipes = async (
 
     const loadMoreFilteredRecipes = async (
         time: number | null,
-        difficulty: number[],
+        difficulty: number[] | null,
         recipe_type: string | null,
         favourites: boolean | null,
         isInitialLoad : boolean = false

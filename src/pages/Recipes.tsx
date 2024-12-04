@@ -13,7 +13,7 @@ const Recipes: React.FC = () => {
   const { recipes, loadMoreRecipes, hasMore, resetRecipes, loadMoreFilteredRecipes, loadMoreSearchRecipes, refreshRecipes } = useRecipes();
   const [filtered, setFiltered] = useState<boolean>(false);
   const [time, setTime] = useState<number | null>(null);
-  const [difficulty, setDifficulty] = useState<number[]>([]);
+  const [difficulty, setDifficulty] = useState<number[] | null>(null);
   const [recipeType, setRecipeType] = useState<string | null>(null);
   const [favourites, setFavourites] = useState<boolean | null>(null);
   const [nothingFound, setNothingFound] = useState<boolean>(false);
@@ -39,7 +39,7 @@ const handleFilter = async () => {
     try {
       setFilterPanelVisible(false);
       setNothingFound(false);
-      if ((time === null || time === 0) && difficulty.length === 0 && recipeType === null && favourites === null) {
+      if ((time === null || time === 0) &&(difficulty?.length === 0 || null) && recipeType === null && favourites === null) {
         setFiltered(false);
         resetRecipes();
       } else {
@@ -81,7 +81,7 @@ const handleFilter = async () => {
     setNothingFound(false);
     resetRecipes();
     setTime(null);
-    setDifficulty([]);
+    setDifficulty(null);
     setRecipeType(null);
     setFavourites(null);
     setFiltered(false);
@@ -96,7 +96,7 @@ const handleFilter = async () => {
     refreshRecipes().then(() => {
       setNothingFound(false);
       setTime(null);
-      setDifficulty([]);
+      setDifficulty(null);
       setRecipeType(null);
       setFavourites(null);
       setFiltered(false);
@@ -217,7 +217,7 @@ const handleFilter = async () => {
                         <IonSelectOption className="label-dark-mode" value={3}>
                           Hard
                         </IonSelectOption>
-                        <IonSelectOption className="label-dark-mode" value={[]}>
+                        <IonSelectOption className="label-dark-mode" value={null}>
                           All difficulties
                         </IonSelectOption>
                       </IonSelect>
@@ -298,26 +298,26 @@ const handleFilter = async () => {
                         interface="popover"
                         multiple={false}
                         placeholder="Total time"
-                        value={time?.toString()}
+                        value={time}
                         style={{ padding: 0 }}
                         className="transparent-select"
-                        onIonChange={(e) => setTime(Number(e.detail.value))}
+                        onIonChange={(e) => setTime(e.detail.value)}
                       >
-                        <IonSelectOption className="label-dark-mode" value="30">
+                        <IonSelectOption className="label-dark-mode" value={30}>
                           &lt; 30 min
                         </IonSelectOption>
-                        <IonSelectOption className="label-dark-mode" value="60">
+                        <IonSelectOption className="label-dark-mode" value={60}>
                           &lt; 1h
                         </IonSelectOption>
                         <IonSelectOption
                           className="label-dark-mode"
-                          value="120"
+                          value={120}
                         >
                           &lt; 2h
                         </IonSelectOption>
                         <IonSelectOption
                           className="label-dark-mode"
-                          value="180"
+                          value={180}
                         >
                           &lt; 3h
                         </IonSelectOption>
