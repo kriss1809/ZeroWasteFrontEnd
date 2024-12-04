@@ -2,7 +2,8 @@ import {
   IonLabel,
   IonButton,
   IonInput, IonModal,
-  IonLoading
+  IonLoading,
+  IonToast
 } from "@ionic/react";
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
@@ -29,6 +30,8 @@ const AccountSettings: React.FC = () => {
     const [showDeleteAccountModal, setShowDeleteAccountModal] =
     useState<boolean>(false);
     const [deletePassword, setDeletePassword] = useState<string>("");
+    const [showToast, setShowToast] = useState(false);
+    const [toastmessage, setToastMessage] = useState<string>("");
 
     useEffect(() => {
     
@@ -41,29 +44,33 @@ const AccountSettings: React.FC = () => {
     const handleSaveNewPassword = () => {
         setLoading(true);
         changePassword(oldPassword, newPassword, confirmNewPassword).then((response) => {
-          if (response && response.status === 200){
+          if (response ){
             setLoading(false);
             setShowChangePasswordModal(false);}
-          else{
-            console.log("Error changing password");
-            setLoading(false);}
+        }).catch((error) => {
+          setToastMessage(error.detail);
+          setShowToast(true);
+          setLoading(false);
+          setShowChangePasswordModal(false);
         });
       };
 
-    const handleDeleteAccount = () => {
-      setLoading(true);
+  const handleDeleteAccount = () => {
+    setLoading(true);
       
-        deleteAccount(deletePassword).then((response) => {
+    deleteAccount(deletePassword)
+      .then((response) => {
+      setShowDeleteAccountModal(false);
+        if (response) {
+          history.push("/successfully-deleted-account");
+          setLoading(false);
+        }
+      })
+        .catch((error) => {
+          setToastMessage(error.detail);
+          setShowToast(true);
+          setLoading(false);
           setShowDeleteAccountModal(false);
-
-          if(response && response.status === 204){
-            history.push("/successfully-deleted-account");
-            setLoading(false);
-          }
-          else{
-            console.log("Error deleting account");
-            setLoading(false);
-          }
         });
       };
 
@@ -215,6 +222,15 @@ const AccountSettings: React.FC = () => {
       </IonModal>
       {/* Loading spinner */}
       <IonLoading isOpen={loading} message="Please wait..." />
+
+      <IonToast
+        isOpen={showToast}
+        onDidDismiss={() => setShowToast(false)}
+        message={toastmessage}
+        duration={3000}
+        position="top"
+        style={{marginTop : "20px"}}
+      />
     </div>
   );
 };
