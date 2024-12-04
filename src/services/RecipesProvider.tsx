@@ -1,9 +1,10 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Recipe } from '../entities/Recipe';
-import { GetRecipes, RateRecipe, FilterRecipes, SearchRecipes } from './apiClient';
+import { GetRecipes, RateRecipe, FilterRecipes, SearchRecipes, RefreshRecipes } from './apiClient';
 import { useAuth } from './authProvider';
 import { useWebSocket } from './WebSocketProvider';
 import { get } from 'axios';
+import { refresh } from 'ionicons/icons';
 
 interface RecipesContextValue {
     recipes: Recipe[];
@@ -11,6 +12,7 @@ interface RecipesContextValue {
     rateRecipe: (recipeId: number, rating: boolean | null) => Promise<void>;
     filterRecipes: (time: number | null, difficulty: number[], recipe_type: string | null, favourites: boolean | null,) => Promise<void>;
     searchRecipes: (searchText: string) => Promise<void>;
+    refreshRecipes: () => Promise<void>;
     loadMoreRecipes: () => Promise<void>;
     loadMoreFilteredRecipes: (time: number | null, difficulty: number[], recipe_type: string | null, favourites: boolean | null, isInitialLoad: boolean) => Promise<void>;
     loadMoreSearchRecipes: (searchText: string, isInitialLoad: boolean) => Promise<void>;
@@ -128,6 +130,10 @@ const filterRecipes = async (
         setIsLoading(false);
     };
 
+    const refreshRecipes = async () => {
+        await RefreshRecipes();
+    }
+
 
     const loadMoreFilteredRecipes = async (
         time: number | null,
@@ -148,7 +154,7 @@ const filterRecipes = async (
     };
 
     return (
-        <RecipesContext.Provider value={{ recipes, getRecipes, rateRecipe, filterRecipes, searchRecipes, loadMoreFilteredRecipes, loadMoreSearchRecipes, loadMoreRecipes, hasMore, isLoading, resetRecipes }}>
+        <RecipesContext.Provider value={{ recipes, getRecipes, rateRecipe, filterRecipes, searchRecipes, refreshRecipes, loadMoreFilteredRecipes, loadMoreSearchRecipes, loadMoreRecipes, hasMore, isLoading, resetRecipes }}>
             {children}
         </RecipesContext.Provider>
     );

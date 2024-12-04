@@ -10,7 +10,7 @@ import { Recipe } from "../entities/Recipe";
 const Recipes: React.FC = () => {
   const [isFilterPanelVisible, setFilterPanelVisible] = useState(false);
   const { darkMode } = useTheme();
-  const { recipes, loadMoreRecipes, hasMore, resetRecipes, loadMoreFilteredRecipes, loadMoreSearchRecipes } = useRecipes();
+  const { recipes, loadMoreRecipes, hasMore, resetRecipes, loadMoreFilteredRecipes, loadMoreSearchRecipes, refreshRecipes } = useRecipes();
   const [filtered, setFiltered] = useState<boolean>(false);
   const [time, setTime] = useState<number | null>(null);
   const [difficulty, setDifficulty] = useState<number[]>([]);
@@ -92,9 +92,9 @@ const handleFilter = async () => {
   };
 
   const handleRefresh = () => {
-    setIsSearchActive(false);
-    setFilterPanelVisible(false);
-    resetRecipes();
+    refreshRecipes().then(() => {
+      setNothingFound(false);
+    });
   };
 
 
