@@ -116,7 +116,7 @@ const filterRecipes = async (
         try {
             const response = await SearchRecipes(searchText, limit, isInitialLoad ? 0 : offset);
             if (response) {
-                setRecipes(response.results);
+                setRecipes((prev) =>isInitialLoad? response.results: [...prev, ...response.results]);
                 setOffset((prev) => prev + limit);
                 setHasMore(!!response.next);
             } else {
@@ -145,7 +145,7 @@ const filterRecipes = async (
         await filterRecipes(time, difficulty, recipe_type, favourites, isInitialLoad);
     };
 
-    const loadMoreSearchRecipes = async (searchText: string, isInitialLoad = false) => {
+    const loadMoreSearchRecipes = async (searchText: string, isInitialLoad: boolean = false) => {
         await searchRecipes(searchText,isInitialLoad);
     };
 
