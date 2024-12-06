@@ -67,7 +67,6 @@ const handleFilter = async () => {
     } else {
       try {
         await loadMoreSearchRecipes(searchText, true);
-        setFiltered(true);
       } catch (error: any) {
         setNothingFound(true);
         resetRecipes();
@@ -201,12 +200,12 @@ const handleFilter = async () => {
                       <IonIcon icon={flameOutline} size="large" />
                       <IonSelect
                         interface="popover"
-                        multiple={true}
+                        multiple={false}
                         style={{ padding: 0 }}
                         value={difficulty}
                         placeholder="Difficulty"
                         className="transparent-select"
-                        onIonChange={(e) => setDifficulty(e.detail.value)}
+                        onIonChange={(e) => setDifficulty([e.detail.value])}
                       >
                         <IonSelectOption className="label-dark-mode" value={1}>
                           Easy
