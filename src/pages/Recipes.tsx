@@ -73,7 +73,6 @@ const handleFilter = async () => {
     } else {
       try {
         await loadMoreSearchRecipes(searchText, true);
-        setFiltered(true);
       } catch (error: any) {
         setNothingFound(true);
         resetRecipes();

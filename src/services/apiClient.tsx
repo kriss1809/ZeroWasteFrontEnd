@@ -502,6 +502,7 @@ export const SearchRecipes = async (search: string, limit: number, offset: numbe
         offset,
       },
   });
+    console.log(response.data);
     return response.data;
   } catch (error: any) {
     throw error.response.data;
