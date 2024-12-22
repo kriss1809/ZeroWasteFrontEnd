@@ -2,7 +2,7 @@ import axios from "axios";
 import { User } from "../entities/User";
 import { Recipe } from "../entities/Recipe";
 
-const url = "http://192.168.100.92:8000/";
+const url = "https://192.168.100.92:443/";
 // const url = "http://localhost:8000/";
 export const loginUser = async (email: string, password: string) => {
   try {
@@ -118,8 +118,8 @@ export const UserdeleteAccount = async (password: string) => {
     });
 
     return response;
-  } catch (error) {
-    console.error(error);
+  } catch (error: any) {
+    throw error.response.data;
   }
 };
 
@@ -143,8 +143,8 @@ export const ChangePassword = async (
       }
     );
     return response;
-  } catch (error) {
-    console.error(error);
+  } catch (error : any) {
+    throw error.response.data;
   }
 }
 
@@ -255,7 +255,7 @@ export const UpdateProduct = async (
       {
         id,
         name,
-        best_before,
+        best_before: best_before ? best_before : null,
         consumption_days: consumption_days ? consumption_days : null,
         opened: opened ? opened : null,
       },

@@ -99,7 +99,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       localStorage.clear();
       return response;
     } catch (error) {
-      console.error('Delete account failed:', error);
+      throw error;
     }
   };
 
@@ -108,7 +108,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const response = await ChangePassword(oldPassword, newPassword, confirm_password);
       return response;
     } catch (error) {
-      console.error('Change password failed:', error);
+      throw error;
     }
   };
 

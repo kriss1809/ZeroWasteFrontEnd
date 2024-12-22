@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {IonPage, IonHeader, IonToolbar,IonTitle,IonContent,IonButton,IonList,IonItem,IonLabel,IonSelect,IonSelectOption,IonModal,IonIcon,IonInput, IonGrid, IonRow, IonCol, IonInfiniteScroll, IonInfiniteScrollContent} from "@ionic/react";
+import {IonPage, IonHeader, IonToolbar,IonTitle,IonContent,IonButton,IonList,IonItem,IonLabel,IonSelect,IonSelectOption,IonModal,IonIcon,IonInput, IonGrid, IonRow, IonCol, IonInfiniteScroll, IonInfiniteScrollContent, IonLoading} from "@ionic/react";
 import Menu from "../components/Menu";
 import RecipeCard from "../components/RecipeCard";
 import { search, optionsOutline, flameOutline, restaurantOutline, timerOutline, heartOutline, closeOutline, refreshCircle, refreshCircleOutline, sync } from "ionicons/icons";
@@ -10,7 +10,9 @@ import { Recipe } from "../entities/Recipe";
 const Recipes: React.FC = () => {
   const [isFilterPanelVisible, setFilterPanelVisible] = useState(false);
   const { darkMode } = useTheme();
-  const { recipes, loadMoreRecipes, hasMore, resetRecipes, loadMoreFilteredRecipes, loadMoreSearchRecipes, refreshRecipes } = useRecipes();
+  const { recipes, loadMoreRecipes, hasMore,
+    resetRecipes, loadMoreFilteredRecipes, loadMoreSearchRecipes,
+    refreshRecipes, isLoading } = useRecipes();
   const [filtered, setFiltered] = useState<boolean>(false);
   const [time, setTime] = useState<number | null>(null);
   const [difficulty, setDifficulty] = useState<number[] | null>(null);
@@ -19,8 +21,10 @@ const Recipes: React.FC = () => {
   const [nothingFound, setNothingFound] = useState<boolean>(false);
   const [searchText, setSearchText] = useState<string>("");
   const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
+  const [isRefreshActive, setIsRefreshActive] = useState<boolean>(false);
 
   const handleInfiniteScroll = async (event: CustomEvent<void>) => {
+    setIsRefreshActive(false);
     if (hasMore) {
       if (filtered) {
         await loadMoreFilteredRecipes(time, difficulty, recipeType, favourites, false );
@@ -38,6 +42,7 @@ const Recipes: React.FC = () => {
 const handleFilter = async () => {
     try {
       setFilterPanelVisible(false);
+      setIsRefreshActive(false);
       setNothingFound(false);
       if ((time === null || time === 0) &&(difficulty?.length === 0 || null) && recipeType === null && favourites === null) {
         setFiltered(false);
@@ -60,6 +65,7 @@ const handleFilter = async () => {
 
   const handleSearch = async () => {
     setIsSearchActive(true);
+    setIsRefreshActive(false);
     setNothingFound(false);
     setFilterPanelVisible(false);
     if (searchText.trim() === "") {
@@ -99,6 +105,7 @@ const handleFilter = async () => {
       setRecipeType(null);
       setFavourites(null);
       setFiltered(false);
+      setIsRefreshActive(true);
     });
   };
 
@@ -419,6 +426,11 @@ const handleFilter = async () => {
           </IonInfiniteScroll>
         </div>
       </IonContent>
+      {isRefreshActive && <IonLoading
+        isOpen={isLoading}
+        message="Please wait..."
+        cssClass={darkMode ? "dark-mode" : ""}
+      />}
 
       <div slot="bottom">
         <Menu />
