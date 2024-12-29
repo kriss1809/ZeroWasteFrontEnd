@@ -78,7 +78,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
             ws.close();
             setWs(null);
         }
-    }, [isAuthenticated, share_code, user]);
+    }, [isAuthenticated, share_code, user?.email]);
 
     const sendMessage = (message: any) => {
         if (ws && isConnected) {
