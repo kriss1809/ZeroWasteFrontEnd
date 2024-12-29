@@ -28,7 +28,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     const [isConnected, setIsConnected] = useState(false);
 
     useEffect(() => {
-        if (isAuthenticated && user) {
+        if (isAuthenticated && user && share_code) {
             console.log("Connecting to WebSocket");
             const token = accessToken;
             if (!token) return;
@@ -78,7 +78,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
             ws.close();
             setWs(null);
         }
-    }, [isAuthenticated, share_code]);
+    }, [isAuthenticated, share_code, user]);
 
     const sendMessage = (message: any) => {
         if (ws && isConnected) {

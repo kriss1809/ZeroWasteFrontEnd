@@ -44,7 +44,7 @@ export const ProductListProvider: React.FC<{ children: React.ReactNode }> = ({ c
         if (accessToken) {
             getProductList();
         }
-    }, [accessToken, isConnected]);
+    }, [accessToken]);
 
     useEffect(() => {
         if (productMessages.length > 0 && accessToken) {

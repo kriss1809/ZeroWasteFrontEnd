@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import React from "react";
 import {
   IonButton,
@@ -22,7 +22,7 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const history = useHistory(); 
   const { darkMode } = useTheme();
-  const { login } = useAuth();
+  const { login, refreshAccessToken } = useAuth();
   const [loading, setLoading] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastmessage, setToastMessage] = useState<string>("");
@@ -58,6 +58,14 @@ const Login: React.FC = () => {
       }
     });
   }
+
+  useEffect(() => {
+    if (localStorage.getItem("refreshToken")) {
+      refreshAccessToken();
+      history.push("/home");
+    }
+  }
+  , []);
 
   const [showForgotPasswordModal, setShowForgotPasswordModal] = useState<boolean>(false);
 
