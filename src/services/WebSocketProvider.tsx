@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useAuth } from './authProvider';
 
 // const url = "ws://localhost:8000/"
-const url = "wss://192.168.100.92:443/";
+const url = "ws://192.168.101.17:8000/";
 
 interface MessageData {
   type: string;
@@ -20,7 +20,7 @@ interface WebSocketContextValue {
 const WebSocketContext = createContext<WebSocketContextValue | undefined>(undefined);
 
 export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const { isAuthenticated, accessToken, user } = useAuth();
+    const { isAuthenticated, accessToken, user, share_code } = useAuth();
     const [ws, setWs] = useState<WebSocket | null>(null);
     const [messages, setMessages] = useState<MessageData[]>([]);
     const [productMessages, setProductMessages] = useState<MessageData[]>([]);
@@ -37,7 +37,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
             const socket = new WebSocket(wsUrl);
 
             socket.onopen = () => {
-                socket.send(JSON.stringify({ type: 'authorization', payload: { token, share_code: sessionStorage.getItem("share_code"), email: user?.email} }));
+                socket.send(JSON.stringify({ type: 'authorization', payload: { token, share_code, email: user?.email} }));
             };
 
             socket.onmessage = (event) => {
@@ -52,7 +52,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
                 if (data.type === "recipe") {
                     setRecipeMessages((prev) => [...prev, data.payload]);
                 }
-                else if (data.type === "product_message") {
+                else if (data.type === "productmessage") {
                     setProductMessages((prev) => [...prev, data.payload]);
                 }
                 else {
@@ -78,7 +78,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
             ws.close();
             setWs(null);
         }
-    }, [isAuthenticated]);
+    }, [isAuthenticated, share_code]);
 
     const sendMessage = (message: any) => {
         if (ws && isConnected) {
