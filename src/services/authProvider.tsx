@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import {
   loginUser, logoutUser, getUserProfile, UserdeleteAccount,
   UpdateAllergies, UpdateNotificationDay, UpdatePreferences,
-  JoinProductList, ChangePassword, RefreshAccessToken
+  JoinProductList, ChangePassword, RefreshAccessToken,UpdatePreferredNotificationHour
 } from './apiClient';
 import { User } from '../entities/User';
 
@@ -22,6 +22,7 @@ interface AuthContextValue {
   updatePreferences: (preferences: string[]) => Promise<void>;
   joinProductList: (productId: string) => Promise<void>;
   refreshAccessToken: () => Promise<void>;
+  updatePreferredNotificationHour: (preferredNotificationHour: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
@@ -142,6 +143,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const updatePreferredNotificationHour = async (preferredNotificationHour: string) => {
+    try {
+      preferredNotificationHour = preferredNotificationHour.substring(0, 5);
+      await UpdatePreferredNotificationHour(preferredNotificationHour);
+      profile();
+    } catch (error) {
+      console.error('Update preferred notification hour failed:', error);
+    }
+  };
 
   const joinProductList = async (productId: string) => {
     try {
@@ -165,7 +175,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, accessToken , login, logout, deleteAccount, changePassword, updateAllergies, updateNotificationDay, updatePreferences, joinProductList, refreshAccessToken, share_code, setShareCode }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, accessToken , login, logout, deleteAccount, changePassword, updateAllergies, updateNotificationDay, updatePreferences, joinProductList, refreshAccessToken, share_code, setShareCode, updatePreferredNotificationHour }}>
       {children}
     </AuthContext.Provider>
   );

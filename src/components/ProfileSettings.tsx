@@ -5,12 +5,11 @@ import { IonPopover, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonIt
 import { clipboardOutline, copy } from "ionicons/icons";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../services/authProvider";
-import { UpdatePreferredNotificationHour } from "../services/apiClient";
 
 const ProfileSettings: React.FC = () => {
   const [preferredTime, setPreferredTime] = useState<string>("");
   const [notificationDays, setNotificationDays] = useState<number>(1);
-  const { user, updateNotificationDay, updateAllergies, updatePreferences, joinProductList, share_code  } = useAuth();
+  const { user, updateNotificationDay, updateAllergies, updatePreferences, joinProductList, share_code, updatePreferredNotificationHour  } = useAuth();
   const { darkMode, toggleDarkMode } = useTheme();
 
   useEffect(() => {
@@ -270,9 +269,10 @@ const ProfileSettings: React.FC = () => {
             <IonInput
               value={preferredTime}
               type="time"
+              onKeyDown={(e) => e.preventDefault()}
               onIonChange={(e) => {
                 setPreferredTime(e.detail.value!); 
-                UpdatePreferredNotificationHour(e.detail.value!);
+                updatePreferredNotificationHour(e.detail.value!);
               }}
             />
           </div>
