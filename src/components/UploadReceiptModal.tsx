@@ -11,7 +11,7 @@ import {
 } from "@ionic/react";
 import { closeOutline } from "ionicons/icons";
 import { useState } from "react";
-import { UploadReceipt } from "../services/apiClient";
+import { useProductList } from "../services/ProductListProvider";
 
 interface ModalProps {
   showUploadModal: boolean;
@@ -22,6 +22,7 @@ const UploadReceiptModal: React.FC<ModalProps> = ({
   showUploadModal,
   setShowUploadModal,
 }) => {
+  const { uploadReceipt } = useProductList();
   const { darkMode } = useTheme();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string | null>(null); // New state to hold the file name
@@ -159,7 +160,7 @@ const UploadReceiptModal: React.FC<ModalProps> = ({
                 className="green-button-gradient"
                 onClick={() => {
                   setShowUploadModal(false);
-                  UploadReceipt(file!).then((response) => {
+                  uploadReceipt(file!).then((response) => {
                     if (response) {
                       console.log("Receipt uploaded successfully");
                     }

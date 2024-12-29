@@ -31,6 +31,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [share_code, setShareCode] = useState<string>('');
+  
 
  const profile = async () => {
     try {
@@ -52,15 +53,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     const token = sessionStorage.getItem('accessToken');
-    if (token) {
-      profile();
-      setAccessToken(token);
-      setIsAuthenticated(true);
-      if (sessionStorage.getItem('share_code')) {
-        setShareCode(sessionStorage.getItem('share_code')!);
+    if( ! user){
+      if (token) {
+        profile();
+        setAccessToken(token);
+        setIsAuthenticated(true);
+        if (sessionStorage.getItem('share_code')) {
+          setShareCode(sessionStorage.getItem('share_code')!);
+        }
       }
     }
-  }, []);
+  }, [accessToken]);
 
   const login = async (email: string, password: string) => {
     try {
@@ -153,6 +156,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const acces = await RefreshAccessToken();
       if (acces) {
         setAccessToken(acces);
+        sessionStorage.setItem('accessToken', acces);
       }
     } catch (error) {
       console.error('Refresh access token failed:', error);
