@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Product } from '../entities/Product';
-import { GetProductList, DeleteProduct, UpdateProduct, AddProduct } from './apiClient';
+import { GetProductList, DeleteProduct, UpdateProduct, AddProduct, UploadReceipt } from './apiClient';
 import { useAuth } from './authProvider';
 import { useWebSocket } from './WebSocketProvider';
 
@@ -12,6 +12,8 @@ interface ProductListContextValue {
     updateProduct: (id: number,productName:string, expirationDate:string, openingDate:string, recommendedDays:string ) => Promise<void>;
     addProduct: (productName: string, expirationDate: string, openingDate: string, recommendedDays: string) => Promise<void>;
     searchProduct: (searchText: string) => Promise<void>;
+    uploadReceipt: (file: File) => Promise<any>;
+    loading: boolean;
 }
 
 const ProductListContext = createContext<ProductListContextValue | undefined>(undefined);
@@ -21,6 +23,7 @@ export const ProductListProvider: React.FC<{ children: React.ReactNode }> = ({ c
     const { refreshAccessToken, accessToken, setShareCode } = useAuth();
     const { productMessages, isConnected } = useWebSocket();
     const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const handleMessages = (message: any) => {
         if (message.type === 'add_product') {
@@ -37,6 +40,7 @@ export const ProductListProvider: React.FC<{ children: React.ReactNode }> = ({ c
         }
         if (message.type === 'add_products') {
             getProductList();    
+            setLoading(false);
         }
     }
 
@@ -90,8 +94,21 @@ export const ProductListProvider: React.FC<{ children: React.ReactNode }> = ({ c
         }
     };
 
+    const uploadReceipt = async (file: File) => {
+        setLoading(true);
+        UploadReceipt(file).then((response) => {
+            if (response) {
+                return response;
+            }
+        }).catch((error) => {
+            setLoading(false);
+            return error;
+        }); 
+    }
+
+
     return (
-        <ProductListContext.Provider value={{ products, filteredProducts, getProductList, deleteProduct, updateProduct, addProduct, searchProduct }}>
+        <ProductListContext.Provider value={{ products, filteredProducts, getProductList, deleteProduct, updateProduct, addProduct, searchProduct, loading, uploadReceipt }}>
             {children}
         </ProductListContext.Provider>
     );

@@ -1,6 +1,6 @@
 // Home.tsx
 import React, { useState, useEffect } from "react";
-import { IonHeader, IonPage, IonContent, IonButton, IonIcon, IonModal, IonList, IonItem, IonLabel, IonListHeader } from "@ionic/react";
+import { IonHeader, IonPage, IonContent, IonButton, IonIcon, IonModal, IonList, IonItem, IonLabel, IonListHeader, IonLoading } from "@ionic/react";
 import Menu from "../components/Menu";
 import AddItem from "../components/AddItem";
 import ItemCard from "../components/ItemCard";
@@ -15,7 +15,7 @@ import { useProductList } from "../services/ProductListProvider";
 
 const Home: React.FC = () => {
   const { darkMode } = useTheme();
-  const { filteredProducts, searchProduct } = useProductList();
+  const { filteredProducts, searchProduct, loading } = useProductList();
   const [selectedItem, setSelectedItem] = useState<Product | null>(null);
   const [searchText, setSearchText] = useState<string>("");
   const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
@@ -189,6 +189,12 @@ const Home: React.FC = () => {
         />
         <Menu />
       </div>
+      {/* Loading spinner */}
+      <IonLoading
+        isOpen={loading}
+        message="Please wait..."
+        cssClass={darkMode ? "dark-mode" : ""}
+      />
     </IonPage>
   );
 };
