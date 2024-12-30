@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useAuth } from './authProvider';
 
 // const url = "ws://localhost:8000/"
-const url = "ws://192.168.101.17:8000/";
+const url = "ws://192.168.100.186:8000/";
 
 interface MessageData {
   type: string;

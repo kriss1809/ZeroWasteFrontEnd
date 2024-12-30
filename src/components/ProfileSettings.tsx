@@ -5,11 +5,13 @@ import { IonPopover, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonIt
 import { clipboardOutline, copy } from "ionicons/icons";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../services/authProvider";
+import { useProductList } from "../services/ProductListProvider";
 
 const ProfileSettings: React.FC = () => {
   const [preferredTime, setPreferredTime] = useState<string>("");
   const [notificationDays, setNotificationDays] = useState<number>(1);
-  const { user, updateNotificationDay, updateAllergies, updatePreferences, joinProductList, share_code, updatePreferredNotificationHour  } = useAuth();
+  const { user, updateNotificationDay, updateAllergies, updatePreferences, share_code, updatePreferredNotificationHour } = useAuth();
+  const { joinProductList } = useProductList();
   const { darkMode, toggleDarkMode } = useTheme();
 
   useEffect(() => {
