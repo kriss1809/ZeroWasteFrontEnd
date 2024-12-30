@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Product } from '../entities/Product';
-import { GetProductList, DeleteProduct, UpdateProduct, AddProduct, UploadReceipt } from './apiClient';
+import { GetProductList, DeleteProduct, UpdateProduct, AddProduct, JoinProductList, UploadReceipt } from './apiClient';
 import { useAuth } from './authProvider';
 import { useWebSocket } from './WebSocketProvider';
+import { get } from 'axios';
 
 interface ProductListContextValue {
     products: Product[];
@@ -13,6 +14,7 @@ interface ProductListContextValue {
     addProduct: (productName: string, expirationDate: string, openingDate: string, recommendedDays: string) => Promise<void>;
     searchProduct: (searchText: string) => Promise<void>;
     uploadReceipt: (file: File) => Promise<any>;
+    joinProductList: (productId: string) => Promise<void>;
     loading: boolean;
 }
 
@@ -106,9 +108,18 @@ export const ProductListProvider: React.FC<{ children: React.ReactNode }> = ({ c
         }); 
     }
 
+      const joinProductList = async (productId: string) => {
+    try {
+        await JoinProductList(productId);
+        await getProductList();
+    } catch (error) {
+      console.error('Join product list failed:', error);
+    }
+    };
+
 
     return (
-        <ProductListContext.Provider value={{ products, filteredProducts, getProductList, deleteProduct, updateProduct, addProduct, searchProduct, loading, uploadReceipt }}>
+        <ProductListContext.Provider value={{ products, filteredProducts, getProductList, deleteProduct, updateProduct, addProduct, searchProduct, loading, uploadReceipt, joinProductList }}>
             {children}
         </ProductListContext.Provider>
     );

@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import {
   loginUser, logoutUser, getUserProfile, UserdeleteAccount,
   UpdateAllergies, UpdateNotificationDay, UpdatePreferences,
-  JoinProductList, ChangePassword, RefreshAccessToken,UpdatePreferredNotificationHour
+  ChangePassword, RefreshAccessToken,UpdatePreferredNotificationHour
 } from './apiClient';
 import { User } from '../entities/User';
 
@@ -20,7 +20,7 @@ interface AuthContextValue {
   updateAllergies: (allergies: string[]) => Promise<void>;
   updateNotificationDay: (notificationDay: number) => Promise<void>;
   updatePreferences: (preferences: string[]) => Promise<void>;
-  joinProductList: (productId: string) => Promise<void>;
+  
   refreshAccessToken: () => Promise<void>;
   updatePreferredNotificationHour: (preferredNotificationHour: string) => Promise<void>;
 }
@@ -145,7 +145,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const updatePreferredNotificationHour = async (preferredNotificationHour: string) => {
     try {
-      preferredNotificationHour = preferredNotificationHour.substring(0, 5);
+      if (preferredNotificationHour == "") {
+        preferredNotificationHour = "--:--";
+      }else
+        preferredNotificationHour = preferredNotificationHour.substring(0, 5);
       await UpdatePreferredNotificationHour(preferredNotificationHour);
       profile();
     } catch (error) {
@@ -153,13 +156,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const joinProductList = async (productId: string) => {
-    try {
-      await JoinProductList(productId);
-    } catch (error) {
-      console.error('Join product list failed:', error);
-    }
-  };
+
 
   const refreshAccessToken = async () => {
     try {
@@ -175,7 +172,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, accessToken , login, logout, deleteAccount, changePassword, updateAllergies, updateNotificationDay, updatePreferences, joinProductList, refreshAccessToken, share_code, setShareCode, updatePreferredNotificationHour }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, accessToken , login, logout, deleteAccount, changePassword, updateAllergies, updateNotificationDay, updatePreferences, refreshAccessToken, share_code, setShareCode, updatePreferredNotificationHour }}>
       {children}
     </AuthContext.Provider>
   );

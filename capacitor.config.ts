@@ -5,7 +5,7 @@ const config: CapacitorConfig = {
   appName: 'ZeroWasteFrontEnd',
   webDir: 'dist',
   server: {
-    url: 'http://192.168.101.17:8100',
+    url: 'http://192.168.100.186:8100',
     cleartext: true
   },
 };
