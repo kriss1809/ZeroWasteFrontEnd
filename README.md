@@ -1,3 +1,6 @@
+ZeroWasteBackend: <a>https://github.com/kevinscrg/ZeroWasteBackEnd</a>
+ZeroWasteAI: <a>https://github.com/kriss1809/ZeroWasteAI</a>
+
 # ZeroWasteFrontEnd
 
 La preluarea proiectului, se vor rula următoarele comenzi în terminal: <br>
