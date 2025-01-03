@@ -84,7 +84,6 @@ const ProfileSettings: React.FC = () => {
 
 
     const handleShare = () => {
-      // AICI CODUL PRIMIT DE LA SERVER
       const Code = share_code;
 
       if (Code) {
