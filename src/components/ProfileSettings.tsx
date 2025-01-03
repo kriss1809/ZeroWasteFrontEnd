@@ -2,7 +2,6 @@ import { IonLabel, IonButton, IonSelect, IonSelectOption, IonInput, IonToggle, I
 import React, { useState, useEffect } from "react";
 import { useTheme } from "./ThemeContext";
 import { IonPopover, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonCheckbox, IonIcon } from "@ionic/react";
-import { clipboardOutline, copy } from "ionicons/icons";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../services/authProvider";
 import { useProductList } from "../services/ProductListProvider";
@@ -57,7 +56,7 @@ const ProfileSettings: React.FC = () => {
     { label: "Vegetarian", value: "Vegetarian" },
   ];
 
-  // Funcții pentru togglarea alergiilor
+  // panou alergii
   const toggleAllergy = (value: string) => {
     setAllergies((prev) =>
       prev.includes(value)
@@ -66,7 +65,7 @@ const ProfileSettings: React.FC = () => {
     );
   };
 
-  // Funcții pentru togglarea preferințelor
+  // panou preferinte
   const togglePreference = (value: string) => {
     setPreferences((prev) =>
       prev.includes(value)
@@ -88,7 +87,7 @@ const ProfileSettings: React.FC = () => {
 
       if (Code) {
         setShareCode(Code);
-        setShowJoinInput(false); // Ascunde inputul de Join dacă era deschis
+        setShowJoinInput(false); // ascundem inputul de join list daca era deschis
       } else {
         console.error("share_code nu este definit");
         setErrorMessage("Nu s-a putut obține codul de partajare.");
@@ -96,13 +95,13 @@ const ProfileSettings: React.FC = () => {
 
     };
 
-    // Funcția care afișează inputul de "Join"
+    // afisam inputul pentru a introduce codul de alaturare la o lista
     const handleJoin = () => {
-      setShareCode(null); // Ascunde inputul de Share dacă era deschis
-      setShowJoinInput(true); // Afișează inputul de Join
+      setShareCode(null); // ascundem inputul de share daca era deschis
+      setShowJoinInput(true);
     };
 
-    // Funcția care copiază codul în clipboard și resetează la butoanele originale
+    // copiem codul listei in clipboard
     const copyToClipboard = () => {
       if (shareCode) {
         if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -110,14 +109,14 @@ const ProfileSettings: React.FC = () => {
             .writeText(shareCode)
             .then(() => {
               console.log("Cod copiat în clipboard!");
-              setShareCode(null); // Resetează pentru a afișa din nou butoanele
+              setShareCode(null); // resetare pentru a afisa butoanele
             })
             .catch((error) => {
               console.error("Eroare la copierea codului:", error);
               setErrorMessage("Nu s-a putut copia codul. Încearcă din nou.");
             });
         } else {
-          // Fallback: Folosește execCommand pentru copiere
+          // Fallback: folosim execCommand pentru copiere
           const textArea = document.createElement("textarea");
           textArea.value = shareCode;
           document.body.appendChild(textArea);
@@ -156,7 +155,7 @@ const ProfileSettings: React.FC = () => {
   return (
     <div className={darkMode ? "dark-mode" : ""}>
       <div className="grid-item items">
-        {/* Afișează fie cele două butoane "Share list" și "Join list", fie inputul cu codul */}
+        {/* afisam fie cele doua butoane "Share list" si "Join list", fie inputul cu codul */}
         {shareCode === null && !showJoinInput ? (
           <div
             style={{

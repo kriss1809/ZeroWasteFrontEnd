@@ -19,7 +19,7 @@ interface AddItemProps {
     best_before: string;
     opened: string;
     consumption_days: string;
-  } | null; // Updated prop
+  } | null; 
   onCancelEdit: () => void;
   setSelectedItem: (item: any) => void;
 }

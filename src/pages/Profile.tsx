@@ -1,17 +1,12 @@
-import { useState, useEffect } from "react";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import {
   IonPage,
   IonContent,
-  IonInput,
-  IonLabel,
-  IonButton,
-  IonModal, // Import pentru modal
   IonIcon,
   IonRouterLink,
 } from "@ionic/react";
-import { colorFill, logOutOutline } from "ionicons/icons";
+import { logOutOutline } from "ionicons/icons";
 import "../theme/profile.css";
 import "../theme/darkMode.css"
 import { useTheme } from "../components/ThemeContext"; 

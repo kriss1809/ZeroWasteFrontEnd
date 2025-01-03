@@ -82,7 +82,7 @@ const Login: React.FC = () => {
             style={{ objectFit: "cover", maxWidth: "400px" }}
           />
 
-          {/* Formularul de Login */}
+          {/* formular login */}
           <form onSubmit={handleLogin}>
             {/* Email */}
             <IonItem style={{ marginTop: "10px", width: "75vw" }}>
@@ -171,7 +171,7 @@ const Login: React.FC = () => {
             <IonButton
               expand="block"
               className="green-button-gradient"
-              type="submit" // Acum este buton de submit, declanșând evenimentul de form
+              type="submit" // declanseaza functia handleLogin la apasarea butonului
               style={{
                 marginTop: "40px",
                 backgroundColor: "green",

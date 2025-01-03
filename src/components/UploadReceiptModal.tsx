@@ -25,24 +25,24 @@ const UploadReceiptModal: React.FC<ModalProps> = ({
   const { uploadReceipt } = useProductList();
   const { darkMode } = useTheme();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [fileName, setFileName] = useState<string | null>(null); // New state to hold the file name
+  const [fileName, setFileName] = useState<string | null>(null); // numele fisierului
   const [file, setFile] = useState<File | null>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setFileName(file.name); // Set the file name
-      setFile(file); // Set the file
+      setFileName(file.name); // setam numele fisierului
+      setFile(file); // setam fisierul
       const reader = new FileReader();
 
-      // Check if the uploaded file is an image
+      // verificam daca fisierul este de tip imagine
       if (file.type.startsWith("image/")) {
         reader.onloadend = () => {
-          setSelectedImage(reader.result as string); // Set image for preview
+          setSelectedImage(reader.result as string); // setam imaginea selectata
         };
         reader.readAsDataURL(file);
       } else {
-        setSelectedImage(null); // Reset image preview for non-image files
+        setSelectedImage(null); // resetam imaginea selectata
       }
     }
   };
@@ -91,7 +91,7 @@ const UploadReceiptModal: React.FC<ModalProps> = ({
           </div>
         </IonHeader>
         <IonContent>
-          {/* Button for capturing a photo */}
+          {/* buton pentru a prelua poza */}
           <IonItem>
             <IonLabel className="label-dark-mode">Take Photo</IonLabel>
             <IonButton
@@ -111,7 +111,7 @@ const UploadReceiptModal: React.FC<ModalProps> = ({
             id="cameraInput"
           />
 
-          {/* Button for uploading an image */}
+          {/* buton pentru incarcare poza */}
           <IonItem>
             <IonLabel className="label-dark-mode">Upload Photo</IonLabel>
             <IonButton
@@ -172,7 +172,6 @@ const UploadReceiptModal: React.FC<ModalProps> = ({
             </div>
           )}
 
-          {/* Image Preview */}
           {selectedImage && (
             <IonImg
               src={selectedImage}

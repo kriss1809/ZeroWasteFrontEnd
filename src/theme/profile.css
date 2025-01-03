@@ -42,39 +42,38 @@
 }
 
 .grid-item.items.full-row {
-  grid-column: 1 / -1; /* Ocupă un rând întreg */
+  grid-column: 1 / -1; /* acupa un rand intreg */
 }
 
 .dark-mode-toggle {
-  display: flex; /* Use flexbox for layout */
-  align-items: center; /* Center items vertically */
-  justify-content: space-between; /* Space out the label and toggle */
-  margin: 20px 0; /* Add top and bottom margin for spacing */
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  margin: 20px 0; 
 }
 
 .dark-mode-toggle IonLabel {
-  font-size: 16px; /* Font size for the label */
-  font-weight: bold; /* Make the label bold */
+  font-size: 16px; 
+  font-weight: bold;
 }
 
-/* Optional: Customize the toggle appearance */
 .dark-mode-toggle IonToggle {
-  --ion-color-checked: #3880ff; /* Color when checked */
-  --ion-color-unchecked: #ccc; /* Color when unchecked */
-  width: 50px; /* Set toggle width */
-  height: 30px; /* Set toggle height */
+  --ion-color-checked: #3880ff; 
+  --ion-color-unchecked: #ccc; 
+  width: 50px; 
+  height: 30px; 
 }
 
 
 .label-button-container {
-  display: flex; /* Use flexbox for alignment */
-  align-items: center; /* Align items vertically */
-  margin-bottom: 10px; /* Space below the label and button */
+  display: flex; 
+  align-items: center; 
+  margin-bottom: 10px; 
 }
 
 .label-button-container IonLabel {
-  flex: 1; /* Allow the label to take available space */
-  margin-bottom: 0; /* Remove bottom margin to prevent extra space */
+  flex: 1; 
+  margin-bottom: 0;
 }
 
 
@@ -83,19 +82,18 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  max-height: 80vh; /* Limitează înălțimea popoverului */
-  width: 90vw; /* Ajustează lățimea */
-  background-color: transparent; /* Elimină fundalul negru */
-  overflow-y: auto; /* Permite scroll dacă lista e prea lungă */
-  border-radius: 8px; /* Colțuri rotunjite pentru aspect mai plăcut */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Adaugă o umbră pentru un aspect plăcut */
+  max-height: 80vh; 
+  width: 90vw;
+  background-color: transparent; 
+  overflow-y: auto; 
+  border-radius: 8px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
 }
 
 .custom-popover ion-content {
-  background-color: #2c2c2c; /* Setează culoarea de fundal pentru conținutul popoverului */
-  color: white; /* Culoarea textului pentru contrast */
+  background-color: #2c2c2c; 
+  color: white;
 }
-
 
 
 /* Modal container */
@@ -105,7 +103,7 @@
   -webkit-backdrop-filter: blur(5px);
 }
 
-/* Conținutul modalului */
+/* Continutul modalului */
 .modal-content {
   position: absolute;
   top: 50%;
