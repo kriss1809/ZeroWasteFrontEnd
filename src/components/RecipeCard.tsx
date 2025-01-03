@@ -80,7 +80,6 @@ useEffect(() => {
   return (
    
     <div className="recipe-card">
-      {/* Imaginea rețetei */}
       <div onClick={() => openLink()}>
       <img src={image} alt={name} className="recipe-photo" />
       </div>
@@ -90,7 +89,6 @@ useEffect(() => {
             <span className="recipe-title">{name}</span>
           </div>
           <div className="recipe-actions">
-            {/* Buton Like */}
             <IonIcon
               className="like-dislike-button"
               icon={liked ? heart : heartOutline}
@@ -98,7 +96,6 @@ useEffect(() => {
               color="success"
               onClick={handleLikeClick}
             />
-            {/* Buton Dislike */}
             <IonIcon
               className="like-dislike-button"
               icon={disliked ? heartDislike : heartDislikeOutline}

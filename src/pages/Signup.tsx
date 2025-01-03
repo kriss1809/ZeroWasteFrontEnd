@@ -39,10 +39,10 @@ const Signup: React.FC = () => {
           );
           console.log(response);
 
-          // Redirecționare după activarea toast-ului
+          // redirectionare dupa activarea toast-ului
           setTimeout(() => {
             history.push("/login");
-          }, 3000); // Așteaptă ca toast-ul să fie afișat
+          }, 3000); // asteptam ca toast-ul sa dispara
         } else {
           console.log("Signup failed");
         }
@@ -63,7 +63,7 @@ const Signup: React.FC = () => {
     if (!validateEmail(value)) {
       setEmailError("Please enter a valid email address.");
     } else {
-      setEmailError(""); // Dacă emailul este valid, se șterge mesajul de eroare
+      setEmailError(""); // emailul este valid, se sterge mesajul de eroare
     }
   };
 
@@ -72,7 +72,7 @@ const Signup: React.FC = () => {
     if (value !== password) {
       setError("Passwords do not match!");
     } else {
-      setError(""); // Dacă parolele coincid, se șterge mesajul de eroare
+      setError(""); // parolele coincid, se sterge mesajul de eroare
     }
   };
 
@@ -107,7 +107,7 @@ const Signup: React.FC = () => {
                 </IonText>
               )}
 
-              {/* Password */}
+              {/* Parola */}
               <IonItem style={{ marginTop: "10px", width: "75vw" }}>
                 <IonLabel position="stacked" className="label-dark-mode">
                   Password
@@ -120,7 +120,7 @@ const Signup: React.FC = () => {
                 />
               </IonItem>
 
-              {/* Confirm Password */}
+              {/* Confirmare parola */}
               <IonItem style={{ marginTop: "10px", width: "75vw" }}>
                 <IonLabel position="stacked" className="label-dark-mode">
                   Confirm Password

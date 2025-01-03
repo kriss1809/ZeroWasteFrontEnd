@@ -1,6 +1,5 @@
-// Home.tsx
 import React, { useState, useEffect } from "react";
-import { IonHeader, IonPage, IonContent, IonButton, IonIcon, IonModal, IonList, IonItem, IonLabel, IonListHeader, IonLoading } from "@ionic/react";
+import { IonHeader, IonPage, IonContent, IonButton, IonIcon, IonLoading } from "@ionic/react";
 import Menu from "../components/Menu";
 import AddItem from "../components/AddItem";
 import ItemCard from "../components/ItemCard";
@@ -27,10 +26,10 @@ const Home: React.FC = () => {
 
   const handleSearch = () => {
     setIsSearchActive(searchText.trim() !== "");
-    searchProduct(searchText); // Declanșează căutarea
+    searchProduct(searchText); 
   };
 
-  // Monitorizează filteredProducts pentru a seta `nothingFound`
+  // monitorizam filteredProducts pentru a seta nothingFound daca e cazul
   useEffect(() => {
     if (isSearchActive) {
       setNothingFound(filteredProducts.length === 0);
@@ -45,8 +44,8 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     if (searchText.trim() === "") {
-      searchProduct(""); // Încărcați lista completă
-      setNothingFound(false); // Asigură că mesajul "No Recipe Found" dispare
+      searchProduct(""); // incarcam lista completa
+      setNothingFound(false);
     }
   }, [searchText, searchProduct]);
 
@@ -63,26 +62,25 @@ const Home: React.FC = () => {
     setSelectedItem({ id, name, best_before, opened, consumption_days });
   };
 
-  // Funcție pentru sortare după data de expirare
+  // sortare produse dupa data de expirare
   const sortProductsByDate = (products: Product[]) => {
     return products.sort((a, b) => {
       if (!a.best_before && !b.best_before) {
         return 0; // Ambele sunt null
       }
       if (!a.best_before) {
-        return 1; // `a` este null, deci merge la final
+        return 1; // a este null, deci merge la final
       }
       if (!b.best_before) {
-        return -1; // `b` este null, deci merge la final
+        return -1; // b este null, deci merge la final
       }
-      // Ambele au date, comparăm normal
+      // ambele au date, comparam normal
       const dateA = new Date(a.best_before);
       const dateB = new Date(b.best_before);
       return dateA.getTime() - dateB.getTime();
     });
   };
 
-  // Aplicăm sortarea
   const sortedProducts = sortProductsByDate(filteredProducts);
 
   return (
@@ -189,6 +187,7 @@ const Home: React.FC = () => {
         />
         <Menu />
       </div>
+      
       {/* Loading spinner */}
       <IonLoading
         isOpen={loading}

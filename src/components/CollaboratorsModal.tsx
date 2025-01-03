@@ -86,10 +86,7 @@ const CollaboratorsModal: React.FC<ModalProps> = ({ showCollaboratorsModal, setS
             </div>
           </IonListHeader>
 
-            {/* pentru fiecare colaborator, avem un IonItem ce contine un IonLabel cu adresa de email
-          <IonItem>
-            <IonLabel className="label-dark-mode">Item 1</IonLabel>
-          </IonItem> */}
+            {/* pentru fiecare colaborator, avem un IonItem ce contine un IonLabel cu adresa de email*/}
           {collaborators.map((collaborator, index) => (
             <IonItem key={index}>
               <IonLabel className="label-dark-mode">{collaborator}</IonLabel>

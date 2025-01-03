@@ -47,7 +47,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } catch (error) {
       console.error('Failed to load profile:', error);
       setIsAuthenticated(false);
-      sessionStorage.removeItem('accessToken'); // Elimină token-ul invalid
+      sessionStorage.removeItem('accessToken');
     }
   };
 

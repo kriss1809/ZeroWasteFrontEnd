@@ -17,14 +17,6 @@ import "@ionic/react/css/text-alignment.css";
 import "@ionic/react/css/text-transformation.css";
 import "@ionic/react/css/flex-utils.css";
 import "@ionic/react/css/display.css";
-
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
- */
-
 import "@ionic/react/css/palettes/dark.system.css";
 import "./theme/variables.css";
 import Login from "./pages/Login";
@@ -50,9 +42,9 @@ const App: React.FC = () => {
 };
 
 const MainApp: React.FC = () => {
-  const { darkMode } = useTheme(); // Get the darkMode state from context
+  const { darkMode } = useTheme(); // obtinem valoarea darkMode din context
 
-  // Effect to apply the dark mode class on the body
+  // aplicam clasa dark-mode pe body daca darkMode este true
   useEffect(() => {
     if (darkMode) {
       document.body.classList.add("dark-mode");
