@@ -220,6 +220,7 @@ const AccountSettings: React.FC = () => {
           </IonButton>
         </div>
       </IonModal>
+      
       {/* Loading spinner */}
       <IonLoading isOpen={loading} message="Please wait..." />
 

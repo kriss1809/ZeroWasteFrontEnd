@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import {IonPage, IonHeader, IonToolbar,IonTitle,IonContent,IonButton,IonList,IonItem,IonLabel,IonSelect,IonSelectOption,IonModal,IonIcon,IonInput, IonGrid, IonRow, IonCol, IonInfiniteScroll, IonInfiniteScrollContent, IonLoading} from "@ionic/react";
+import {IonPage, IonHeader,IonContent,IonButton,IonSelect,IonSelectOption,IonIcon,IonInput, IonCol, IonInfiniteScroll, IonInfiniteScrollContent, IonLoading} from "@ionic/react";
 import Menu from "../components/Menu";
 import RecipeCard from "../components/RecipeCard";
-import { search, optionsOutline, flameOutline, restaurantOutline, timerOutline, heartOutline, closeOutline, refreshCircle, refreshCircleOutline, sync } from "ionicons/icons";
+import { search, optionsOutline, flameOutline, restaurantOutline, timerOutline, heartOutline, closeOutline, sync } from "ionicons/icons";
 import { useTheme } from "../components/ThemeContext";
 import { useRecipes } from "../services/RecipesProvider";
 import { Recipe } from "../entities/Recipe";
@@ -202,7 +202,7 @@ const handleFilter = async () => {
               <div id="filter-panel">
                 <IonCol size="12" sizeMd="12">
                   <div className="filter-container">
-                    {/* Difficulty Filter */}
+                    {/* dificultate */}
                     <div className="filter-field">
                       <IonIcon icon={flameOutline} size="large" />
                       <IonSelect
@@ -229,7 +229,7 @@ const handleFilter = async () => {
                       </IonSelect>
                     </div>
 
-                    {/* Type Filter */}
+                    {/* tip */}
                     <div className="filter-field">
                       <IonIcon icon={restaurantOutline} size="large" />
                       <IonSelect
@@ -294,10 +294,9 @@ const handleFilter = async () => {
                   </div>
                 </IonCol>
 
-                {/* Additional Filters */}
                 <IonCol size="12" sizeMd="12">
                   <div className="filter-container">
-                    {/* Time Filter */}
+                    {/* timp */}
                     <div className="filter-field">
                       <IonIcon icon={timerOutline} size="large" />
                       <IonSelect
@@ -336,7 +335,7 @@ const handleFilter = async () => {
                       </IonSelect>
                     </div>
 
-                    {/* Favourites Filter */}
+                    {/* like/dislike */}
                     <div className="filter-field">
                       <IonIcon icon={heartOutline} size="large" />
                       <IonSelect
@@ -384,7 +383,7 @@ const handleFilter = async () => {
             )}
           </IonCol>
 
-          {/* Afișare Rețete */}
+          {/* afisam retetele */}
           <div>
             {nothingFound && (
               <div

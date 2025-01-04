@@ -23,17 +23,17 @@ const setNewPassword: React.FC = () => {
      if (value !== password) {
        setError("Passwords do not match!");
      } else {
-       setError(""); // Dacă parolele coincid, se șterge mesajul de eroare
+       setError(""); // parolele coincid, se sterge mesajul de eroare
      }
   };
   
   const handleSubmit = () => {
-    // Verifică dacă parolele coincid
+    // verificam daca parolele coincid
     if (password !== confirmPassword) {
       setError("Passwords do not match!");
       return;
     }
-    // Trimite datele la server
+    // trimitem datele la server
     if (!token || !uid) {
       setError("Invalid token or user ID");
       return;
@@ -52,7 +52,7 @@ const setNewPassword: React.FC = () => {
           >
             <h1 className="title">Choose a new password for your account</h1>
 
-            {/* Password */}
+            {/* Parola */}
             <IonItem style={{ marginTop: "10px" }}>
               <IonLabel position="stacked" className="label-dark-mode">
                 Password
@@ -65,7 +65,7 @@ const setNewPassword: React.FC = () => {
               />
             </IonItem>
 
-            {/* Confirm Password */}
+            {/* Confirmare parola */}
             <IonItem style={{ marginTop: "10px" }}>
               <IonLabel position="stacked" className="label-dark-mode">
                 Confirm Password

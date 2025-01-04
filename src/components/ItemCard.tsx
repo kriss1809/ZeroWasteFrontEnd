@@ -29,7 +29,7 @@ interface ItemProps {
     best_before: string,  // Format: "DD.MM.YYYY"
     opened: string,
     consumption_days: string
-  ) => void; // Callback prop for editing
+  ) => void; 
 }
 
 
@@ -43,8 +43,8 @@ const ItemCard: React.FC<ItemProps> = ({id,name, best_before, opened, consumptio
     return `${parts[2]}.${parts[1]}.${parts[0]}`; // "DD.MM.YYYY"
   };
 
-  best_before ? best_before = convertDateFormat(best_before) : best_before; // Convert the date format
-  opened ? (opened = convertDateFormat(opened)) : opened; // Convert the date format if opened is not null 
+  best_before ? best_before = convertDateFormat(best_before) : best_before; // conversie a formatului datei daca best_before nu este null
+  opened ? (opened = convertDateFormat(opened)) : opened; // conversie a formatului datei daca opened nu este null
 
  
   const handleDeleteClick = (e: React.MouseEvent) => {
@@ -66,7 +66,7 @@ const ItemCard: React.FC<ItemProps> = ({id,name, best_before, opened, consumptio
    };
 
    const handleItemEdit = () => {
-    onEdit(id,name, best_before, opened, consumption_days); // Call the edit handler
+    onEdit(id,name, best_before, opened, consumption_days); // editarea produsului
   };
 
   const isSoonToExpire = () => {
