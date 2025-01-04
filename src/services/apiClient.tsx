@@ -63,7 +63,8 @@ export const RefreshAccessToken = async () => {
     const { access } = response.data;
     sessionStorage.setItem("accessToken", access);
     return access;
-  } catch (error : any) {
+  } catch (error: any) {
+    localStorage.removeItem("refreshToken");
     throw error.response.data;
   }
 };

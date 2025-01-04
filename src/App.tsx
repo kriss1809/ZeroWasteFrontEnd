@@ -38,6 +38,7 @@ import Recipes from "./pages/Recipes";
 import { ThemeProvider, useTheme } from "./components/ThemeContext";
 import SetNewPassword from "./pages/SetNewPassword";
 import { useEffect } from "react";
+import { useAuth } from "./services/authProvider";
 
 setupIonicReact();
 
@@ -51,6 +52,7 @@ const App: React.FC = () => {
 
 const MainApp: React.FC = () => {
   const { darkMode } = useTheme(); // Get the darkMode state from context
+  const { isAuthenticated } = useAuth();
 
   // Effect to apply the dark mode class on the body
   useEffect(() => {
@@ -67,10 +69,10 @@ const MainApp: React.FC = () => {
         <IonRouterOutlet>
           <Switch>
             <Route exact path="/home">
-              <Home />
+              {isAuthenticated ? <Home /> : <Redirect to="/login" />}
             </Route>
             <Route exact path="/recipes">
-              <Recipes />
+              {isAuthenticated ? <Recipes /> : <Redirect to="/login" />}
             </Route>
             <Route exact path="/login">
               <Login />
@@ -82,7 +84,7 @@ const MainApp: React.FC = () => {
               <SetNewPassword />
             </Route>
             <Route exact path="/profile">
-              <Profile />
+              {isAuthenticated ? <Profile /> : <Redirect to="/login" />}
             </Route>
             <Route exact path="/successfully-created-account">
               <SuccessfullyCreatedAccount />
