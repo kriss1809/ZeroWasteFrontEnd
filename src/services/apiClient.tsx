@@ -2,7 +2,7 @@ import axios from "axios";
 import { User } from "../entities/User";
 import { Recipe } from "../entities/Recipe";
 
-const url = "http://192.168.100.186:8000/";
+const url = "http://192.168.101.17:8000/";
 // const url = "http://localhost:8000/";
 export const loginUser = async (email: string, password: string) => {
   try {
@@ -63,8 +63,8 @@ export const RefreshAccessToken = async () => {
     const { access } = response.data;
     sessionStorage.setItem("accessToken", access);
     return access;
-  } catch (error) {
-    console.error(error);
+  } catch (error : any) {
+    throw error.response.data;
   }
 };
 

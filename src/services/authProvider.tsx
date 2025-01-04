@@ -165,8 +165,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setAccessToken(acces);
         sessionStorage.setItem('accessToken', acces);
       }
-    } catch (error) {
-      console.error('Refresh access token failed:', error);
+    } catch (error : any) {
+      throw error;
     }
   };
 
