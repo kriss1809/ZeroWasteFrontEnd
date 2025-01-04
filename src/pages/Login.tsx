@@ -53,6 +53,7 @@ const Login: React.FC = () => {
     ForgotPassword(email).then((response) => {
       if (response) {
         console.log("Email sent");
+        setShowForgotPasswordModal(false);
       } else {
         console.log("Email not sent");
       }
@@ -61,8 +62,11 @@ const Login: React.FC = () => {
 
   useEffect(() => {
     if (localStorage.getItem("refreshToken")) {
-      refreshAccessToken();
-      history.push("/home");
+      refreshAccessToken().then(() => {
+        history.push("/home");
+      }).catch(() => {
+        console.log("Refresh token expired");
+      });
     }
   }
   , []);
